@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="lightwaverf"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<thing-type id="structure">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="lightwaverfaccount" />
+		</supported-bridge-type-refs>
+		<label>Structure</label>
+		<description>A Lightwave RF Structure</description>
+		<channels>
+			<channel id="name" typeId="name" />
+		</channels>
+		<config-description>
+			<parameter name="structureId" type="text" required="true">
+				<label>Device ID</label>
+				<description>Device ID of the A.C. device</description>
+			</parameter>
+			<parameter name="pollingInterval" type="integer" required="true">
+				<label>Polling Interval</label>
+				<description>Time interval how often poll data from MELCloud</description>
+				<default>60</default>
+			</parameter>
+		</config-description>
+	</thing-type>
+</thing:thing-descriptions>

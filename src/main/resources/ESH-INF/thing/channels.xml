@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="lightwaverf"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+
+	<channel-type id="discoverDevices">
+		<item-type>Switch</item-type>
+		<label>Discover Devices (no useable channels)</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="discoveryStructures">
+		<item-type>Switch</item-type>
+		<label>Discover Structures (no useable channels)</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<!-- Structures -->
+
+	<channel-type id="name">
+		<item-type>String</item-type>
+		<label>Name</label>
+		<description>Name</description>
+		<state readOnly="true"></state>
+	</channel-type>
+
+	<!-- Devices -->
+	
+	<!-- Sockets -->
+	<channel-type id="featureSetName">
+		<item-type>String</item-type>
+		<label>Name</label>
+		<description>featureSet Name</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="switch">
+		<item-type>Switch</item-type>
+		<label>Switch</label>
+		<description>Switch</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="outletInUse">
+		<item-type>Switch</item-type>
+		<label>Outlet In Use</label>
+		<description>Outlet In Use</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="protection">
+		<item-type>Switch</item-type>
+		<label>Protection</label>
+		<description>Manual Switch Locked (Protected)</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="power">
+		<item-type>Number</item-type>
+		<label>Power</label>
+		<description>Current Power Usage</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="energy">
+		<item-type>Number</item-type>
+		<label>Energy Usage (Since Last Reset)</label>
+		<description>Product Energy Usage (kwH)</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="identify">
+		<item-type>Switch</item-type>
+		<label>Identify Device (Blink LEDs)</label>
+		<description>Identify the current Device</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="reset">
+		<item-type>Switch</item-type>
+		<label>Reset To Default</label>
+		<description>Reset The Current Device</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="upgrade">
+		<item-type>Switch</item-type>
+		<label>Check For Upgrades</label>
+		<description>Check if there are firmware updates for the current device</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="diagnostics">
+		<item-type>Switch</item-type>
+		<label>Diagnostics</label>
+		<description>Carry out automated diagnostics</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="periodOfBroadcast">
+		<item-type>String</item-type>
+		<label>Period Of Broadcast</label>
+		<description>Dont ask me what it does...</description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="rgbColor">
+		<item-type>String</item-type>
+		<label>RGB Colour</label>
+		<description>Colour of the LEDs on the device</description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="voltage">
+		<item-type>Number</item-type>
+		<label>Voltage</label>
+		<description>Current Voltage To The Device</description>
+		<state readOnly="true"></state>
+	</channel-type>
+
+
+	<channel-type id="targetTemperature">
+		<item-type>Number</item-type>
+		<label>Target Temperature</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="temperature">
+		<item-type>Number</item-type>
+		<label>Current Temperature</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="valveLevel">
+		<item-type>Dimmer</item-type>
+		<label>Valve Level</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="heatState">
+		<item-type>Switch</item-type>
+		<label>Heating State</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="batteryLevel">
+		<item-type>Number</item-type>
+		<label>Battery Level</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="callForHeat">
+		<item-type>Switch</item-type>
+		<label>Demanding Heat</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="rssi">
+		<item-type>Number</item-type>
+		<label>Signal Strength</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+
+	<channel-type id="dimLevel">
+		<item-type>Dimmer</item-type>
+		<label>Dim Level</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="dimSetup">
+		<item-type>Switch</item-type>
+		<label>Dim Setup</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="bulbSetup">
+		<item-type>Switch</item-type>
+		<label>Bulb Setup</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+
+	<channel-type id="currentTime">
+		<item-type>String</item-type>
+		<label>Current Time</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="buttonPress">
+		<item-type>Switch</item-type>
+		<label>Button Press</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="time">
+		<item-type>String</item-type>
+		<label>Time</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="date">
+		<item-type>String</item-type>
+		<label>Date</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="monthArray">
+		<item-type>String</item-type>
+		<label>Month Array</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="weekdayArray">
+		<item-type>String</item-type>
+		<label>Weekday Array</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="timeZone">
+		<item-type>String</item-type>
+		<label>Time Zone</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="locationLongitude">
+		<item-type>String</item-type>
+		<label>Longitude</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="locationLatitude">
+		<item-type>String</item-type>
+		<label>Latitude</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+	<channel-type id="duskTime">
+		<item-type>String</item-type>
+		<label>Dusk Time</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="dawnTime">
+		<item-type>String</item-type>
+		<label>Dawn Time</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="day">
+		<item-type>String</item-type>
+		<label>Day</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="month">
+		<item-type>String</item-type>
+		<label>Month</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="year">
+		<item-type>String</item-type>
+		<label>Year</label>
+		<description></description>
+		<state readOnly="true"></state>
+	</channel-type>
+	<channel-type id="weekday">
+		<item-type>String</item-type>
+		<label>Weekday</label>
+		<description></description>
+		<state readOnly="false"></state>
+	</channel-type>
+
+</thing:thing-descriptions>
