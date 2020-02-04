@@ -65,9 +65,10 @@ public class FeatureSetHandler extends BaseThingHandler {
     private LWAccountHandler accountHandler;
     private ScheduledFuture<?> refreshTask;
     private ScheduledFuture<?> listTask;
-    List<FeatureSets> featureSets = LWBindingConstants.featureSets;
-    List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
-    List<String> channelList = UpdateListener.channelList;
+    private static List<FeatureSets> featureSets = LWBindingConstants.featureSets;
+    private static List<Features> features = LWBindingConstants.features;
+    private static List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
+    private static List<String> channelList = UpdateListener.channelList;
     public FeatureSetHandler(Thing thing) {
         super(thing);
     }
@@ -133,7 +134,7 @@ public class FeatureSetHandler extends BaseThingHandler {
         for (Channel channel : getThing().getChannels()) {
             if (isLinked(channel.getUID())) {
                 String featureSetId = this.thing.getConfiguration().get("featureSetId").toString();
-                FeatureSets featureSet = LWBindingConstants.featureSets.stream()
+                FeatureSets featureSet = featureSets.stream()
                 .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));            
                 Features feature = featureSet.getFeatures().stream().filter(i -> 
                     channel.getUID().getId().equals(i.getType())).findFirst().orElse(features.get(0));
@@ -173,21 +174,21 @@ public class FeatureSetHandler extends BaseThingHandler {
 
     private synchronized void updateChannels() {
         String featureSetId = this.thing.getConfiguration().get("featureSetId").toString();
-        FeatureSets featureSet = LWBindingConstants.featureSets.stream()
-            .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(LWBindingConstants.featureSets.get(0));
+        FeatureSets featureSet = featureSets.stream()
+            .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));
         for (Channel channel : getThing().getChannels()) {
             if (isLinked(channel.getUID())) {
             Features feature = featureSet.getFeatures().stream().filter(i -> 
-                channel.getUID().getId().equals(i.getType())).findFirst().orElse(LWBindingConstants.features.get(0));
+                channel.getUID().getId().equals(i.getType())).findFirst().orElse(features.get(0));
             FeatureStatus status = featureStatus.stream().filter(i -> 
-                feature.getFeatureId().equals(i.getFeatureId())).findFirst().orElse(LWBindingConstants.featureStatus.get(0));
+                feature.getFeatureId().equals(i.getFeatureId())).findFirst().orElse(featureStatus.get(0));
             Integer value = status.getValue();
             updateChannels(channel.getUID().getId(),value);
             }
         }
     }
 
-    private void updateChannels(String channelId,Integer value) {
+    private synchronized void updateChannels(String channelId,Integer value) {
         switch (channelId) {
             case "switch": case "diagnostics": case "outletInUse": case "protection":
             case "identify": case "reset": case "upgrade": case "heatState":
@@ -207,10 +208,10 @@ public class FeatureSetHandler extends BaseThingHandler {
             case "energy":
                 updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 1000));
                 break;
-            case "rssi": case "batteryLevel": case "temperature": case "targetTemperature":
+            case "rssi":  case "temperature": case "targetTemperature":
                 updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 10));
                 break;
-            case "dimLevel":
+                case "batteryLevel": case "dimLevel":
                 updateState(channelId,new DecimalType(value));
                 break;
         }
@@ -231,7 +232,7 @@ public class FeatureSetHandler extends BaseThingHandler {
             }
             logger.debug("Received command '{}' to channel {}", command, channelUID);
             String fSId = this.thing.getConfiguration().get("featureSetId").toString();
-            Optional<FeatureSets> featureSetStatus = LWBindingConstants.featureSets.stream()
+            Optional<FeatureSets> featureSetStatus = featureSets.stream()
                     .filter(i -> fSId.equals(i.getFeatureSetId()))
                     .findFirst();
             Features Status = featureSetStatus.get().getFeatures().stream()
@@ -258,11 +259,11 @@ public class FeatureSetHandler extends BaseThingHandler {
             case CHANNEL_LOCATION_LONGITUDE:
             case CHANNEL_DIM_LEVEL:
             case CHANNEL_VALVE_LEVEL:
-                command.toString();
+                value = command.toString();
                 break;
             case CHANNEL_TEMPERATURE:
             case CHANNEL_TARGET_TEMPERATURE:
-                new DecimalType((Float.parseFloat(command.toString())) * 10);
+                value = new DecimalType((Float.parseFloat(command.toString())) * 10).toString();
                 break;
             default : value = "-1";
             }

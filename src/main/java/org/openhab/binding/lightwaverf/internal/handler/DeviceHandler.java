@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ScheduledFuture;
-
+import java.awt.Color;
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
@@ -70,12 +70,10 @@ public class DeviceHandler extends BaseThingHandler {
     String value;
     private LWAccountHandler accountHandler;
     private ScheduledFuture<?> refreshTask;
-    // private final static Gson gson = new
-    // GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-    // .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
-    List<FeatureSets> featureSets = LWBindingConstants.featureSets;
-    List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
-    List<Devices> devices = LWBindingConstants.devices;
+    private static List<FeatureSets> featureSets = LWBindingConstants.featureSets;
+    private static List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
+    private static List<Devices> devices = LWBindingConstants.devices;
+    private static List<Features> features = LWBindingConstants.features;
     private String s = this.thing.getConfiguration().get("deviceId").toString();
     List<String> channelList = UpdateListener.channelList;
     private ScheduledFuture<?> listTask;
@@ -109,7 +107,7 @@ public class DeviceHandler extends BaseThingHandler {
                 Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst()
                         .orElse(devices.get(0));
                 String featureSetId = device.getFeatureSets().get(0).getFeatureSetId().toString();
-                FeatureSets featureSet = LWBindingConstants.featureSets.stream()
+                FeatureSets featureSet = featureSets.stream()
                         .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));
                 Features feature = featureSet.getFeatures().stream()
                         .filter(i -> channel.getUID().getId().equals(i.getType())).findFirst().orElse(features.get(0));
@@ -182,7 +180,7 @@ public class DeviceHandler extends BaseThingHandler {
 
     private void updateStateAndChannels() {
         if (accountHandler.isConnected()) {
-            logger.debug("Update device '{}' channels", getThing().getLabel().toString());
+            logger.debug("Update device {} channels", getThing().getLabel().toString());
             // updateState();
             updateChannels();
         } else {
@@ -193,15 +191,17 @@ public class DeviceHandler extends BaseThingHandler {
     private synchronized void updateChannels() {
         Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst().orElse(devices.get(0));
         String t = device.getFeatureSets().get(0).getFeatureSetId().toString();
-        FeatureSets featureSet = LWBindingConstants.featureSets.stream().filter(i -> t.equals(i.getFeatureSetId()))
-                .findFirst().orElse(LWBindingConstants.featureSets.get(0));
+        logger.debug("FeatureSet Id of device to update:{} ", t);
+        FeatureSets featureSet = featureSets.stream().filter(i -> t.equals(i.getFeatureSetId()))
+                .findFirst().orElse(featureSets.get(0));
         for (Channel channel : getThing().getChannels()) {
             Features feature = featureSet.getFeatures().stream()
                     .filter(i -> channel.getUID().getId().equals(i.getType())).findFirst()
-                    .orElse(LWBindingConstants.features.get(0));
+                    .orElse(features.get(0));
             FeatureStatus status = featureStatus.stream().filter(i -> feature.getFeatureId().equals(i.getFeatureId()))
-                    .findFirst().orElse(LWBindingConstants.featureStatus.get(0));
-            Integer value = status.getValue();
+                    .findFirst().orElse(featureStatus.get(0));
+            int value = status.getValue();
+            logger.debug("Send update {} to channel {}", value,channel.getUID().getId() );
             updateChannels(channel.getUID().getId(), value);
         }
     }
@@ -230,7 +230,6 @@ public class DeviceHandler extends BaseThingHandler {
             updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 100));
             break;
         case "rssi":
-        case "batteryLevel":
         case "temperature":
         case "targetTemperature":
         case "voltage":
@@ -238,11 +237,17 @@ public class DeviceHandler extends BaseThingHandler {
             break;
         case "dimLevel":
         case "valveLevel":
+        case "batteryLevel":
             updateState(channelId, new DecimalType(value));
             break;
         case "rgbColor":
+            Color color = new Color(value);
+            Number red = color.getRed();
+            Number green = color.getGreen();
+            Number blue = color.getBlue();
+            updateState(channelId, new StringType("(" + red.toString() + "," + green.toString() + "," + blue.toString() + ")"));
+            break;
         case "periodOfBroadcast":
-        case "date":
         case "monthArray":
         case "weekdayArray":
         case "day":
@@ -251,9 +256,15 @@ public class DeviceHandler extends BaseThingHandler {
         case "timeZone":
             updateState(channelId, new StringType(value.toString()));
             break;
-        case "currentTime":
-            DateTime date = new DateTime((Long.parseLong(value.toString())));
+        case "date":
+            Number abc = ((value).longValue()*100000);
+            DateTimeType date = new DateTimeType(new DateTime(abc).toString());
             updateState(channelId, new StringType(date.toString()));
+        break;
+        case "currentTime":
+            Number def = ((value).longValue()*1000);
+            DateTimeType time = new DateTimeType(new DateTime(def).toString());
+            updateState(channelId, new StringType(time.toString()));
             break;
         case "duskTime":
         case "dawnTime":
@@ -288,7 +299,7 @@ public class DeviceHandler extends BaseThingHandler {
             updateState(channelId, new StringType(new DecimalType(Float.parseFloat(value.toString()) / 1000000).toString()));
             break;
         }
-        logger.debug("Finished Channel Update for {}", this.thing.toString());
+        logger.debug("channel {} received update", channelId);
     }
 
     @Override
@@ -303,10 +314,11 @@ public class DeviceHandler extends BaseThingHandler {
             return;
         }
         logger.debug("Received command '{}' to channel {}", command, channelUID);
-        String fSId = this.thing.getConfiguration().get("featureSetId").toString();
-        Optional<FeatureSets> featureSetStatus = LWBindingConstants.featureSets.stream()
-                .filter(i -> fSId.equals(i.getFeatureSetId())).findFirst();
-        // FeatureSets cmdtoSend = getFeatureSetStatusCopy(featureSetStatus);
+        Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst().orElse(devices.get(0));
+        String featureSetId = device.getFeatureSets().get(0).getFeatureSetId().toString();
+        logger.debug("FeatureSet Id of device to update:{} ", featureSetId);
+        Optional<FeatureSets> featureSetStatus = featureSets.stream()
+                .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst();
         Features Status = featureSetStatus.get().getFeatures().stream()
                 .filter(i -> channelUID.getId().equals(i.getType())).findAny().orElse(null);
 
@@ -331,11 +343,11 @@ public class DeviceHandler extends BaseThingHandler {
         case CHANNEL_LOCATION_LONGITUDE:
         case CHANNEL_DIM_LEVEL:
         case CHANNEL_VALVE_LEVEL:
-            command.toString();
+            value = command.toString();
             break;
         case CHANNEL_TEMPERATURE:
         case CHANNEL_TARGET_TEMPERATURE:
-            new DecimalType((Float.parseFloat(command.toString())) * 10);
+            value = (new DecimalType((Float.parseFloat(command.toString())) * 10)).toString();
             break;
         default:
             value = "-1";
