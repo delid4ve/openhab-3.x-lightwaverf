@@ -21,7 +21,6 @@ package org.openhab.binding.lightwaverf.internal.handler;
 
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
 
-
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.Channel;
 import org.eclipse.smarthome.core.thing.ChannelUID;
@@ -37,32 +36,24 @@ import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
 import org.openhab.binding.lightwaverf.internal.Http;
 import org.openhab.binding.lightwaverf.internal.LWBindingConstants;
+import org.openhab.binding.lightwaverf.internal.UpdateListener;
 import org.openhab.binding.lightwaverf.internal.api.discovery.FeatureSets;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Features;
 import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 import org.openhab.binding.lightwaverf.internal.config.FeatureSetConfig;
-import org.openhab.binding.lightwaverf.internal.discovery.LWDiscoveryService;
-import org.openhab.binding.lightwaverf.internal.exceptions.*;
-import org.openhab.binding.lightwaverf.internal.Utils;
+import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -73,11 +64,10 @@ public class FeatureSetHandler extends BaseThingHandler {
     private FeatureSetConfig config;
     private LWAccountHandler accountHandler;
     private ScheduledFuture<?> refreshTask;
-    private String t = this.thing.getConfiguration().get("featureSetId").toString();
-    private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+    private ScheduledFuture<?> listTask;
     List<FeatureSets> featureSets = LWBindingConstants.featureSets;
     List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
+    List<String> channelList = UpdateListener.channelList;
     public FeatureSetHandler(Thing thing) {
         super(thing);
     }
@@ -92,15 +82,21 @@ public class FeatureSetHandler extends BaseThingHandler {
         }
         config = getConfigAs(FeatureSetConfig.class);
         logger.debug("Device Config: {}", config);
-        initializeBridge(bridge.getHandler(), bridge.getStatus());
-        startRefresh();
+        initializeBridge(bridge.getHandler(), bridge.getStatus()); 
+        if (listTask == null || listTask.isCancelled()) {
+            listTask = scheduler.schedule(this::createUpdateList, 5, TimeUnit.SECONDS);
+        }       
     }
 
     @Override
     public void dispose() {
-        // logger.debug("Running dispose()");
-       
-        refreshTask.cancel(true);
+        logger.debug("Running dispose()");
+        if (refreshTask != null) {
+            refreshTask.cancel(true);
+        }
+        if (listTask != null) {
+            listTask.cancel(true);
+        }
     }
 
     @Override
@@ -122,21 +118,41 @@ public class FeatureSetHandler extends BaseThingHandler {
     }
 
     private void startRefresh() {
+        int refresh;
+        if(Integer.valueOf(this.getBridge()
+                        .getConfiguration().get("pollingInterval").toString())<5){refresh = 5;} 
+                        else {refresh = Integer.valueOf(this.getBridge()
+                            .getConfiguration().get("pollingInterval").toString());}
         if (refreshTask == null || refreshTask.isCancelled()) {
-            refreshTask = scheduler.scheduleWithFixedDelay(this::updateStateAndChannels, 1,
-                    10, TimeUnit.SECONDS);
+            refreshTask = scheduler.scheduleWithFixedDelay(this::updateStateAndChannels, 15,
+                    refresh, TimeUnit.SECONDS);
         }
+    }  
+
+    private void createUpdateList() {
+        for (Channel channel : getThing().getChannels()) {
+            if (isLinked(channel.getUID())) {
+                String featureSetId = this.thing.getConfiguration().get("featureSetId").toString();
+                FeatureSets featureSet = LWBindingConstants.featureSets.stream()
+                .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));            
+                Features feature = featureSet.getFeatures().stream().filter(i -> 
+                    channel.getUID().getId().equals(i.getType())).findFirst().orElse(features.get(0));
+                channelList.add(feature.getFeatureId());  
+                logger.debug("channel added to Update List: {}", channel.getUID().toString());
+            }
+        }
+        startRefresh();
     }
 
-    private void updateStateAndChannels() {
+     private void updateStateAndChannels() {
+        
         if (accountHandler.isConnected()) {
-            logger.warn("Update device '{}' channels", getThing().getLabel().toString());
-                updateState();
+            logger.debug("Update device '{}' channels", getThing().getLabel().toString());
                 updateChannels();
         } else {
             logger.debug("Connection to Lightwave is down");
         }
-    }
+    } 
 
     private void initializeBridge(ThingHandler thingHandler, ThingStatus bridgeStatus) {
         logger.debug("initializeBridge {} for thing {}", bridgeStatus, getThing().getUID());
@@ -155,29 +171,19 @@ public class FeatureSetHandler extends BaseThingHandler {
         }
     }
 
-    public void updateState() {
-        InputStream body = Utils.createRequestBody(t);
-        String response = Http.httpClient("features", body, "application/json","");
-        logger.debug("Refresh command not supported");
-        HashMap<String,Integer> featureStatuses = gson.fromJson(response,new TypeToken<HashMap<String,Integer>>(){}.getType());
-        for (Map.Entry<String,Integer> myMap : featureStatuses.entrySet()) {
-            String key = myMap.getKey().toString();
-            int value = myMap.getValue();
-            featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(u -> u.setValue(value));
-        }
-    }
-
     private synchronized void updateChannels() {
         String featureSetId = this.thing.getConfiguration().get("featureSetId").toString();
         FeatureSets featureSet = LWBindingConstants.featureSets.stream()
             .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(LWBindingConstants.featureSets.get(0));
         for (Channel channel : getThing().getChannels()) {
+            if (isLinked(channel.getUID())) {
             Features feature = featureSet.getFeatures().stream().filter(i -> 
                 channel.getUID().getId().equals(i.getType())).findFirst().orElse(LWBindingConstants.features.get(0));
             FeatureStatus status = featureStatus.stream().filter(i -> 
                 feature.getFeatureId().equals(i.getFeatureId())).findFirst().orElse(LWBindingConstants.featureStatus.get(0));
             Integer value = status.getValue();
             updateChannels(channel.getUID().getId(),value);
+            }
         }
     }
 
@@ -192,11 +198,17 @@ public class FeatureSetHandler extends BaseThingHandler {
                     updateState(channelId, OnOffType.OFF);
                 }
                 break;
-            case "power": case "energy": case "voltage":
-                updateState(channelId, new DecimalType((value / 1000)));
+            case "voltage":
+                updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 10));
+                break;
+            case "power": 
+                updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 10));
+                break;
+            case "energy":
+                updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 1000));
                 break;
             case "rssi": case "batteryLevel": case "temperature": case "targetTemperature":
-                updateState(channelId, new DecimalType(value / 10));
+                updateState(channelId, new DecimalType(Float.parseFloat(value.toString()) / 10));
                 break;
             case "dimLevel":
                 updateState(channelId,new DecimalType(value));
@@ -222,7 +234,6 @@ public class FeatureSetHandler extends BaseThingHandler {
             Optional<FeatureSets> featureSetStatus = LWBindingConstants.featureSets.stream()
                     .filter(i -> fSId.equals(i.getFeatureSetId()))
                     .findFirst();
-            // FeatureSets cmdtoSend = getFeatureSetStatusCopy(featureSetStatus);
             Features Status = featureSetStatus.get().getFeatures().stream()
                     .filter(i -> channelUID.getId().equals(i.getType())).findAny().orElse(null);
                     
@@ -258,13 +269,13 @@ public class FeatureSetHandler extends BaseThingHandler {
             logger.debug("channel: {}", channelUID.getId());
             logger.debug("value: {}", value);
             setStatus(Status.getFeatureId(), value);
-        } catch (IOException | LightwaveCommException | LightwaveLoginException e) {
+        } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
-    public void setStatus(String featureId, String value) throws IOException, LightwaveCommException, LightwaveLoginException {
+    public void setStatus(String featureId, String value) throws Exception {
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("value", value);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));

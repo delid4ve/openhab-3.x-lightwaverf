@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import org.openhab.binding.lightwaverf.internal.Http;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Root;
-import org.openhab.binding.lightwaverf.internal.discovery.LWDiscoveryService;
+import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -120,20 +120,20 @@ public class StructureHandler extends BaseThingHandler {
     }
 
     
-    public void updateState(String channelId, String string) {
+    public void updateState(String channelId, String string) throws Exception {
         String response = Http.httpClient("structure", null, "application/json",t);
         Root structureStatus = gson.fromJson(response, Root.class);
         updateChannels(structureStatus);
     }
    
-    private synchronized void updateChannels(Root newStructureStatus) {
+    private synchronized void updateChannels(Root newStructureStatus) throws Exception {
         structureStatus = newStructureStatus;
         for (Channel channel : getThing().getChannels()) {
             updateChannels(channel.getUID().getId(), structureStatus);
         }
     }
 
-    private void updateChannels(String channelId, Root structureStatus) {
+    private void updateChannels(String channelId, Root structureStatus) throws Exception {
         switch (channelId) {
             case "name":
                 updateState(channelId, structureStatus.getName().toString());

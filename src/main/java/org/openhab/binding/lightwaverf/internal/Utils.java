@@ -20,8 +20,8 @@ package org.openhab.binding.lightwaverf.internal;
  */
 
 import org.openhab.binding.lightwaverf.internal.LWBindingConstants;
-import org.openhab.binding.lightwaverf.internal.api.*;
 import org.openhab.binding.lightwaverf.internal.api.discovery.*;
+import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.FieldNamingPolicy;
@@ -110,7 +110,7 @@ public class Utils {
         }
     }*/
 
-    public static void createLists() {
+    public static void createLists() throws Exception {
         if (LWBindingConstants.structures == null || LWBindingConstants.structures.isEmpty() == true) {
             String response = Http.httpClient("structures", null, null, null);
             StructureList structureList = gson.fromJson(response, StructureList.class);
@@ -139,7 +139,7 @@ public class Utils {
         }
     }
 
-    public static void createFeatureStatus() {
+  public static void createFeatureStatus() {
         String a;
         if (LWBindingConstants.featureStatus == null || LWBindingConstants.featureStatus.isEmpty() == true) {
             logger.warn("Started Status Update");
@@ -150,13 +150,13 @@ public class Utils {
                 LWBindingConstants.featureStatus.add(j, b);
             }
             logger.warn("createLists Feature Status size {}", LWBindingConstants.featureStatus.size());
-            //logger.warn("feature Status First ID {}", featureStatus.get(0).getFeatureId().toString());  
-        int partitionSize = 30;
+        }}    //logger.warn("feature Status First ID {}", featureStatus.get(0).getFeatureId().toString());  
+  /*      int partitionSize = 30;
         //List<List<FeatureStatus>> partitions = new ArrayList<>();
         for (int i = 0; i < LWBindingConstants.featureStatus.size(); i += partitionSize) {
             LWBindingConstants.partitions.add(LWBindingConstants.featureStatus.subList(i, Math.min(i + partitionSize, LWBindingConstants.featureStatus.size())));
-        }}}
- /*           
+        
+           
         public void eachUpdate(int k) {
             String string1;
             String body = "{\"features\": [";

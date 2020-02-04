@@ -12,6 +12,8 @@
  */
 package org.openhab.binding.lightwaverf.internal;
 
+
+
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
  * used across the whole binding.
@@ -19,7 +21,6 @@ package org.openhab.binding.lightwaverf.internal;
  * @author David Murton - Initial contribution
  */
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import org.openhab.binding.lightwaverf.internal.api.AccessToken;
@@ -89,23 +90,16 @@ public class Http {
         return method;
     }
 
-    public static String httpClient(String type, InputStream data, String other, String groupId) {
+    public static String httpClient(String type, InputStream data, String other, String groupId) throws Exception {
+        try{
         String response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
-        logger.debug("HTTP Client Response: {}", response);
-        if (response.contains("structure not found")) {
-            logger.warn("Structure not found, too many requests for {}", type);
-        }
         return response;
+        } catch (Exception e) {
+            logger.debug("HTTP Client Response Error: {}", e.getMessage());
+        }  
+        return ""; 
     }
 
-    public String httpClient2(String type, InputStream data, String other, String groupId) throws IOException {
-        String response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
-        logger.debug("HTTP Client Response: {}", response);
-        if (response.contains("structure not found")) {
-            logger.warn("Structure not found, too many requests for {}", type);
-        }
-        return response;
-    }
 
     
     

@@ -37,7 +37,7 @@ public class LWBindingConstants {
         public static List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
         public static List<Features> features = new ArrayList<Features>();
         public static List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
-        public static List<List<FeatureStatus>> partitions = new ArrayList<>();
+        
 
 
     private static final String BINDING_ID = "lightwaverf";
