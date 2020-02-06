@@ -44,28 +44,47 @@ public class LWBindingConstants {
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_LIGHTWAVE_ACCOUNT = new ThingTypeUID(BINDING_ID, "lightwaverfaccount");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_STRUCTURE = new ThingTypeUID(BINDING_ID, "structure");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_DEVICE = new ThingTypeUID(BINDING_ID, "device");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_SOCKET = new ThingTypeUID(BINDING_ID, "socket");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_THERMOSTAT = new ThingTypeUID(BINDING_ID, "thermostat");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_DIMMER = new ThingTypeUID(BINDING_ID, "dimmer");
     public static final ThingTypeUID THING_TYPE_LIGHTWAVE_HUB = new ThingTypeUID(BINDING_ID, "hub");
+    public static final ThingTypeUID THING_TYPE_THERMOSTAT = new ThingTypeUID(BINDING_ID, "thermostat");
+    public static final ThingTypeUID THING_TYPE_EMONITOR_GEN1 = new ThingTypeUID(BINDING_ID, "energyMonitorGen1");
+    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "socketSingleGen1");
+    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "socketSingleGen2");
+    public static final ThingTypeUID THING_TYPE_DSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "socketDoubleGen2");
+    public static final ThingTypeUID THING_TYPE_SDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerSingleGen2");
+    public static final ThingTypeUID THING_TYPE_DDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerDoubleGen2");
+    public static final ThingTypeUID THING_TYPE_TDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerTripleGen2");
+    public static final ThingTypeUID THING_TYPE_QDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerQuadGen2");
+    public static final ThingTypeUID THING_TYPE_UNKNOWNDEVICE = new ThingTypeUID(BINDING_ID, "device");
+
     
     public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
-            .unmodifiableSet(Stream.of(THING_TYPE_LIGHTWAVE_ACCOUNT, THING_TYPE_LIGHTWAVE_STRUCTURE,
-                    THING_TYPE_LIGHTWAVE_DEVICE, THING_TYPE_LIGHTWAVE_SOCKET ,
-                    THING_TYPE_LIGHTWAVE_THERMOSTAT, THING_TYPE_LIGHTWAVE_DIMMER,
-                    THING_TYPE_LIGHTWAVE_HUB).collect(Collectors.toSet()));
+            .unmodifiableSet(Stream.of(
+                    THING_TYPE_LIGHTWAVE_ACCOUNT,   
+                    THING_TYPE_LIGHTWAVE_HUB,
+                    THING_TYPE_THERMOSTAT,
+                    THING_TYPE_SSOCKET_GEN1,
+                    THING_TYPE_SSOCKET_GEN2,
+                    THING_TYPE_DSOCKET_GEN2,
+                    THING_TYPE_SDIMMER_GEN2,
+                    THING_TYPE_DDIMMER_GEN2,
+                    THING_TYPE_TDIMMER_GEN2,
+                    THING_TYPE_QDIMMER_GEN2,
+                    THING_TYPE_EMONITOR_GEN1,
+                    THING_TYPE_UNKNOWNDEVICE).collect(Collectors.toSet()));
 
     public static final Set<ThingTypeUID> DISCOVERABLE_THING_TYPE_UIDS = Collections.unmodifiableSet(
-            Stream.of(THING_TYPE_LIGHTWAVE_STRUCTURE, THING_TYPE_LIGHTWAVE_DEVICE,
-            THING_TYPE_LIGHTWAVE_SOCKET, THING_TYPE_LIGHTWAVE_THERMOSTAT, THING_TYPE_LIGHTWAVE_DIMMER,
-            THING_TYPE_LIGHTWAVE_HUB)
-                    .collect(Collectors.toSet()));
+            Stream.of(THING_TYPE_LIGHTWAVE_HUB,
+            THING_TYPE_THERMOSTAT,
+            THING_TYPE_SSOCKET_GEN1,
+            THING_TYPE_SSOCKET_GEN2,
+            THING_TYPE_DSOCKET_GEN2,
+            THING_TYPE_SDIMMER_GEN2,
+            THING_TYPE_DDIMMER_GEN2,
+            THING_TYPE_TDIMMER_GEN2,
+            THING_TYPE_QDIMMER_GEN2,
+            THING_TYPE_EMONITOR_GEN1,
+            THING_TYPE_UNKNOWNDEVICE).collect(Collectors.toSet()));
 
-    // Common channels
-    public static final String CHANNEL_DISCOVER_DEVICES = "discoverDevices";
-    public static final String CHANNEL_DISCOVER_STRUCTURES = "discoverStructures";
     // Structure / Devices / Featuresets
     public static final String CHANNEL_NAME = "name";
     // Devices / Features
@@ -88,6 +107,7 @@ public class LWBindingConstants {
 
     public static final String CHANNEL_GROUP_ID = "groupId";
     // List of all Channel ids (Devices)
+    public static final String CHANNEL_SDEVICE_ID = "sdId";
     public static final String CHANNEL_DEVICE_ID = "deviceId";
     public static final String CHANNEL_PRODUCT_CODE = "productCode";
     public static final String CHANNEL_PRODUCT = "product";

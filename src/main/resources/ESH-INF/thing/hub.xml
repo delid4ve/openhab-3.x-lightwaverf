@@ -10,25 +10,9 @@
 		</supported-bridge-type-refs>
 		<label>Hub</label>
 		<description>Lightwave Hub</description>
-		<channels>
-			<channel id="currentTime" typeId="currentTime" />
-			<channel id="buttonPress" typeId="buttonPress" />
-			<channel id="time" typeId="time" />
-			<channel id="date" typeId="date" />
-			<channel id="monthArray" typeId="monthArray" />
-			<channel id="weekdayArray" typeId="weekdayArray" />
-			<channel id="locationLongitude" typeId="locationLongitude" />
-			<channel id="locationLatitude" typeId="locationLatitude" />
-			<channel id="duskTime" typeId="duskTime" />
-			<channel id="dawnTime" typeId="dawnTime" />
-			<channel id="day" typeId="day" />
-			<channel id="month" typeId="month" />
-			<channel id="year" typeId="year" />
-			<channel id="weekday" typeId="weekday" />
-			<channel id="timeZone" typeId="timeZone" />
-			<channel id="rgbColor" typeId="rgbColor" />
-			<channel id="identify" typeId="identify" />
-		</channels>
+		<channel-groups>
+			<channel-group id="1" typeId="gen2Hub" />
+		</channel-groups>
 		<properties>
 			<property name="Connected To Structure ID"></property>
 			<property name="Connected To Structure Name"></property>
@@ -40,9 +24,10 @@
 				<property name="Product Code"></property>
 				<property name="Category"></property>
 				<property name="Generation"></property>
+				<property name="Channels"></property>
 		</properties>
 		<config-description>
-			<parameter name="deviceId" type="text" required="true">
+			<parameter name="sdId" type="text" required="true">
 				<label>Device ID</label>
 				<description>Device ID of the Lightwave Item</description>
 			</parameter>

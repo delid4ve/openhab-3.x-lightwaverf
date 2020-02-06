@@ -19,8 +19,6 @@ package org.openhab.binding.lightwaverf.internal.handler;
  * @author David Murton - Initial contribution
  */
 
-import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -28,6 +26,7 @@ import java.time.DayOfWeek;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.awt.Color;
 import org.eclipse.smarthome.core.thing.Bridge;
@@ -60,7 +59,6 @@ import org.slf4j.LoggerFactory;
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import com.google.gson.JsonObject;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 public class DeviceHandler extends BaseThingHandler {
@@ -68,13 +66,27 @@ public class DeviceHandler extends BaseThingHandler {
     private final Logger logger = LoggerFactory.getLogger(DeviceHandler.class);
     private DeviceConfig config;
     String value;
+    //private ChannelGroupTypeProvider groups;
     private LWAccountHandler accountHandler;
     private ScheduledFuture<?> refreshTask;
     private static List<FeatureSets> featureSets = LWBindingConstants.featureSets;
     private static List<FeatureStatus> featureStatus = LWBindingConstants.featureStatus;
-    private static List<Devices> devices = LWBindingConstants.devices;
     private static List<Features> features = LWBindingConstants.features;
-    private String s = this.thing.getConfiguration().get("deviceId").toString();
+    private String deviceId = this.thing.getProperties().get("Device ID").toString();
+    private static List<Devices> devices = LWBindingConstants.devices;
+    private Devices device = null;
+    private Features feature = null;    
+    private FeatureStatus status = null;
+    private String featureSetId = null;
+    private int i;
+    public static int partitionSize;
+    private String groupType;
+    private String noChannels = this.thing.getProperties().get("Channels");
+    public int pollingInterval;
+    private String channelId;
+    private String channelTypeId;
+    private int channelValue;
+    private FeatureSets featureSet = null;
     List<String> channelList = UpdateListener.channelList;
     private ScheduledFuture<?> listTask;
     int refresh;
@@ -94,28 +106,10 @@ public class DeviceHandler extends BaseThingHandler {
         config = getConfigAs(DeviceConfig.class);
         logger.debug("Device Config: {}", config);
         initializeBridge(bridge.getHandler(), bridge.getStatus());
-        if (listTask == null || listTask.isCancelled()) {
-            listTask = scheduler.schedule(this::createUpdateList, 5, TimeUnit.SECONDS);
-        }
-
-    }
-
-    private void createUpdateList() {
-        for (Channel channel : getThing().getChannels()) {
-            if (isLinked(channel.getUID())) {
-                s = this.thing.getConfiguration().get("deviceId").toString();
-                Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst()
-                        .orElse(devices.get(0));
-                String featureSetId = device.getFeatureSets().get(0).getFeatureSetId().toString();
-                FeatureSets featureSet = featureSets.stream()
-                        .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));
-                Features feature = featureSet.getFeatures().stream()
-                        .filter(i -> channel.getUID().getId().equals(i.getType())).findFirst().orElse(features.get(0));
-                channelList.add(feature.getFeatureId());
-                logger.debug("channel added to update list {}", channel.getUID().toString());
-            }
-        }
-        startRefresh();
+        pollingInterval = Integer.valueOf(this.getBridge().getConfiguration().get("pollingInterval").toString());
+        partitionSize = Integer.valueOf(this.getBridge().getConfiguration().get("pollingGroupSize").toString());
+        refreshTask = scheduler.scheduleWithFixedDelay(this::updateChannels, 11, pollingInterval, TimeUnit.SECONDS);
+        
     }
 
     @Override
@@ -130,7 +124,6 @@ public class DeviceHandler extends BaseThingHandler {
             listTask = null;
         }
         accountHandler = null;
-
     }
 
     @Override
@@ -166,48 +159,69 @@ public class DeviceHandler extends BaseThingHandler {
         }
     }
 
-    private void startRefresh() {
-        int refresh;
-        if (Integer.valueOf(this.getBridge().getConfiguration().get("pollingInterval").toString()) < 5) {
-            refresh = 5;
-        } else {
-            refresh = Integer.valueOf(this.getBridge().getConfiguration().get("pollingInterval").toString());
+    @Override
+    public void channelUnlinked(final ChannelUID channelUID) {
+        Objects.requireNonNull(channelUID, "channelUID cannot be null");
+        String ch = channelUID.getIdWithoutGroup().toString();
+        int group =  (Integer.parseInt(channelUID.getGroupId()) -1);
+        feature = getFeature(group,ch);
+        if(channelList.contains(feature.getFeatureId()) == true) {
+            channelList.remove(feature.getFeatureId());
         }
-        if (refreshTask == null || refreshTask.isCancelled()) {
-            refreshTask = scheduler.scheduleWithFixedDelay(this::updateStateAndChannels, 15, refresh, TimeUnit.SECONDS);
+        super.channelUnlinked(channelUID);
+    }
+
+    @Override
+    public void channelLinked(final ChannelUID channelUID) {
+        Objects.requireNonNull(channelUID, "channelUID cannot be null");
+        String ch = channelUID.getIdWithoutGroup().toString();
+        int group =  (Integer.parseInt(channelUID.getGroupId()) -1);
+        feature = getFeature(group,ch);
+        if(channelList.contains(feature.getFeatureId()) == false) {
+            channelList.add(feature.getFeatureId());
+        }
+        super.channelLinked(channelUID);
+    }
+
+    private Features getFeature(int featureSetNo, String channelId) { 
+        device = devices.stream().filter(i -> deviceId.equals(i.getDeviceId())).findFirst().orElse(devices.get(0));
+        featureSetId = device.getFeatureSets().get(featureSetNo).getFeatureSetId().toString();
+        featureSet = featureSets.stream()
+        .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst().orElse(featureSets.get(0));
+        return featureSet.getFeatures().stream()
+        .filter(i -> channelId.equals(i.getType())).findFirst().orElse(features.get(0));
+    } 
+
+    private FeatureStatus getFeatureStatus(String featureId) { 
+        return featureStatus.stream().filter(i -> featureId.equals(i.getFeatureId()))
+        .findFirst().orElse(featureStatus.get(0));
+    }
+
+    private void updateChannels() {
+        i = (int) Double.parseDouble(noChannels);
+        for (int j=0; j < i; j++) { 
+            groupType = (j+1) + "";
+                for (Channel group : getThing().getChannelsOfGroup(groupType)) {
+                    if (isLinked(group.getUID())) {
+                        channelTypeId = group.getChannelTypeUID().getId();
+                        feature = getFeature(j,channelTypeId);                    
+                        if(channelList.contains(feature.getFeatureId()) == false) {
+                            channelList.add(feature.getFeatureId());
+                            logger.debug("channel added to update list {} for featureId {}", group.getUID().getId().toString(),feature.getFeatureId());
+                        }
+                        status = getFeatureStatus(feature.getFeatureId());
+                        channelValue = status.getValue();
+                        channelId = group.getUID().getId().toString();
+                        updateChannels(channelId, channelValue,group.getUID().getIdWithoutGroup());
+                        logger.debug("value {} sent to {} with channel name {}",channelValue,group.getUID().getId().toString(),group.getUID().getIdWithoutGroup()); 
+                    }
+                }     
         }
     }
 
-    private void updateStateAndChannels() {
-        if (accountHandler.isConnected()) {
-            logger.debug("Update device {} channels", getThing().getLabel().toString());
-            // updateState();
-            updateChannels();
-        } else {
-            logger.debug("Connection to Lightwave is down");
-        }
-    }
-
-    private synchronized void updateChannels() {
-        Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst().orElse(devices.get(0));
-        String t = device.getFeatureSets().get(0).getFeatureSetId().toString();
-        logger.debug("FeatureSet Id of device to update:{} ", t);
-        FeatureSets featureSet = featureSets.stream().filter(i -> t.equals(i.getFeatureSetId()))
-                .findFirst().orElse(featureSets.get(0));
-        for (Channel channel : getThing().getChannels()) {
-            Features feature = featureSet.getFeatures().stream()
-                    .filter(i -> channel.getUID().getId().equals(i.getType())).findFirst()
-                    .orElse(features.get(0));
-            FeatureStatus status = featureStatus.stream().filter(i -> feature.getFeatureId().equals(i.getFeatureId()))
-                    .findFirst().orElse(featureStatus.get(0));
-            int value = status.getValue();
-            logger.debug("Send update {} to channel {}", value,channel.getUID().getId() );
-            updateChannels(channel.getUID().getId(), value);
-        }
-    }
-
-    private void updateChannels(String channelId, Integer value) {
-        switch (channelId) {
+    private void updateChannels(String channelId, Integer value,String channelName) {
+        
+        switch (channelName) {
         case "switch":
         case "diagnostics":
         case "outletInUse":
@@ -304,7 +318,16 @@ public class DeviceHandler extends BaseThingHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
+        String channelName = channelUID.getIdWithoutGroup();
         String value = "";
+        String group = channelUID.getGroupId();
+        String channelId = channelUID.getId();
+        i = ((int) Double.parseDouble(group) - 1);
+        logger.debug("i: {}", i);
+        logger.debug("Group Id: {}", group);
+        logger.debug("Channel Name: {}", channelName);
+        logger.debug("Channel Id: {}", channelId);
+
         if (command instanceof RefreshType) {
             logger.debug("Refresh command not supported");
             return;
@@ -313,40 +336,35 @@ public class DeviceHandler extends BaseThingHandler {
             logger.warn("No connection to Lightwave available, ignoring command");
             return;
         }
-        logger.debug("Received command '{}' to channel {}", command, channelUID);
-        Devices device = devices.stream().filter(i -> s.equals(i.getDeviceId())).findFirst().orElse(devices.get(0));
-        String featureSetId = device.getFeatureSets().get(0).getFeatureSetId().toString();
-        logger.debug("FeatureSet Id of device to update:{} ", featureSetId);
-        Optional<FeatureSets> featureSetStatus = featureSets.stream()
-                .filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst();
-        Features Status = featureSetStatus.get().getFeatures().stream()
-                .filter(i -> channelUID.getId().equals(i.getType())).findAny().orElse(null);
-
-        switch (channelUID.getId()) {
-        case CHANNEL_SWITCH:
-        case CHANNEL_PROTECTION:
-        case CHANNEL_IDENTIFY:
-        case CHANNEL_RESET:
-        case CHANNEL_UPGRADE:
-        case CHANNEL_DIAGNOSTICS:
-        case CHANNEL_BULB_SETUP:
-        case CHANNEL_DIM_SETUP:
+        feature = getFeature(i,channelName);
+        switch (channelName) {
+        case "switch":
+        case "diagnostics":
+        case "outletInUse":
+        case "protection":
+        case "identify":
+        case "reset":
+        case "upgrade":
+        case "heatState":
+        case "callForHeat":
+        case "bulbSetup":
+        case "dimSetup":
             if (command.toString() == "ON") {
                 value = "1";
             } else {
                 value = "0";
             }
             break;
-        case CHANNEL_RGB_COLOR:
-        case CHANNEL_TIME_ZONE:
-        case CHANNEL_LOCATION_LATITUDE:
-        case CHANNEL_LOCATION_LONGITUDE:
-        case CHANNEL_DIM_LEVEL:
-        case CHANNEL_VALVE_LEVEL:
-            value = command.toString();
+            case "rgbColor":
+        case "timeZone":
+        case "locationLongitude":
+        case "locationLatitude":
+        case "dimLevel":
+        case "valveLevel":
+            value = (new DecimalType(Float.parseFloat(command.toString()))).toString();
             break;
-        case CHANNEL_TEMPERATURE:
-        case CHANNEL_TARGET_TEMPERATURE:
+            case "temperature":
+            case "targetTemperature":
             value = (new DecimalType((Float.parseFloat(command.toString())) * 10)).toString();
             break;
         default:
@@ -355,7 +373,7 @@ public class DeviceHandler extends BaseThingHandler {
         logger.debug("channel: {}", channelUID.getId());
         logger.debug("value: {}", value);
         try {
-            setStatus(Status.getFeatureId(), value);
+            setStatus(feature.getFeatureId(), value);
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -366,9 +384,7 @@ public class DeviceHandler extends BaseThingHandler {
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("value", value);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
-        //logger.debug("json: {}", data.toString());
         Http.httpClient("feature", data, "application/json",featureId);  
-        logger.debug("Command sent");            
+        logger.debug("Command sent");       
     }
-
 }

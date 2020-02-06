@@ -55,12 +55,12 @@ public class LWAccountHandler extends BaseBridgeHandler {
     private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
     private ScheduledFuture<?> connectionCheckTask;
-    int partitionSize = 30;
     private ScheduledFuture<?> refreshTask;
     private AccountConfig config;
     private static boolean isConnected = false;
+    public static boolean listsCreated = false;
     private ScheduledFuture<?> listTask;
-
+    private String sessionKey;
     public LWAccountHandler(Bridge bridge) {
         super(bridge);
     }
@@ -71,7 +71,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
         config = getConfigAs(AccountConfig.class);
         startConnectionCheck();
         if (listTask == null || listTask.isCancelled()) {
-            listTask = scheduler.schedule(this::startRefresh, 15, TimeUnit.SECONDS);
+            listTask = scheduler.schedule(this::startRefresh, 10, TimeUnit.SECONDS);
         }
     }
 
@@ -100,6 +100,13 @@ public class LWAccountHandler extends BaseBridgeHandler {
         return getThing().getUID();
     }
 
+    public synchronized static boolean isListsCreated() {
+        return listsCreated;
+    }
+
+    public synchronized static void setListsCreated(boolean state) {
+        listsCreated = state;
+    }
     public synchronized boolean isConnected() {
         return isConnected;
     }
@@ -109,6 +116,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
     }
 
     public void login(String username, String password) throws Exception {
+        logger.warn("Start Login Process");
         setConnected(false);
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("email", username);
@@ -116,24 +124,28 @@ public class LWAccountHandler extends BaseBridgeHandler {
         InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
         // InputStream body = Utils.createRequestBody(jsonReq.toString());
         String response = Http.httpClient("login", body, "application/json", null);
-        String sessionKey = null;
+        logger.warn("Returned Login Http Response {}", response);
+        if (response.contains("Not found")) {
+            logger.warn("Lightwave Rf Servers Currently Down");
+            updateStatus(ThingStatus.OFFLINE);
+        }
         Login login = gson.fromJson(response, Login.class);
+        logger.warn("Parsed Login response");
         sessionKey = login.getTokens().getAccessToken().toString();
         AccessToken.setToken(sessionKey);
-        // logger.debug("token: {}", sessionKey);
+        logger.warn("token: {}", sessionKey);
         Utils.createLists();
         Utils.createFeatureStatus();
-        LWAccountHandler.setConnected(true);
+        setListsCreated(true);
+        setConnected(true);
+        logger.warn("Connected");
     }
 
     private void startRefresh() {
         int refresh = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
         if (UpdateListener.channelList.size() == 0) {
             logger.warn("Channel List For Updating Is Empty");
-            return;
         }
-        // else {
-        // modifiedRefresh = (refresh * modifierSize);
         if (refreshTask == null || refreshTask.isCancelled()) {
             refreshTask = scheduler.scheduleWithFixedDelay(this::updateStateAndChannels, 0, refresh, TimeUnit.SECONDS);
         }
@@ -168,8 +180,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
                 if (isConnected()) {
                     logger.debug("Connection to Lightwave established");
                 } else {
-
-
                         try {
                         connect();
                     } catch (Exception e) {
@@ -180,8 +190,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
                 }
             };
             connectionCheckTask = scheduler.scheduleWithFixedDelay(runnable, 0, 60, TimeUnit.SECONDS);
-            
-
         } else {
              logger.debug("Connection check task already running");
         }

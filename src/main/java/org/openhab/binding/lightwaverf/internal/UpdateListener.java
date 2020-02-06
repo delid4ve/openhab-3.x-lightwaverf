@@ -32,6 +32,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
+import org.openhab.binding.lightwaverf.internal.handler.DeviceHandler;
+
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -44,12 +46,13 @@ public class UpdateListener {
     private static String jsonBody = "";
     private static String jsonEnd = "";
     private static String jsonMain = "";
-    private static int partitionSize = 30;
+    private static int partitionSize;
     public static List<List<String>> partitions = new ArrayList<>();
     private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
     public static void updateListener() throws Exception {
+        partitionSize = DeviceHandler.partitionSize;
         jsonBody = "";
         jsonEnd = "";
         jsonMain = "";

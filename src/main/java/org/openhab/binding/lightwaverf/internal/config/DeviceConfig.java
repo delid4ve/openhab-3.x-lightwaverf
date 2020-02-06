@@ -21,20 +21,18 @@ package org.openhab.binding.lightwaverf.internal.config;
 
 public class DeviceConfig {
 
-    public String deviceId;
-    public String name;
+    public String sdId;
+    /*public String name;
     public String productCode;
     public String product;
     public String device;
     public String desc;
     public String type;
     public String cat;
-    public String gen;
+    public String gen; */
 
     @Override
     public String toString() {
-        return "[deviceId=" + deviceId + 
-        //", product=" + product + 
-        "]";
+        return "[deviceId=" + sdId + "]";
     }
 }

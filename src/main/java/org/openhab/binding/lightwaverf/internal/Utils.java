@@ -81,35 +81,6 @@ public class Utils {
         return data;
     }
 
- /*   public static void updates(String type, String response) {
-        switch (type) {
-        case "features":
-            List<FeatureStatus> temp = new ArrayList<FeatureStatus>();
-            String array1[] = response.split(",");
-            for (int j = 0; j < array1.length; j++) {
-                String b = "{\"featureId\":"
-                        + array1[j].toString().replace(":", ",\"value\": ").replace("{", "").replace("}", "") + "}";
-                logger.warn("String b: {}", b);
-                FeatureStatus d = gson.fromJson(b, FeatureStatus.class);
-                temp.add(d);
-            }
-            logger.warn("temp size: {}", temp.size());
-            for (int m = 0; m < temp.size(); m++) {
-                int index = featureStatusIndex(temp.get(m).getFeatureId().toString());
-            if (index != -1) {LWBindingConstants.featureStatus.set(index, temp.get(m));}
-            } 
-        case "login":
-        String sessionKey = null;
-        Login login = gson.fromJson(response, Login.class);
-            sessionKey = login.getTokens().getAccessToken().toString();
-            AccessToken.setToken(sessionKey);
-            //logger.debug("token: {}", sessionKey);
-            createLists();
-            createFeatureStatus();
-            LWAccountHandler.setConnected(true);
-        }
-    }*/
-
     public static void createLists() throws Exception {
         if (LWBindingConstants.structures == null || LWBindingConstants.structures.isEmpty() == true) {
             String response = Http.httpClient("structures", null, null, null);
@@ -129,7 +100,8 @@ public class Utils {
                     LWBindingConstants.featureSets.addAll(LWBindingConstants.devices.get(b).getFeatureSets());
                 }
                 logger.warn("createLists FeatureSets size {}", LWBindingConstants.featureSets.size());
-                logger.warn("featureSet First ID {}", LWBindingConstants.featureSets.get(0).getFeatureSetId().toString());
+                logger.warn("featureSet First ID {}",
+                        LWBindingConstants.featureSets.get(0).getFeatureSetId().toString());
                 for (int c = 0; c < LWBindingConstants.featureSets.size(); c++) {
                     LWBindingConstants.features.addAll(LWBindingConstants.featureSets.get(c).getFeatures());
                 }
@@ -139,56 +111,21 @@ public class Utils {
         }
     }
 
-  public static void createFeatureStatus() {
+    public static void createFeatureStatus() {
         String a;
         if (LWBindingConstants.featureStatus == null || LWBindingConstants.featureStatus.isEmpty() == true) {
             logger.warn("Started Status Update");
             for (int j = 0; j < LWBindingConstants.features.size(); j++) {
                 a = "{\"featureId\": " + LWBindingConstants.features.get(j).getFeatureId() + ",\"value\": 0}";
-                //logger.warn("String {}", a);
+                // logger.warn("String {}", a);
                 FeatureStatus b = gson.fromJson(a, FeatureStatus.class);
                 LWBindingConstants.featureStatus.add(j, b);
             }
             logger.warn("createLists Feature Status size {}", LWBindingConstants.featureStatus.size());
-        }}    //logger.warn("feature Status First ID {}", featureStatus.get(0).getFeatureId().toString());  
-  /*      int partitionSize = 30;
-        //List<List<FeatureStatus>> partitions = new ArrayList<>();
-        for (int i = 0; i < LWBindingConstants.featureStatus.size(); i += partitionSize) {
-            LWBindingConstants.partitions.add(LWBindingConstants.featureStatus.subList(i, Math.min(i + partitionSize, LWBindingConstants.featureStatus.size())));
-        
-           
-        public void eachUpdate(int k) {
-            String string1;
-            String body = "{\"features\": [";
-            String last = "";
-            logger.warn("Started Update: {}",k);
-            //for (int l = 0; l < LWBindingConstants.partitions.get(k).size(); l++) { 
-            for (int l = 0; l < LWBindingConstants.featureSets.get(k).getFeatures().size(); l++) { 
-                //logger.warn("feature Id: {}",partitions.get(k).get(l).getFeatureId().toString());
-                //if (l < (LWBindingConstants.partitions.get(k).size() - 1)) {last = ",";} else {last = "]}";}   
-                if (l < (LWBindingConstants.featureSets.get(k).getFeatures().size() - 1)) {last = ",";} else {last = "]}";}   
-                string1 = "{\"featureId\": \"" + LWBindingConstants.featureSets.get(k).getFeatures().get(l).getFeatureId() + "\"}";
-                //logger.warn("string: {}",string1);
-                body = body + string1 + last;
-            }
-            //logger.warn("Body: {}",body);
-            InputStream data = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));   
-            String response1 = Http.httpClient("features",data,"application/json","");
-            List<FeatureStatus> temp = new ArrayList<FeatureStatus>(); 
-            String array1[] = response1.split(",");
-                for (int j=0; j < array1.length; j++) {
-                    String b = "{\"featureId\":" + array1[j].toString().replace(":",",\"value\": ").replace("{", "").replace("}", "") + "}";
-                    //logger.warn("String b: {}",b);
-                    FeatureStatus d = gson.fromJson(b, FeatureStatus.class);
-                    temp.add(d);
-                    }
-                    //logger.warn("temp size: {}",temp.size());
-            for (int m = 0; m < temp.size(); m++) {   
-            int index = featureStatusIndex(temp.get(m).getFeatureId().toString());
-            if (index != -1) {LWBindingConstants.featureStatus.set(index, temp.get(m));}
-            } 
-            logger.warn("Finished Update: {}",k);       
-    }*/
+        }
+    }
+
+    
 
 
 

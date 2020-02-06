@@ -4,19 +4,6 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-
-	<channel-type id="discoverDevices">
-		<item-type>Switch</item-type>
-		<label>Discover Devices (no useable channels)</label>
-		<description></description>
-		<state readOnly="false"></state>
-	</channel-type>
-	<channel-type id="discoveryStructures">
-		<item-type>Switch</item-type>
-		<label>Discover Structures (no useable channels)</label>
-		<description></description>
-		<state readOnly="false"></state>
-	</channel-type>
 	<!-- Structures -->
 
 	<channel-type id="name">
