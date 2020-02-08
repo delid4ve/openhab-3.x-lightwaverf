@@ -1,39 +1,74 @@
 # lightwaverf Binding
 
-Provides a link between openHab and LightwaveRf through their Api.
+
+This binding integrates Lightwave RF's range of smart devices. (https://lightwaverf.com/).
+A registered account is required with Lightwave Rf in order to use the binding.
+![Lightwave RF](logo.png)
+
 
 ## Supported Things
 
-Devices supported:
-    Tested: Sockets (gen2)
-    Untested: Dimmers, Thermostats, Linkplus, Sockets(gen1)
+The Link Plus or previous generation 1 hub is required as a gateway between devices.
+The current 'Smart Series' (gen2) equipment operates on 867mHz and is only accessible throught the provided api, generation 1 equipment is also integrated through this api.
+
+Devices supported currently include:
+Generation 2 Sockets and Dimmers.
+Generation 1 Socket(single), Thermostat and energy Monitor.
+
+
+| Device type              | Generation       | ThingType |
+|--------------------------|------------------|------------|
+| Socket (1 way)           | 1                | s11        |
+| Socket (2 way)           | 2                | s22        |
+| Dimmer (1 way)           | 2                | d21        |
+| Dimmer (2 way)           | 2                | d22        |
+| Dimmer (3 way)           | 2                | d23        |
+| Dimmer (4 way)           | 2                | d24        |
+| Thermostat               | 1                | t11        |
+| Energy Monitor           | 1                | e11        |
+
+A single 'Thing' is used for each device type, with channels being allocated into groups.  Ie, a 2 way socket will have 2 channel groups, each containing the relavent controls.
 
 ## Discovery
 
 All devices are avilable for auto discovery.
+For any other devices not supported, please add these to the binding where they will be discovered as an unknown device.
+A list of supported channels will be generated under the 'Thing' properties in order for them to be added to the binding, please submit this list via github.
 
 ## Binding Configuration
 
 Add a lightwave account thing and configure your email and password for your online account.
-Polling interval can also be configured under the account thing.  
-** Due to no streaming data service or working large batch responses, the actual polling interval is: 
-pollinginterval multiplied by ((number of linked items / 30) rounded up to the next integer))
+Additional Properties:
+Refresh interval: Frequency to get updates from the api.
+Number of items to fetch at once: Due to limitations with the api, polling has to be split into groups, this defines how many channels will be fetched at once.
+If the amount of channels goes above this, a further fetch will be initiated resulting in an icreased poll time. (refreshinterval x groups = new polling time).
+  
+
 
 ## Thing Configuration
 
-_ToDo
+The initial configuration is as follows:
+
+Bridge lightwaverf:lightwaverfaccount:anyname [ username="example@microsoft.com", password="password" ]
+
+## Devices
+
+Devices are identified by the number between - and - in the deviceId.  This generally starts at 1 for each account.  DeviceId's are not visible in the lightwave app but can be found by running discovery.
+
+Things can be added to a bridge enclosed in {} as follows:
+
+ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] 
 
 ## Channels
 
-_Todo
-| channel  | type   | description                  |
-|----------|--------|------------------------------|
-| contr    | Switch | This is the control channel  |
+channels can be assigned as follows:
 
-## Full Example
+{ channel="lightwaverf:thingType:anyname:sdId:channelgroup#channel" }
 
-_Provide a full usage example based on textual configuration files (*.things, *.items, *.sitemap)._
+Therefore a typical layout for a 2 way socket would look as follows:
 
-## Any custom content here!
+Switch  Socket_LeftSwitch  { channel="lightwaverf:s22:anyname:1:1#switch" }
+Switch  Socket_RightSwitch  { channel="lightwaverf:s22:anyname:1:2#switch" }
 
-_Feel free to add additional sections for whatever you think should also be mentioned about your binding!_
+Full list of channels to be added soon.
+

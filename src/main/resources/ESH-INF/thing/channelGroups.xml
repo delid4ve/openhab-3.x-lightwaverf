@@ -4,8 +4,8 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<channel-group-type id="gen2Hub">
-		<label>Channel 1</label>
+	<channel-group-type id="h21">
+		<label>Link Plus</label>
 		<description></description>
 		<category></category>
 	<channels>
@@ -29,8 +29,8 @@
 	</channels>
 </channel-group-type>
 
-	<channel-group-type id="gen1Thermostat">
-		<label>Channel 1</label>
+	<channel-group-type id="t11">
+		<label>Thermostat</label>
 		<description></description>
 		<category></category>
 	<channels>
@@ -46,8 +46,8 @@
 	</channels>
 </channel-group-type>
 
-	<channel-group-type id="gen1EnergyMonitor">
-		<label>Channel 1</label>
+	<channel-group-type id="e11">
+		<label>Energy Monitor</label>
 		<description></description>
 		<category></category>
 		<channels>
@@ -59,7 +59,7 @@
 	</channel-group-type>
 
 
-	<channel-group-type id="gen2Socket">
+	<channel-group-type id="s21">
 		<label>Channel 1</label>
 		<description></description>
 		<category>PowerOutlet</category>
@@ -79,7 +79,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen2Socket1">
+	<channel-group-type id="s22">
 		<label>Channel 2</label>
 		<description></description>
 		<category>PowerOutlet</category>
@@ -92,7 +92,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen1Socket">
+	<channel-group-type id="s11">
 		<label>Channel 1</label>
 		<description></description>
 		<category>PowerOutlet</category>
@@ -104,7 +104,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen2Dimmer">
+	<channel-group-type id="d21">
 		<label>Channel 1</label>
 		<description></description>
 		<category>WallSwitch</category>
@@ -125,7 +125,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen2Dimmer1">
+	<channel-group-type id="d22">
 		<label>Channel 2</label>
 		<description></description>
 		<category>WallSwitch</category>
@@ -140,7 +140,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen2Dimmer2">
+	<channel-group-type id="d23">
 		<label>Channel 2</label>
 		<description></description>
 		<category>WallSwitch</category>
@@ -155,7 +155,7 @@
 		</channels>
 	</channel-group-type>
 
-	<channel-group-type id="gen2Dimmer3">
+	<channel-group-type id="d24">
 		<label>Channel 2</label>
 		<description></description>
 		<category>WallSwitch</category>

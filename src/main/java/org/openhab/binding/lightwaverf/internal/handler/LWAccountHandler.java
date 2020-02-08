@@ -12,9 +12,6 @@
  */
 package org.openhab.binding.lightwaverf.internal.handler;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
  * used across the whole binding.
@@ -24,10 +21,10 @@ import java.nio.charset.StandardCharsets;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
-import com.google.gson.JsonObject;
 
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.ChannelUID;
@@ -36,31 +33,24 @@ import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerService;
 import org.eclipse.smarthome.core.types.Command;
-import org.openhab.binding.lightwaverf.internal.Http;
 import org.openhab.binding.lightwaverf.internal.UpdateListener;
-import org.openhab.binding.lightwaverf.internal.Utils;
-import org.openhab.binding.lightwaverf.internal.api.login.*;
-import org.openhab.binding.lightwaverf.internal.api.*;
+import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
+import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
+import org.openhab.binding.lightwaverf.internal.api.discovery.FeatureSets;
 import org.openhab.binding.lightwaverf.internal.config.AccountConfig;
 import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.google.gson.FieldNamingPolicy;
-import java.io.ByteArrayInputStream;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 public class LWAccountHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(LWAccountHandler.class);
-    private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
     private ScheduledFuture<?> connectionCheckTask;
     private ScheduledFuture<?> refreshTask;
     private AccountConfig config;
-    private static boolean isConnected = false;
-    public static boolean listsCreated = false;
+    private UpdateListener listener;
     private ScheduledFuture<?> listTask;
-    private String sessionKey;
+    
+    private String list;
     public LWAccountHandler(Bridge bridge) {
         super(bridge);
     }
@@ -69,10 +59,42 @@ public class LWAccountHandler extends BaseBridgeHandler {
     public void initialize() {
         logger.debug("Initializing Lightwave account handler.");
         config = getConfigAs(AccountConfig.class);
+        listener = new UpdateListener();
         startConnectionCheck();
         if (listTask == null || listTask.isCancelled()) {
             listTask = scheduler.schedule(this::startRefresh, 10, TimeUnit.SECONDS);
         }
+    }
+
+    private void startConnectionCheck() {
+        if (connectionCheckTask == null || connectionCheckTask.isCancelled()) {
+            logger.debug("Start periodic connection check");
+            Runnable runnable = () -> {
+                logger.debug("Checking Lightwave connection");
+                if (isConnected()) {
+                    logger.debug("Connection to Lightwave established");
+                } else {
+                        try {
+                        connect();
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    
+                }
+            };
+            connectionCheckTask = scheduler.scheduleWithFixedDelay(runnable, 0, 60, TimeUnit.SECONDS);
+        } else {
+             logger.debug("Connection check task already running");
+        }
+    }
+
+    private void connect() throws Exception {
+        logger.debug("Initializing connection to Lightwave");
+        updateStatus(ThingStatus.OFFLINE);
+            listener.login(config.username, config.password);
+            properties();
+            updateStatus(ThingStatus.ONLINE);
     }
 
     @Override
@@ -100,50 +122,43 @@ public class LWAccountHandler extends BaseBridgeHandler {
         return getThing().getUID();
     }
 
-    public synchronized static boolean isListsCreated() {
-        return listsCreated;
-    }
-
-    public synchronized static void setListsCreated(boolean state) {
-        listsCreated = state;
-    }
     public synchronized boolean isConnected() {
-        return isConnected;
+        return listener.isConnected();
     }
 
-    public synchronized static void setConnected(boolean state) {
-        isConnected = state;
+    public synchronized List<Devices> devices() {
+        return listener.devices();
     }
 
-    public void login(String username, String password) throws Exception {
-        logger.warn("Start Login Process");
-        setConnected(false);
-        JsonObject jsonReq = new JsonObject();
-        jsonReq.addProperty("email", username);
-        jsonReq.addProperty("password", password);
-        InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
-        // InputStream body = Utils.createRequestBody(jsonReq.toString());
-        String response = Http.httpClient("login", body, "application/json", null);
-        logger.warn("Returned Login Http Response {}", response);
-        if (response.contains("Not found")) {
-            logger.warn("Lightwave Rf Servers Currently Down");
-            updateStatus(ThingStatus.OFFLINE);
+    public synchronized List<FeatureSets> featureSets() {
+        return listener.featureSets();
+    }
+    public synchronized List<FeatureStatus> featureStatus() {
+        return listener.featureStatus();
+    }
+
+    public synchronized List<String> channelList() {
+        return listener.channelList();
+    }
+
+    public synchronized List<String> cLinked() {
+        return listener.cLinked();
+    }
+
+    private void properties() {
+        Map<String, String> properties = editProperties();
+        properties.clear();
+        for (int i=0; i < devices().size(); i++) { 
+            String deviceArray[] = devices().get(i).getDeviceId().split("-");
+            list = "Simple DeviceId (sdId): " + deviceArray[1] + ", Product: " + devices().get(i).getDesc() +
+            ", Gen: " + devices().get(i).getGen() + ", Channels: " + devices().get(i).getFeatureSets().size() + "\r\n";
+            properties.put("Connected Device: " + i + "", list);
         }
-        Login login = gson.fromJson(response, Login.class);
-        logger.warn("Parsed Login response");
-        sessionKey = login.getTokens().getAccessToken().toString();
-        AccessToken.setToken(sessionKey);
-        logger.warn("token: {}", sessionKey);
-        Utils.createLists();
-        Utils.createFeatureStatus();
-        setListsCreated(true);
-        setConnected(true);
-        logger.warn("Connected");
+        updateProperties(properties);
     }
-
     private void startRefresh() {
         int refresh = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
-        if (UpdateListener.channelList.size() == 0) {
+        if (channelList().size() == 0) {
             logger.warn("Channel List For Updating Is Empty");
         }
         if (refreshTask == null || refreshTask.isCancelled()) {
@@ -152,48 +167,22 @@ public class LWAccountHandler extends BaseBridgeHandler {
     }
 
     private void updateStateAndChannels() {
+        if (channelList().size() > 0) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    UpdateListener.updateListener();
+                        listener.updateListener();
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
     }
 }).start();
-    }
-
-    private void connect() throws Exception {
-        logger.debug("Initializing connection to Lightwave");
-        updateStatus(ThingStatus.OFFLINE);
-            login(config.username, config.password);
-            updateStatus(ThingStatus.ONLINE);
-    }
-
-    private void startConnectionCheck() {
-        if (connectionCheckTask == null || connectionCheckTask.isCancelled()) {
-            logger.debug("Start periodic connection check");
-            Runnable runnable = () -> {
-                logger.debug("Checking Lightwave connection");
-                if (isConnected()) {
-                    logger.debug("Connection to Lightwave established");
-                } else {
-                        try {
-                        connect();
-                    } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    
-                }
-            };
-            connectionCheckTask = scheduler.scheduleWithFixedDelay(runnable, 0, 60, TimeUnit.SECONDS);
-        } else {
-             logger.debug("Connection check task already running");
         }
     }
+
+    
 
     private void stopConnectionCheck() {
         if (connectionCheckTask != null) {

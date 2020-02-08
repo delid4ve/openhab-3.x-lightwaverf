@@ -9,7 +9,7 @@
 		<label>Lightwaverf Account</label>
 		<description>Lightwave Account</description>
 		<properties>
-			<property name="Access Token"></property>
+			<property name="Connected Devices"></property>
 		</properties>
 		<config-description>
 			<parameter name="username" type="text" required="true">

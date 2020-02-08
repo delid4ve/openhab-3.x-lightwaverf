@@ -16,65 +16,68 @@
 	<!-- Devices -->
 	
 	<!-- Sockets -->
-	<channel-type id="featureSetName">
-		<item-type>String</item-type>
-		<label>Name</label>
-		<description>featureSet Name</description>
-		<state readOnly="true"></state>
-	</channel-type>
 	<channel-type id="switch">
 		<item-type>Switch</item-type>
 		<label>Switch</label>
 		<description>Switch</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="outletInUse">
 		<item-type>Switch</item-type>
 		<label>Outlet In Use</label>
 		<description>Outlet In Use</description>
-		<state readOnly="true"></state>
+		<category>Switch</category>
+		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="protection">
 		<item-type>Switch</item-type>
 		<label>Protection</label>
 		<description>Manual Switch Locked (Protected)</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="power">
 		<item-type>Number</item-type>
 		<label>Power</label>
 		<description>Current Power Usage</description>
-		<state readOnly="true"></state>
+		<category>Energy</category>
+		<state pattern="%.2f W" readOnly="true" />
 	</channel-type>
 	<channel-type id="energy">
 		<item-type>Number</item-type>
 		<label>Energy Usage (Since Last Reset)</label>
 		<description>Product Energy Usage (kwH)</description>
-		<state readOnly="true"></state>
+		<category>Energy</category>
+		<state pattern="%.2f KwH" readOnly="true" />
 	</channel-type>
 	<channel-type id="identify">
 		<item-type>Switch</item-type>
 		<label>Identify Device (Blink LEDs)</label>
 		<description>Identify the current Device</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="reset">
 		<item-type>Switch</item-type>
 		<label>Reset To Default</label>
 		<description>Reset The Current Device</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="upgrade">
 		<item-type>Switch</item-type>
 		<label>Check For Upgrades</label>
 		<description>Check if there are firmware updates for the current device</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="diagnostics">
 		<item-type>Switch</item-type>
 		<label>Diagnostics</label>
 		<description>Carry out automated diagnostics</description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="periodOfBroadcast">
 		<item-type>String</item-type>
@@ -83,16 +86,18 @@
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="rgbColor">
-		<item-type>String</item-type>
+		<item-type>Color</item-type>
 		<label>RGB Colour</label>
 		<description>Colour of the LEDs on the device</description>
-		<state readOnly="false"></state>
+		<category>Colorpicker</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="voltage">
 		<item-type>Number</item-type>
 		<label>Voltage</label>
 		<description>Current Voltage To The Device</description>
-		<state readOnly="true"></state>
+		<category>Energy</category>
+		<state pattern="%.2f V" readOnly="true" />
 	</channel-type>
 
 
@@ -100,62 +105,71 @@
 		<item-type>Number</item-type>
 		<label>Target Temperature</label>
 		<description></description>
-		<state readOnly="false"></state>
+		<category>Heating</category>
+		<state pattern="%.1f °C" readOnly="false" />
 	</channel-type>
 	<channel-type id="temperature">
 		<item-type>Number</item-type>
 		<label>Current Temperature</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<category>Temperature</category>
+		<state pattern="%.1f °C" readOnly="true" />
 	</channel-type>
 	<channel-type id="valveLevel">
 		<item-type>Dimmer</item-type>
 		<label>Valve Level</label>
 		<description></description>
-		<state readOnly="false"></state>
+		<category>Volume</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="heatState">
 		<item-type>Switch</item-type>
 		<label>Heating State</label>
-		<description></description>
-		<state readOnly="true"></state>
+		<category>Switch</category>
+		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="batteryLevel">
 		<item-type>Number</item-type>
 		<label>Battery Level</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<category>Battery</category>
+		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="callForHeat">
 		<item-type>Switch</item-type>
 		<label>Demanding Heat</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<category>Fire</category>
+		<state readOnly="true" />
 	</channel-type>
 	<channel-type id="rssi">
 		<item-type>Number</item-type>
 		<label>Signal Strength</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<category>QualityOfService</category>
+		<state readOnly="true" pattern="%.0f dBi" />
 	</channel-type>
 
 	<channel-type id="dimLevel">
 		<item-type>Dimmer</item-type>
 		<label>Dim Level</label>
 		<description></description>
-		<state readOnly="false"></state>
+		<category>Light</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="dimSetup">
 		<item-type>Switch</item-type>
 		<label>Dim Setup</label>
 		<description></description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="bulbSetup">
 		<item-type>Switch</item-type>
 		<label>Bulb Setup</label>
 		<description></description>
-		<state readOnly="false"></state>
+		<category>Switch</category>
+		<state readOnly="false" />
 	</channel-type>
 
 	<channel-type id="currentTime">
@@ -177,7 +191,7 @@
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="date">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Date</label>
 		<description></description>
 		<state readOnly="true"></state>
@@ -225,19 +239,19 @@
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="day">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Day</label>
 		<description></description>
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="month">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Month</label>
 		<description></description>
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="year">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Year</label>
 		<description></description>
 		<state readOnly="true"></state>

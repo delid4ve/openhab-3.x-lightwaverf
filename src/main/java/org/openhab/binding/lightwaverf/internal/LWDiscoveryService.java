@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +41,6 @@ import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerService;
 import org.openhab.binding.lightwaverf.internal.LWBindingConstants;
-import org.openhab.binding.lightwaverf.internal.api.AccessToken;
 import org.openhab.binding.lightwaverf.internal.api.discovery.*;
 import org.openhab.binding.lightwaverf.internal.handler.*;
 import org.osgi.service.component.annotations.Modified;
@@ -132,12 +130,6 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
         }
     }
 
-    public Properties getHeader() {
-        Properties headers = new Properties();
-        headers.put("Authorization", "Bearer " + AccessToken.getToken());
-        return headers;
-    }
-
     private void discover() throws Exception {
         logger.debug("Start Discovery");
             bridgeUID = accountHandler.getThing().getUID();
@@ -204,8 +196,6 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                                     Map<String, Object> dProperties = new HashMap<>();
                                     dProperties.put("Device ID", dId);
                                     dProperties.put("sdId", sdId);
-                                    dProperties.put("Connected To Structure ID", sId);
-                                    dProperties.put("Connected To Structure Name", sName);
                                     dProperties.put("Name", structures.get(s).getDevices().get(d).getName().toString());
                                     dProperties.put("Device", structures.get(s).getDevices().get(d).getDevice().toString());
                                     dProperties.put("Type", dType);

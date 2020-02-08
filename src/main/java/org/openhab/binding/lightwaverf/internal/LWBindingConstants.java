@@ -12,16 +12,12 @@
  */
 package org.openhab.binding.lightwaverf.internal;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
-import org.openhab.binding.lightwaverf.internal.api.discovery.*;
-import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
@@ -32,11 +28,6 @@ import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 
 @NonNullByDefault
 public class LWBindingConstants {
-        public static List<Root> structures = new ArrayList<Root>();
-        public static List<Devices> devices = new ArrayList<Devices>();
-        public static List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
-        public static List<Features> features = new ArrayList<Features>();
-        public static List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
         
 
 
@@ -44,16 +35,16 @@ public class LWBindingConstants {
 
     // List of all Thing Type UIDs
     public static final ThingTypeUID THING_TYPE_LIGHTWAVE_ACCOUNT = new ThingTypeUID(BINDING_ID, "lightwaverfaccount");
-    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_HUB = new ThingTypeUID(BINDING_ID, "hub");
-    public static final ThingTypeUID THING_TYPE_THERMOSTAT = new ThingTypeUID(BINDING_ID, "thermostat");
-    public static final ThingTypeUID THING_TYPE_EMONITOR_GEN1 = new ThingTypeUID(BINDING_ID, "energyMonitorGen1");
-    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "socketSingleGen1");
-    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "socketSingleGen2");
-    public static final ThingTypeUID THING_TYPE_DSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "socketDoubleGen2");
-    public static final ThingTypeUID THING_TYPE_SDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerSingleGen2");
-    public static final ThingTypeUID THING_TYPE_DDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerDoubleGen2");
-    public static final ThingTypeUID THING_TYPE_TDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerTripleGen2");
-    public static final ThingTypeUID THING_TYPE_QDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "dimmerQuadGen2");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_HUB = new ThingTypeUID(BINDING_ID, "h21");
+    public static final ThingTypeUID THING_TYPE_THERMOSTAT = new ThingTypeUID(BINDING_ID, "t11");
+    public static final ThingTypeUID THING_TYPE_EMONITOR_GEN1 = new ThingTypeUID(BINDING_ID, "e11");
+    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "s11");
+    public static final ThingTypeUID THING_TYPE_SSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s21");
+    public static final ThingTypeUID THING_TYPE_DSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s22");
+    public static final ThingTypeUID THING_TYPE_SDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d21");
+    public static final ThingTypeUID THING_TYPE_DDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d22");
+    public static final ThingTypeUID THING_TYPE_TDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d23");
+    public static final ThingTypeUID THING_TYPE_QDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d24");
     public static final ThingTypeUID THING_TYPE_UNKNOWNDEVICE = new ThingTypeUID(BINDING_ID, "device");
 
     
