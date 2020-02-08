@@ -3,6 +3,7 @@
 
 This binding integrates Lightwave RF's range of smart devices. (https://lightwaverf.com/).
 A registered account is required with Lightwave Rf in order to use the binding.
+
 ![Lightwave RF](logo.png)
 
 
@@ -68,6 +69,7 @@ channels can be assigned as follows:
 Therefore a typical layout for a 2 way socket would look as follows:
 
 Switch  Socket_LeftSwitch  { channel="lightwaverf:s22:anyname:1:1#switch" }
+
 Switch  Socket_RightSwitch  { channel="lightwaverf:s22:anyname:1:2#switch" }
 
 Full list of channels to be added soon.
