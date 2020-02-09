@@ -51,6 +51,13 @@
 		<category>Energy</category>
 		<state pattern="%.2f KwH" readOnly="true" />
 	</channel-type>
+	<channel-type id="powerm">
+		<item-type>Number</item-type>
+		<label>Power</label>
+		<description>Current Power Usage</description>
+		<category>Energy</category>
+		<state pattern="%.2f kW" readOnly="true" />
+	</channel-type>
 	<channel-type id="identify">
 		<item-type>Switch</item-type>
 		<label>Identify Device (Blink LEDs)</label>
@@ -89,7 +96,7 @@
 		<item-type>Color</item-type>
 		<label>RGB Colour</label>
 		<description>Colour of the LEDs on the device</description>
-		<category>Colorpicker</category>
+		<category>ColorLight</category>
 		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="voltage">

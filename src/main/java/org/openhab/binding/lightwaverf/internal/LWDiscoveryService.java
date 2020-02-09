@@ -129,6 +129,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
             this.scanTask = null;
         }
     }
+    
 
     private void discover() throws Exception {
         logger.debug("Start Discovery");

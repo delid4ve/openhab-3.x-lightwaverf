@@ -22,15 +22,7 @@ package org.openhab.binding.lightwaverf.internal.config;
 public class DeviceConfig {   
 
     public String sdId;
-    public String name;
-    public String productCode;
-    public String product;
-    public String device;
-    public String desc;
-    public String type;
-    public String cat;
-    public String gen;
-    public String channels; 
+    
 
     @Override
     public String toString() {

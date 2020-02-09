@@ -86,6 +86,7 @@ public class LWBindingConstants {
     public static final String CHANNEL_OUTLET_IN_USE = "outletInUse";
     public static final String CHANNEL_PROTECTION = "protection";
     public static final String CHANNEL_POWER = "power";
+    public static final String CHANNEL_POWERM = "powerm";
     public static final String CHANNEL_ENERGY = "energy";
     public static final String CHANNEL_IDENTIFY = "identify";
     public static final String CHANNEL_RESET = "reset";

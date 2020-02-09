@@ -25,11 +25,11 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.openhab.binding.lightwaverf.internal.api.AccessToken;
 import org.openhab.io.net.http.HttpUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 public class Http {
-    private final static Logger logger = LoggerFactory.getLogger(Http.class);
+    //private final static Logger logger = LoggerFactory.getLogger(Http.class);
 
 
     private static Properties getHeader(String type) {
@@ -90,14 +90,9 @@ public class Http {
         return method;
     }
 
-    public static String httpClient(String type, InputStream data, String other, String groupId) throws Exception {
-        try{
+    public static String httpClient(String type, InputStream data, String other, String groupId) {
         String response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
         return response;
-        } catch (Exception e) {
-            logger.debug("HTTP Client Response Error: {}", e.getMessage());
-        }  
-        return ""; 
     }
 
 
