@@ -185,8 +185,8 @@ public class DeviceHandler extends BaseThingHandler {
         if (listTask != null) {
             listTask.cancel(true);
         }
-            listTask = null;
-            refreshTask = null;
+        listTask = null;
+        refreshTask = null;
         account = null;
     }
 
@@ -264,17 +264,16 @@ public class DeviceHandler extends BaseThingHandler {
         for (int i = 0; i < device.getFeatureSets().size(); i++) {
             String Name = device.getFeatureSets().get(i).getName();
             logger.debug("Item Property Added, Device channel: {} - {}", i, Name);
-            list = "Channel: " + (i+1) + ", Name: " + Name + "\r\n";
-            dProperties.put("Channel" + (i+1), list);
+            list = "Channel: " + (i + 1) + ", Name: " + Name + "\r\n";
+            dProperties.put("Channel" + (i + 1), list);
         }
         for (int i = 0; i < device.getFeatureSets().size(); i++) {
-            featureString = featureString + "Channel " + (i+1) + ": ";
+            featureString = featureString + "Channel " + (i + 1) + ": ";
             for (int j = 0; j < device.getFeatureSets().get(i).getFeatures().size(); j++) {
                 featureString = featureString + device.getFeatureSets().get(i).getFeatures().get(j).getType() + ",";
             }
         }
-        featureString.substring(0, featureString.length() - 1);
-        dProperties.put("Available Channels", featureString);
+        dProperties.put("Available Channels", featureString.substring(0, featureString.length() - 1));
         dProperties.put("Device ID", device.getDeviceId());
         dProperties.put("sdId", sdId);
         dProperties.put("Name", device.getName());
@@ -379,13 +378,13 @@ public class DeviceHandler extends BaseThingHandler {
         case "periodOfBroadcast":
         case "monthArray":
         case "weekdayArray":
-        case "timeZone":
             updateState(channelId, new StringType(value.toString()));
             break;
+        case "timeZone":
         case "day":
         case "month":
         case "year":
-            updateState(channelId, new StringType(value.toString()));
+            updateState(channelId, new DecimalType(value.toString()));
             break;
         case "date":
             Number abc = ((value).longValue()*100000);
@@ -414,9 +413,9 @@ public class DeviceHandler extends BaseThingHandler {
             }
             if (seconds < 10) {
                 secsPad = "0";
-            }
-            String timeValue = hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds;
-            updateState(channelId, new StringType(timeValue.toString()));
+            } 
+            String timeValue = hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
+            updateState(channelId, new DateTimeType(timeValue));
             break;
         case "weekday":
             if (value != 0) {
@@ -448,6 +447,9 @@ public class DeviceHandler extends BaseThingHandler {
             logger.warn("No connection to Lightwave available, ignoring command");
             return;
         }
+        else if (channelName == "rgbColor" && Integer.parseInt(command.toString()) >= 0 && Integer.parseInt(command.toString()) <= 100) { 
+            logger.warn("Brightness Is Not Supported For the RGB Colour Channel"); 
+        }
         else {
         logger.debug("handleCommand(list): channel = {} group = {}", channelName,i);
         feature = getFeature(i,channelName);
@@ -469,7 +471,8 @@ public class DeviceHandler extends BaseThingHandler {
                 value = "0";
             }
             break;
-        case "rgbColor":            
+        case "rgbColor":    
+                 
             PercentType redp =  new HSBType(command.toString()).getRed();
             PercentType greenp =  new HSBType(command.toString()).getGreen();
             PercentType bluep =  new HSBType(command.toString()).getBlue();

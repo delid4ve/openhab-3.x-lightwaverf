@@ -13,9 +13,6 @@
 		<state readOnly="true"></state>
 	</channel-type>
 
-	<!-- Devices -->
-	
-	<!-- Sockets -->
 	<channel-type id="switch">
 		<item-type>Switch</item-type>
 		<label>Switch</label>
@@ -180,10 +177,10 @@
 	</channel-type>
 
 	<channel-type id="currentTime">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Current Time</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<state readOnly="true" pattern= "%1$tH:%1$tM:%1$tS" />
 	</channel-type>
 	<channel-type id="buttonPress">
 		<item-type>Switch</item-type>
@@ -192,16 +189,16 @@
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="time">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Time</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<state readOnly="true" pattern= "%1$tH:%1$tM:%1$tS" />
 	</channel-type>
 	<channel-type id="date">
 		<item-type>DateTime</item-type>
 		<label>Date</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<state readOnly="true" pattern= "%1$tA,%1$tB %1$td, %1$tY" />
 	</channel-type>
 	<channel-type id="monthArray">
 		<item-type>String</item-type>
@@ -216,7 +213,7 @@
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="timeZone">
-		<item-type>String</item-type>
+		<item-type>Number</item-type>
 		<label>Time Zone</label>
 		<description></description>
 		<state readOnly="false"></state>
@@ -234,16 +231,16 @@
 		<state readOnly="false"></state>
 	</channel-type>
 	<channel-type id="duskTime">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Dusk Time</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<state readOnly="true" pattern= "%1$tH:%1$tM:%1$tS" />
 	</channel-type>
 	<channel-type id="dawnTime">
-		<item-type>String</item-type>
+		<item-type>DateTime</item-type>
 		<label>Dawn Time</label>
 		<description></description>
-		<state readOnly="true"></state>
+		<state readOnly="true" pattern= "%1$tH:%1$tM:%1$tS" />
 	</channel-type>
 	<channel-type id="day">
 		<item-type>Number</item-type>
