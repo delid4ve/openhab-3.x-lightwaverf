@@ -447,9 +447,6 @@ public class DeviceHandler extends BaseThingHandler {
             logger.warn("No connection to Lightwave available, ignoring command");
             return;
         }
-        else if (channelName == "rgbColor" && Integer.parseInt(command.toString()) >= 0 && Integer.parseInt(command.toString()) <= 100) { 
-            logger.warn("Brightness Is Not Supported For the RGB Colour Channel"); 
-        }
         else {
         logger.debug("handleCommand(list): channel = {} group = {}", channelName,i);
         feature = getFeature(i,channelName);
@@ -471,8 +468,8 @@ public class DeviceHandler extends BaseThingHandler {
                 value = "0";
             }
             break;
-        case "rgbColor":    
-                 
+        case "rgbColor": 
+            if(command.toString().contains(",")) {        
             PercentType redp =  new HSBType(command.toString()).getRed();
             PercentType greenp =  new HSBType(command.toString()).getGreen();
             PercentType bluep =  new HSBType(command.toString()).getBlue();
@@ -482,6 +479,11 @@ public class DeviceHandler extends BaseThingHandler {
             Integer c = (red << 16) + (green << 8) + (blue);
             value = c.toString();
             break;
+        }
+        else {
+        logger.warn("Brightness Is Not Supported For the RGB Colour Channel");
+            break; 
+        }  
         case "timeZone":
         case "locationLongitude":
         case "locationLatitude":
