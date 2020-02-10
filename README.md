@@ -138,25 +138,25 @@ e11 	KitchenEnergyMonitor	  "Kitchen energy Monitor"	[ sdId="6" ]
 ### demo.items
 
 ```
-Switch  KitchenSocket2_LeftSwitch         "Kettle"                       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
-Number	KitchenSocket2_LeftPower	        "Kettle Power"		            { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power"  }
-Number	KitchenSocket2_LeftEnergy	        "Kettle Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
-Switch	KitchenSocket2_LeftOutletInUse	  "Kettle Outlet In Use"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
-Switch	KitchenSocket2_LeftProtection	    "Kettle Protection"		    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
+Switch  Socket2_LeftSwitch        "Kettle"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
+Number	Socket2_LeftPower         "Kettle Power"          { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power"  }
+Number	Socket2_LeftEnergy        "Kettle Energy"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
+Switch	Socket2_LeftOutletInUse	  "Kettle Outlet In Use"  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
+Switch	Socket2_LeftProtection    "Kettle Protection"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
 
-Switch  KitchenSocket2_RightSwitch        "Toaster"                      { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
-Number	KitchenSocket2_RightPower	        "Toaster Power"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power"  }
-Number	KitchenSocket2_RightEnergy	      "Toater Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
-Switch	KitchenSocket2_RightOutletInUse	  "Toaster Outlet In Use"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
-Switch	KitchenSocket2_RightProtection	  "Toaster Protection"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
+Switch  Socket2_RightSwitch       "Toaster"               { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
+Number	Socket2_RightPower        "Toaster Power"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power"  }
+Number	Socket2_RightEnergy       "Toater Energy"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
+Switch	Socket2_RightOutletInUse  "Toaster Outlet In Use" { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
+Switch	Socket2_RightProtection   "Toaster Protection"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
 
-Number	KitchenSocket2_Voltage   	        "Kitchen Socket 2 Voltage"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
-Switch	KitchenSocket2_Identify			      "Kitchen Socket 2 Identify"	  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
-Switch	KitchenSocket2_Reset			        "Kitchen Socket 2 Reset"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
-Switch	KitchenSocket2_Upgrade		        "Kitchen Socket 2 Upgrade"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
-Switch	KitchenSocket2_Diagnostics		    "Kitchen Socket 2 Diagnostics"  {channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
-String	KitchenSocket2_PeriodOfBroadcast  "Kitchen Socket 2 Broadcast"  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
-Color	KitchenSocket2_RgbColor			        "Kitchen Socket 2 Colour"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
+Number	Socket2_Voltage           "Socket 2 Voltage"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
+Switch	Socket2_Identify          "Socket 2 Identify"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
+Switch	Socket2_Reset			        "Socket 2 Reset"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
+Switch	Socket2_Upgrade		        "Socket 2 Upgrade"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
+Switch	Socket2_Diagnostics		    "Socket 2 Diagnostics"  {channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
+String	Socket2_PeriodOfBroadcast "Socket 2 Broadcast"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
+Color	  Socket2_RgbColor			    "Socket 2 Colour"       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
 
 ```
 
