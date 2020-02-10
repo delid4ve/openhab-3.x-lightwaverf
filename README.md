@@ -3,6 +3,7 @@
 
 This binding integrates Lightwave RF's range of smart devices. (https://lightwaverf.com/).
 A registered account is required with Lightwave Rf in order to use the binding.
+
 ![Lightwave RF](logo.png)
 
 
