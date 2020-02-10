@@ -125,12 +125,12 @@ channels can be assigned to items as follows:
 
 Bridge lightwaverf:lightwaverfaccount:mylocation "Lightwave Account" [ username="example@hotmail.co.uk", password="xxxxxxxxxx"] {
 
-h21 	LightwaveHub	          "Link Plus"				        [ sdId="1" ]
-s11 	KitchenSocket1 	        "Kitchen Socket 1"		    [ sdId="2" ]
-s22 	KitchenSocket2 	        "Kitchen Socket 2"		    [ sdId="3" ]
-d21 	KitchenDimmer 	        "Kitchen Dimmer"			    [ sdId="4" ]
-t11 	KitchenThermostat 	    "Kitchen Thermostat"		  [ sdId="5" ]
-e11 	KitchenEnergyMonitor	  "Kitchen energy Monitor"	[ sdId="6" ]	
+h21 	LightwaveHub            "Link Plus"               [ sdId="1" ]
+s11 	KitchenSocket1          "Kitchen Socket 1"        [ sdId="2" ]
+s22 	KitchenSocket2          "Kitchen Socket 2"        [ sdId="3" ]
+d21 	KitchenDimmer           "Kitchen Dimmer"          [ sdId="4" ]
+t11 	KitchenThermostat       "Kitchen Thermostat"      [ sdId="5" ]
+e11 	KitchenEnergyMonitor    "Kitchen energy Monitor"  [ sdId="6" ]	
 }
 
 ```
@@ -152,11 +152,11 @@ Switch	Socket2_RightProtection   "Toaster Protection"    { channel="lightwaverf:
 
 Number	Socket2_Voltage           "Socket 2 Voltage"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
 Switch	Socket2_Identify          "Socket 2 Identify"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
-Switch	Socket2_Reset			        "Socket 2 Reset"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
-Switch	Socket2_Upgrade		        "Socket 2 Upgrade"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
-Switch	Socket2_Diagnostics		    "Socket 2 Diagnostics"  {channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
+Switch	Socket2_Reset             "Socket 2 Reset"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
+Switch	Socket2_Upgrade           "Socket 2 Upgrade"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
+Switch	Socket2_Diagnostics       "Socket 2 Diagnostics"  {channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
 String	Socket2_PeriodOfBroadcast "Socket 2 Broadcast"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
-Color	  Socket2_RgbColor			    "Socket 2 Colour"       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
+Color   Socket2_RgbColor          "Socket 2 Colour"       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
 
 ```
 
