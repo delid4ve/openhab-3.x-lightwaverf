@@ -61,7 +61,7 @@ Things can be added to a bridge enclosed in {} as follows:
 ## Channels
 
 channels can be assigned as follows:
-
+| Device type              | Generation       | ThingType |
 |{ channel="lightwaverf:thingType:anyname:sdId:channelgroup#channel" }|
 
 Therefore a typical layout for a 2 way socket would look as follows:
