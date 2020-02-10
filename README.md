@@ -58,10 +58,22 @@ Things can be added to a bridge enclosed in {} as follows:
 
 |ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] |
 
+| Device type              | Generation       | ThingType |
+|--------------------------|------------------|------------|
+| Socket (1 way)           | 1                | s11        |
+| Socket (2 way)           | 2                | s22        |
+| Dimmer (1 way)           | 2                | d21        |
+| Dimmer (2 way)           | 2                | d22        |
+| Dimmer (3 way)           | 2                | d23        |
+| Dimmer (4 way)           | 2                | d24        |
+| Thermostat               | 1                | t11        |
+| Energy Monitor           | 1                | e11        |
+
+
 ## Channels
 
 channels can be assigned as follows:
-| Device type              | Generation       | ThingType |
+
 |{ channel="lightwaverf:thingType:anyname:sdId:channelgroup#channel" }|
 
 Therefore a typical layout for a 2 way socket would look as follows:
