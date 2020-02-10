@@ -48,7 +48,7 @@ If the amount of channels goes above this, a further fetch will be initiated res
 
 The initial configuration is as follows:
 
-Bridge lightwaverf:lightwaverfaccount:anyname [ username="example@microsoft.com", password="password" ]
+| Bridge lightwaverf:lightwaverfaccount:anyname [ username="example@microsoft.com", password="password" ] |
 
 ## Devices
 
@@ -56,18 +56,18 @@ Devices are identified by the number between - and - in the deviceId.  This gene
 
 Things can be added to a bridge enclosed in {} as follows:
 
-ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] 
+|ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] |
 
 ## Channels
 
 channels can be assigned as follows:
 
-{ channel="lightwaverf:thingType:anyname:sdId:channelgroup#channel" }
+|{ channel="lightwaverf:thingType:anyname:sdId:channelgroup#channel" }|
 
 Therefore a typical layout for a 2 way socket would look as follows:
 
-Switch  Socket_LeftSwitch  { channel="lightwaverf:s22:anyname:1:1#switch" }
-Switch  Socket_RightSwitch  { channel="lightwaverf:s22:anyname:1:2#switch" }
+|Switch  Socket_LeftSwitch  { channel="lightwaverf:s22:anyname:1:1#switch" }|
+|Switch  Socket_RightSwitch  { channel="lightwaverf:s22:anyname:1:2#switch" }|
 
 Full list of channels to be added soon.
 
