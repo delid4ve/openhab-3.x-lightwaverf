@@ -154,7 +154,7 @@ Number	Socket2_Voltage           "Socket 2 Voltage"      { channel="lightwaverf:
 Switch	Socket2_Identify          "Socket 2 Identify"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
 Switch	Socket2_Reset             "Socket 2 Reset"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
 Switch	Socket2_Upgrade           "Socket 2 Upgrade"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
-Switch	Socket2_Diagnostics       "Socket 2 Diagnostics"  {channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
+Switch	Socket2_Diagnostics       "Socket 2 Diagnostics"  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
 String	Socket2_PeriodOfBroadcast "Socket 2 Broadcast"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
 Color   Socket2_RgbColor          "Socket 2 Colour"       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
 
