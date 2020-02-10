@@ -88,6 +88,7 @@ public class DeviceHandler extends BaseThingHandler {
     private String state;
     private String featureId;
     private FeatureStatus status;
+    String featureString;
     List<Devices> devices = new ArrayList<Devices>();
     List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
     List<Features> features = new ArrayList<Features>();
@@ -257,14 +258,23 @@ public class DeviceHandler extends BaseThingHandler {
     }
 
     private void properties() {
+        featureString = "";
         Map<String, String> dProperties = editProperties();
         dProperties.clear();
         for (int i = 0; i < device.getFeatureSets().size(); i++) {
             String Name = device.getFeatureSets().get(i).getName();
-            logger.warn("Device channel: {} - {}", i, Name);
-            list = "Channel: " + i + ", Name: " + Name + "\r\n";
-            dProperties.put("Channel Name" + i + ":", list);
+            logger.debug("Item Property Added, Device channel: {} - {}", i, Name);
+            list = "Channel: " + (i+1) + ", Name: " + Name + "\r\n";
+            dProperties.put("Channel" + (i+1), list);
         }
+        for (int i = 0; i < device.getFeatureSets().size(); i++) {
+            featureString = featureString + "Channel " + (i+1) + ": ";
+            for (int j = 0; j < device.getFeatureSets().get(i).getFeatures().size(); j++) {
+                featureString = featureString + device.getFeatureSets().get(i).getFeatures().get(j).getType() + ",";
+            }
+        }
+        featureString.substring(0, featureString.length() - 1);
+        dProperties.put("Available Channels", featureString);
         dProperties.put("Device ID", device.getDeviceId());
         dProperties.put("sdId", sdId);
         dProperties.put("Name", device.getName());
@@ -355,11 +365,15 @@ public class DeviceHandler extends BaseThingHandler {
             break;
         case "rgbColor":
             Color color = new Color(value);
-            int red = (color.getRed() * 100);
-            int green = (color.getGreen() * 100);
-            int blue = (color.getBlue()*100);
+            int red = (color.getRed());
+            int green = (color.getGreen());
+            int blue = (color.getBlue());
             float[] hsb = Color.RGBtoHSB(red, green, blue, null);
-            String hsb1 = hsb[0] + "," + hsb[1] + "," + hsb[2];
+            double hue = (hsb[0] * 100 / 0.255);
+            float saturation = (hsb[1] * 100);
+            float brightness = (hsb[2] * 100);
+            if(hue > 360) {hue = 360;}
+            String hsb1 = hue + "," + saturation + "," + brightness;
             updateState(channelId, new HSBType(hsb1));
             break;
         case "periodOfBroadcast":
@@ -455,7 +469,16 @@ public class DeviceHandler extends BaseThingHandler {
                 value = "0";
             }
             break;
-        case "rgbColor":
+        case "rgbColor":            
+            PercentType redp =  new HSBType(command.toString()).getRed();
+            PercentType greenp =  new HSBType(command.toString()).getGreen();
+            PercentType bluep =  new HSBType(command.toString()).getBlue();
+            int red = (int) (redp.doubleValue() * 255 / 100);
+            int green = (int) (greenp.doubleValue() * 255 / 100);
+            int blue = (int) (bluep.doubleValue() * 255 / 100);
+            Integer c = (red << 16) + (green << 8) + (blue);
+            value = c.toString();
+            break;
         case "timeZone":
         case "locationLongitude":
         case "locationLatitude":
