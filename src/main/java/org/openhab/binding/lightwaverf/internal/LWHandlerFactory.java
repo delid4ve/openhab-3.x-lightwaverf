@@ -13,45 +13,26 @@
 package org.openhab.binding.lightwaverf.internal;
 
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
-
-//import java.util.ArrayList;
-//import java.util.Collection;
-//import java.util.List;
-//import java.util.Locale;
-//import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
-//import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
-//import org.eclipse.smarthome.core.thing.type.ChannelGroupType;
-//import org.eclipse.smarthome.core.thing.type.ChannelGroupTypeProvider;
-//import org.eclipse.smarthome.core.thing.type.ChannelGroupTypeUID;
-//import org.eclipse.smarthome.core.thing.type.ChannelType;
-//import org.eclipse.smarthome.core.thing.type.ChannelTypeProvider;
-//import org.eclipse.smarthome.core.thing.type.ChannelTypeUID;
 import org.openhab.binding.lightwaverf.internal.handler.DeviceHandler;
 import org.openhab.binding.lightwaverf.internal.handler.LWAccountHandler;
 import org.osgi.service.component.annotations.Component;
-
-/**
+ /**
  * The {@link lightwaverfHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author David Murton - Initial contribution
  */
-
-
- 
 @NonNullByDefault
 @Component(configurationPid = "binding.lightwaverf", service = {ThingHandlerFactory.class,
     })
-
 
 public class LWHandlerFactory extends BaseThingHandlerFactory 
 //implements ChannelTypeProvider, ChannelGroupTypeProvider

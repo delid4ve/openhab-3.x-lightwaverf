@@ -10,18 +10,18 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  * 
- * /**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
- *
- * @author David Murton - Initial contribution
  */
 
 package org.openhab.binding.lightwaverf.internal.api;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
+/**
+ * The {@link lightwaverfBindingConstants} class defines common constants, which are
+ * used across the whole binding.
+ *
+ * @author David Murton - Initial contribution
+ */
 public class FeatureStatus {
 
 @SerializedName("featureId")
@@ -46,7 +46,4 @@ return value;
 public void setValue(Integer value) {
 this.value = value;
 }
-
-
-
 }

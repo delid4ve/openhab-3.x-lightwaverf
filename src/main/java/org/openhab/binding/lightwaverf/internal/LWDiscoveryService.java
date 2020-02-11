@@ -12,30 +12,21 @@
  */
 package org.openhab.binding.lightwaverf.internal;
 
-/**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
- *
- * @author David Murton - Initial contribution
- */
-
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
+import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
@@ -46,6 +37,14 @@ import org.openhab.binding.lightwaverf.internal.handler.*;
 import org.osgi.service.component.annotations.Modified;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
+/**
+ * The {@link lightwaverfBindingConstants} class defines common constants, which are
+ * used across the whole binding.
+ *
+ * @author David Murton - Initial contribution
+ */
 
 public class LWDiscoveryService extends AbstractDiscoveryService implements DiscoveryService, ThingHandlerService {
 
@@ -58,6 +57,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
     ThingTypeUID thingTypeUid = null;
     ThingUID bridgeUID;
     String label;
+    private String id;
     private String sId;
     private String sName;
     private String dId;
@@ -65,9 +65,10 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
     private String dType;
     private String dProductCode;
     private String array1[];
+    private Boolean deviceAdded;
     private List<StructureList> structureList = new ArrayList<StructureList>();
     private List<Root> structures = new ArrayList<Root>();
-    private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
     public LWDiscoveryService() {
@@ -75,20 +76,20 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
     }
 
     @Override
-    protected void activate(Map<String, @Nullable Object> configProperties) {
-        // logger.debug("Activate Background Discovery");
+    protected void activate(Map<String, Object> configProperties) {
+        logger.debug("Activate Background Discovery");
         super.activate(configProperties);
     }
 
     @Override
     public void deactivate() {
-        // logger.debug("Deactivate Background discovery");
+        logger.debug("Deactivate Background discovery");
         super.deactivate();
     }
 
     @Override
     @Modified
-    protected void modified(Map<String, @Nullable Object> configProperties) {
+    protected void modified(Map<String, Object> configProperties) {
         super.modified(configProperties);
     }
 
@@ -98,8 +99,6 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
         try {
             discover();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 
@@ -113,8 +112,6 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
             try {
                 discover();
             } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             }
         }, 0, TimeUnit.SECONDS);
     }
@@ -131,10 +128,11 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
     }
     
 
-    private void discover() throws Exception {
+    private void discover() {
         logger.debug("Start Discovery");
             bridgeUID = accountHandler.getThing().getUID();
-            if (structures == null || structures.isEmpty() == true) {
+            List<Thing> things = accountHandler.getThing().getThings();
+            if (structures == null || structures.isEmpty()) {
                 String response = Http.httpClient("structures", null, null, null);
                 logger.debug("Structure Response: {}", response);
                 StructureList structureResponse = gson.fromJson(response, StructureList.class);
@@ -158,6 +156,14 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                             dId = structures.get(s).getDevices().get(d).getDeviceId().toString();
                             array1 = dId.split("-");
                             sdId = array1[1].toString();
+                            deviceAdded = false;
+                                for (int i = 0; i < things.size(); i++) {
+                                    id = things.get(i).getConfiguration().get("sdId").toString();
+                                    if(id.equals(sdId)) {
+                                        deviceAdded = true;
+                                    }
+                                }
+                                if (!deviceAdded) {
                         logger.debug("Device Simplified Id: {}", sdId);
                             dProductCode = structures.get(s).getDevices().get(d).getProductCode().toString();
                             logger.debug("Product Code discovered: {}", "'" + dProductCode + "'");
@@ -213,6 +219,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                                         .withBridge(bridgeUID)
                                         .build());
                             }
+                        }
                     }
                 
             
@@ -225,14 +232,14 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
     }
 
     @Override
-    public void setThingHandler(@Nullable ThingHandler handler) {
+    public void setThingHandler(ThingHandler handler) {
         if (handler instanceof LWAccountHandler) {
             accountHandler = (LWAccountHandler) handler;
         }
     }
 
     @Override
-    public @Nullable ThingHandler getThingHandler() {
+    public ThingHandler getThingHandler() {
         return accountHandler;
     }
 

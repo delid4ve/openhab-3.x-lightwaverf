@@ -12,6 +12,12 @@
  */
 package org.openhab.binding.lightwaverf.internal;
 
+import java.io.InputStream;
+import java.util.Properties;
+import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
+import org.openhab.binding.lightwaverf.internal.api.AccessToken;
+import org.openhab.io.net.http.HttpUtil;
 
 
 /**
@@ -20,19 +26,10 @@ package org.openhab.binding.lightwaverf.internal;
  *
  * @author David Murton - Initial contribution
  */
-
-import java.io.InputStream;
-import java.util.Properties;
-import org.openhab.binding.lightwaverf.internal.api.AccessToken;
-import org.openhab.io.net.http.HttpUtil;
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-
+@NonNullByDefault
 public class Http {
-    //private final static Logger logger = LoggerFactory.getLogger(Http.class);
 
-
-    private static Properties getHeader(String type) {
+    private static Properties getHeader(@Nullable String type) {
         Properties headers = new Properties();
         switch (type) {
         case "login":
@@ -48,7 +45,7 @@ public class Http {
         return headers;
     }
 
-    private static String url(String type, String groupId) {
+    private static String url(@Nullable  String type,@Nullable  String groupId) {
         String url;
         switch (type) {
         case "login":
@@ -72,7 +69,7 @@ public class Http {
         return url;
     }
 
-    public static String method(String type) {
+    public static String method(@Nullable String type) {
         String method;
         switch (type) {
         case "login":
@@ -90,12 +87,8 @@ public class Http {
         return method;
     }
 
-    public static String httpClient(String type, InputStream data, String other, String groupId) {
+    public static String httpClient(@Nullable String type, @Nullable InputStream data, @Nullable String other,@Nullable String groupId) {
         String response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
         return response;
-    }
-
-
-    
-    
+    }  
 }

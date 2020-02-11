@@ -10,15 +10,15 @@
  *
  * SPDX-License-Identifier: EPL-2.0
  * 
- * /**
+ */
+ 
+package org.openhab.binding.lightwaverf.internal.api;
+/**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author David Murton - Initial contribution
  */
- 
-package org.openhab.binding.lightwaverf.internal.api;
-
 public class AccessToken {
     private static String token = "";
 

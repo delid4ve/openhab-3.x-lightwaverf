@@ -49,7 +49,9 @@ If the amount of channels goes above this, a further fetch will be initiated res
 The initial configuration is as follows:
 
 ```
+
 Bridge lightwaverf:lightwaverfaccount:accountname [ username="example@microsoft.com", password="password" ]
+
 ```
 
 ## Devices
@@ -59,18 +61,27 @@ Devices are identified by the number between - and - in the deviceId.  This gene
 Things can be added to a bridge enclosed in {} as follows:
 
 ```
+
 ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] 
+
 ```
+
 
 ## Channels
 
 channels can be assigned to items as follows:
-```
-{ channel="lightwaverf:thingType:accountname:sdId:channelgroup#channel" }
+
 ```
 
+{ channel="lightwaverf:thingType:accountname:sdId:channelgroup#channel" }
+
+```
+
+
 ### LinkPlus (Generation 2)
+
 #### Channel 1
+
 | Channel            | Item Type  | Description                     |  Writeable |
 |--------------------|------------|---------------------------------|------------|
 | 1#currentTime      | DateTime   | Current Time (date and time)    |    No      |
@@ -93,7 +104,9 @@ channels can be assigned to items as follows:
 
 
 ### Sockets (Generation 2)
+
 #### Channel 1
+
 | Channel            | Item Type  | Description                     |  Writeable |
 |--------------------|------------|---------------------------------|------------|
 | 1#switch           | Switch     | Turn on/off                     |    Yes     |
@@ -108,7 +121,9 @@ channels can be assigned to items as follows:
 | 1#diagnostics      | Switch     | Carry out diagnostics           |    Yes     | 
 | 1#periodOfBroadcast| String     | Device Uptime                   |    No      | 
 | 1#rgbColor         | Color      | Colour of the device LED's      |    Yes     |
+
 #### Channel 2
+
 | Channel            | Item Type  | Description                     |  Writeable |
 |--------------------|------------|---------------------------------|------------|
 | 2#switch           | Switch     | Turn on/off                     |    Yes     |
@@ -125,12 +140,12 @@ channels can be assigned to items as follows:
 
 Bridge lightwaverf:lightwaverfaccount:mylocation "Lightwave Account" [ username="example@hotmail.co.uk", password="xxxxxxxxxx"] {
 
-h21 	LightwaveHub            "Link Plus"               [ sdId="1" ]
-s11 	KitchenSocket1          "Kitchen Socket 1"        [ sdId="2" ]
-s22 	KitchenSocket2          "Kitchen Socket 2"        [ sdId="3" ]
-d21 	KitchenDimmer           "Kitchen Dimmer"          [ sdId="4" ]
-t11 	KitchenThermostat       "Kitchen Thermostat"      [ sdId="5" ]
-e11 	KitchenEnergyMonitor    "Kitchen energy Monitor"  [ sdId="6" ]	
+h21 	LightwaveHub	        "Link Plus"				        [ sdId="1" ]
+s11 	KitchenSocket1 	        "Kitchen Socket 1"		        [ sdId="2" ]
+s22 	KitchenSocket2 	        "Kitchen Socket 2"		        [ sdId="3" ]
+d21 	KitchenDimmer 	        "Kitchen Dimmer"			    [ sdId="4" ]
+t11 	KitchenThermostat 	    "Kitchen Thermostat"			[ sdId="5" ]
+e11 	KitchenEnergyMonitor	"Kitchen energy Monitor"	    [ sdId="6" ]	
 }
 
 ```
@@ -138,26 +153,24 @@ e11 	KitchenEnergyMonitor    "Kitchen energy Monitor"  [ sdId="6" ]
 ### demo.items
 
 ```
-Switch  Socket2_LeftSwitch        "Kettle"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
-Number	Socket2_LeftPower         "Kettle Power"          { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power"  }
-Number	Socket2_LeftEnergy        "Kettle Energy"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
-Switch	Socket2_LeftOutletInUse	  "Kettle Outlet In Use"  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
-Switch	Socket2_LeftProtection    "Kettle Protection"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
+Switch  KitchenSocket2_LeftSwitch        "Kettle"                       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
+Number	KitchenSocket2_LeftPower	     "Kettle Power"		            { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power"  }
+Number	KitchenSocket2_LeftEnergy	     "Kettle Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
+Switch	KitchenSocket2_LeftOutletInUse	 "Kettle Outlet In Use"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
+Switch	KitchenSocket2_LeftProtection	 "Kettle Protection"		    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
 
-Switch  Socket2_RightSwitch       "Toaster"               { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
-Number	Socket2_RightPower        "Toaster Power"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power"  }
-Number	Socket2_RightEnergy       "Toater Energy"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
-Switch	Socket2_RightOutletInUse  "Toaster Outlet In Use" { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
-Switch	Socket2_RightProtection   "Toaster Protection"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
+Switch  KitchenSocket2_RightSwitch       "Toaster"                      { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
+Number	KitchenSocket2_RightPower	     "Toaster Power"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power"  }
+Number	KitchenSocket2_RightEnergy	     "Toater Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
+Switch	KitchenSocket2_RightOutletInUse	 "Toaster Outlet In Use"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
+Switch	KitchenSocket2_RightProtection	 "Toaster Protection"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
 
-Number	Socket2_Voltage           "Socket 2 Voltage"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
-Switch	Socket2_Identify          "Socket 2 Identify"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
-Switch	Socket2_Reset             "Socket 2 Reset"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
-Switch	Socket2_Upgrade           "Socket 2 Upgrade"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
-Switch	Socket2_Diagnostics       "Socket 2 Diagnostics"  { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
-String	Socket2_PeriodOfBroadcast "Socket 2 Broadcast"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
-Color   Socket2_RgbColor          "Socket 2 Colour"       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
+Number	KitchenSocket2_Voltage   	     "Kitchen Socket 2 Voltage"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
+Switch	KitchenSocket2_Identify			 "Kitchen Socket 2 Identify"	{ channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
+Switch	KitchenSocket2_Reset			 "Kitchen Socket 2 Reset"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
+Switch	KitchenSocket2_Upgrade		     "Kitchen Socket 2 Upgrade"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
+Switch	KitchenSocket2_Diagnostics		 "Kitchen Socket 2 Diagnostics" { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
+String	KitchenSocket2_PeriodOfBroadcast "Kitchen Socket 2 Broadcast"   { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
+Color	KitchenSocket2_RgbColor			 "Kitchen Socket 2 Colour"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
 
 ```
-
-

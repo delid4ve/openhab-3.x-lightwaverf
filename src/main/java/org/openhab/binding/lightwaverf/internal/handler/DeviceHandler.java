@@ -13,14 +13,6 @@
 package org.openhab.binding.lightwaverf.internal.handler;
 
 import java.awt.Color;
-
-/**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
- *
- * @author David Murton - Initial contribution
- */
-
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -33,7 +25,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import com.google.gson.JsonObject;
 
 import org.eclipse.smarthome.core.library.types.DateTimeType;
@@ -63,6 +54,12 @@ import org.openhab.binding.lightwaverf.internal.api.discovery.Features;
 import org.eclipse.smarthome.core.types.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+/**
+ * The {@link lightwaverfBindingConstants} class defines common constants, which are
+ * used across the whole binding.
+ *
+ * @author David Murton - Initial contribution
+ */
 
 public class DeviceHandler extends BaseThingHandler {
 
@@ -88,7 +85,7 @@ public class DeviceHandler extends BaseThingHandler {
     private String state;
     private String featureId;
     private FeatureStatus status;
-    String featureString;
+    private String featureString;
     List<Devices> devices = new ArrayList<Devices>();
     List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
     List<Features> features = new ArrayList<Features>();
@@ -128,7 +125,7 @@ public class DeviceHandler extends BaseThingHandler {
 
     public int deviceIndex(String sdId) {
         for (int i = 0; i < devices.size(); i++) {
-            if (devices.get(i).getDeviceId().contains("-" + sdId + "-") == true) {
+            if (devices.get(i).getDeviceId().contains("-" + sdId + "-")) {
                 return i;
             }
         }
@@ -143,7 +140,7 @@ public class DeviceHandler extends BaseThingHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Bridge Not set");
         }
         initializeBridge(bridge.getHandler(), bridge.getStatus());
-        listTask = scheduler.schedule(this::connect, 10, TimeUnit.SECONDS);
+        listTask = scheduler.schedule(this::connect, 2, TimeUnit.SECONDS);
     }
 
     private void connect() {
@@ -164,10 +161,10 @@ public class DeviceHandler extends BaseThingHandler {
                 state = account.cLinked().get(i).split(",")[2];
                 feature = getFeature(group, ch);
                 featureId = feature.getFeatureId();
-                if (state == "linked" && (account.channelList().contains(featureId) == false)) {
+                if (state == "linked" && (!account.channelList().contains(featureId))) {
                     account.addChannelList(featureId);
                     account.removecLinked(account.cLinked().get(i));
-                } else if (state == "unlinked" && (account.channelList().contains(featureId) == true)) {
+                } else if (state == "unlinked" && (account.channelList().contains(featureId))) {
                     account.removeChannelList(featureId);
                     account.removecLinked(account.cLinked().get(i));
                 }
@@ -208,14 +205,12 @@ public class DeviceHandler extends BaseThingHandler {
         }
     }
 
-    private void initializeBridge(ThingHandler thingHandler, ThingStatus bridgeStatus) {
+    private void initializeBridge(ThingHandler thingHandler,ThingStatus bridgeStatus) {
         logger.debug("initializeBridge {} for thing {}", bridgeStatus, getThing().getUID());
 
         if (thingHandler != null && bridgeStatus != null) {
             account = (LWAccountHandler) thingHandler;
-            if (bridgeStatus == ThingStatus.ONLINE) {
-                // updateStatus(ThingStatus.ONLINE);
-            } else {
+            if (bridgeStatus != ThingStatus.ONLINE) {
                 updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
             }
         } else {
@@ -233,7 +228,7 @@ public class DeviceHandler extends BaseThingHandler {
         } else if (device != null) {
             Objects.requireNonNull(channelUID, "channelUID cannot be null");
             feature = getFeature(group, ch);
-            if (account.channelList().contains(feature.getFeatureId()) == true) {
+            if (account.channelList().contains(feature.getFeatureId())) {
                 account.removeChannelList(feature.getFeatureId());
             }
         }
@@ -250,7 +245,7 @@ public class DeviceHandler extends BaseThingHandler {
         } else if (device != null) {
             Objects.requireNonNull(channelUID, "channelUID cannot be null");
             feature = getFeature(group, ch);
-            if (account.channelList().contains(feature.getFeatureId()) == false) {
+            if (!account.channelList().contains(feature.getFeatureId())) {
                 account.addChannelList(feature.getFeatureId());
             }
         }
@@ -262,9 +257,9 @@ public class DeviceHandler extends BaseThingHandler {
         Map<String, String> dProperties = editProperties();
         dProperties.clear();
         for (int i = 0; i < device.getFeatureSets().size(); i++) {
-            String Name = device.getFeatureSets().get(i).getName();
-            logger.debug("Item Property Added, Device channel: {} - {}", i, Name);
-            list = "Channel: " + (i + 1) + ", Name: " + Name + "\r\n";
+            String name = device.getFeatureSets().get(i).getName();
+            logger.debug("Item Property Added, Device channel: {} - {}", i, name);
+            list = "Channel: " + (i + 1) + ", Name: " + name + "\r\n";
             dProperties.put("Channel" + (i + 1), list);
         }
         for (int i = 0; i < device.getFeatureSets().size(); i++) {
@@ -288,7 +283,7 @@ public class DeviceHandler extends BaseThingHandler {
         updateProperties(dProperties);
     }
 
-    private Features getFeature(int featureSetNo, String channelId) {
+    private Features getFeature(int featureSetNo,String channelId) {
         featureSetId = device.getFeatureSets().get(featureSetNo).getFeatureSetId();
         featureSet = featureSets.stream().filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst()
                 .orElse(featureSets.get(0));
@@ -311,7 +306,7 @@ public class DeviceHandler extends BaseThingHandler {
                     channelTypeId = group.getChannelTypeUID().getId();
                     logger.debug("Update Channels: j = {} , channeltype = {} ", j, channelTypeId);
                     feature = getFeature(j, channelTypeId);
-                    if (account.channelList().contains(feature.getFeatureId()) == false) {
+                    if (!account.channelList().contains(feature.getFeatureId())) {
                         account.addChannelList(feature.getFeatureId());
                         logger.debug("channel added to update list {} for featureId {}",
                                 group.getUID().getId().toString(), feature.getFeatureId());
@@ -327,7 +322,7 @@ public class DeviceHandler extends BaseThingHandler {
         }
     }
 
-    private void updateChannels(String channelId, Integer value, String channelName) {
+    private void updateChannels(String channelId, Integer value,String channelName) {
         switch (channelName) {
         case "switch":
         case "diagnostics":
@@ -359,8 +354,10 @@ public class DeviceHandler extends BaseThingHandler {
             break;
         case "dimLevel":
         case "valveLevel":
-        case "batteryLevel":
             updateState(channelId, new PercentType(value));
+            break;
+            case "batteryLevel":
+            updateState(channelId, new PercentType(value *100));
             break;
         case "rgbColor":
             Color color = new Color(value);
@@ -399,9 +396,9 @@ public class DeviceHandler extends BaseThingHandler {
         case "duskTime":
         case "dawnTime":
         case "time":
-            String hoursPad = "";
-            String minsPad = "";
-            String secsPad = "";
+        String hoursPad = "";
+        String minsPad = "";
+        String secsPad = "";
             int minutes = ((Integer.parseInt(value.toString()) / 60)%60);
             int hours = (value / 3600);
             int seconds = (Integer.parseInt(value.toString()) % 60);
@@ -434,7 +431,7 @@ public class DeviceHandler extends BaseThingHandler {
     
 
     @Override
-    public  void handleCommand(ChannelUID channelUID, Command command) {
+    public  void handleCommand(ChannelUID channelUID,Command command) {
         String channelName = channelUID.getIdWithoutGroup();
         String value = "";
         String group = channelUID.getGroupId();
@@ -505,13 +502,11 @@ public class DeviceHandler extends BaseThingHandler {
             int valueint = Integer.parseInt(value);
                 account.featureStatus().stream().filter(i -> feature.getFeatureId().equals(i.getFeatureId())).forEach(u -> u.setValue(valueint));
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
     }
     
-    public void setStatus(String featureId, String value) throws Exception {
+    public void setStatus(String featureId,String value) throws Exception {
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("value", value);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));

@@ -12,16 +12,14 @@
  */
 package org.openhab.binding.lightwaverf.internal.api.login;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author David Murton - Initial contribution
  */
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class MyClient {
 
     @SerializedName("bearer")

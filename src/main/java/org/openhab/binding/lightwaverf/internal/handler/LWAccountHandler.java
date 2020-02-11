@@ -13,25 +13,15 @@
 package org.openhab.binding.lightwaverf.internal.handler;
 
 import java.util.ArrayList;
-
-/**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
- *
- * @author David Murton - Initial contribution
- */
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.ThingStatus;
@@ -50,7 +40,12 @@ import org.openhab.binding.lightwaverf.internal.config.AccountConfig;
 import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * The {@link lightwaverfBindingConstants} class defines common constants, which are
+ * used across the whole binding.
+ *
+ * @author David Murton - Initial contribution
+ */
 public class LWAccountHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(LWAccountHandler.class);
     List<Root> structures = new ArrayList<Root>();
@@ -64,7 +59,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
     public UpdateListener listener;
     private ScheduledFuture<?> listTask;
     private String list;
-    private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
     .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
     public LWAccountHandler(Bridge bridge) {
         super(bridge);
@@ -78,19 +73,16 @@ public class LWAccountHandler extends BaseBridgeHandler {
         listener.login(config.username, config.password);
         createLists();
         properties();
-        
-        if (listTask == null || listTask.isCancelled()) {
-            listTask = scheduler.schedule(this::startRefresh, 10, TimeUnit.SECONDS);
-        }
+        startRefresh();
+        //if (listTask == null || listTask.isCancelled()) {
+        //    listTask = scheduler.schedule(this::startRefresh, 10, TimeUnit.SECONDS);
+        //}
         connectionCheckTask = scheduler.schedule(this::startConnectionCheck,60, TimeUnit.SECONDS);
         updateStatus(ThingStatus.ONLINE);
         
     }
 
-    
-
     private void createLists() {
-        
         logger.debug("Started List Generation");
         StructureList structureList = listener.getStructureList();
         for (int a = 0; a < structureList.getStructures().size(); a++) {
@@ -125,8 +117,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
                         try {
                         connect();
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
                     }
                     
                 }
@@ -170,7 +160,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     @Override
     public void handleCommand(ChannelUID channelUID, Command command) {
-
     }
 
     public ThingUID getID() {
@@ -260,8 +249,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
                 try {
                         listener.updateListener(partitionSize);
                 } catch (Exception e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 }
     }
 }).start();

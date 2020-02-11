@@ -11,20 +11,17 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 
+package org.openhab.binding.lightwaverf.internal.api.discovery;
+
+import java.util.ArrayList;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
  * used across the whole binding.
  *
  * @author David Murton - Initial contribution
  */
-
-package org.openhab.binding.lightwaverf.internal.api.discovery;
-
-import java.util.ArrayList;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Structures {
 
     @SerializedName("structures")

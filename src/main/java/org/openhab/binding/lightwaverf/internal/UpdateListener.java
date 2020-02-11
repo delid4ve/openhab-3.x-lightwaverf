@@ -13,14 +13,6 @@
 package org.openhab.binding.lightwaverf.internal;
 
 import java.io.ByteArrayInputStream;
-
-/**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
- *
- * @author David Murton - Initial contribution
- */
-
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -30,6 +22,7 @@ import java.util.Map;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.lightwaverf.internal.api.AccessToken;
 import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
@@ -41,8 +34,15 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * The {@link lightwaverfBindingConstants} class defines common constants, which are
+ * used across the whole binding.
+ *
+ * @author David Murton - Initial contribution
+ */
+@NonNullByDefault
 public class UpdateListener {
-    private final static Logger logger = LoggerFactory.getLogger(Http.class);  
+    private final Logger logger = LoggerFactory.getLogger(UpdateListener.class);  
     private List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
     private List<String> channelList = new ArrayList<String>();
     private List<String> cLinked = new ArrayList<String>();
@@ -51,11 +51,11 @@ public class UpdateListener {
     private String jsonEnd = "";
     private String jsonMain = "";
     private boolean isConnected = false;
-    private String sessionKey;
-    private final static Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+    private String sessionKey = "";
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-    public void updateListener(int partitionSize) throws Exception {
+    public void updateListener(int partitionSize) {
         jsonBody = "";
         jsonEnd = "";
         jsonMain = "";
