@@ -12,6 +12,7 @@
  */
 package org.openhab.binding.lightwaverf.internal.handler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -40,9 +41,10 @@ import org.openhab.binding.lightwaverf.internal.config.AccountConfig;
 import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
+ * The {@link lightwaverfBindingConstants} class defines common constants, which
+ * are used across the whole binding.
  *
  * @author David Murton - Initial contribution
  */
@@ -60,7 +62,8 @@ public class LWAccountHandler extends BaseBridgeHandler {
     private ScheduledFuture<?> listTask;
     private String list;
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
-    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
+
     public LWAccountHandler(Bridge bridge) {
         super(bridge);
     }
@@ -70,8 +73,16 @@ public class LWAccountHandler extends BaseBridgeHandler {
         logger.debug("Initializing Lightwave account handler.");
         config = getConfigAs(AccountConfig.class);
         listener = new UpdateListener();
-        listener.login(config.username, config.password);
-        createLists();
+        try {
+            listener.login(config.username, config.password);
+        } catch (IOException e) {
+
+        }
+        try {
+            createLists();
+        } catch (IOException e) {
+
+        }
         properties();
         startRefresh();
         //if (listTask == null || listTask.isCancelled()) {
@@ -82,7 +93,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
         
     }
 
-    private void createLists() {
+    private void createLists() throws IOException {
         logger.debug("Started List Generation");
         StructureList structureList = listener.getStructureList();
         for (int a = 0; a < structureList.getStructures().size(); a++) {
@@ -96,14 +107,14 @@ public class LWAccountHandler extends BaseBridgeHandler {
             for (int c = 0; c < featureSets.size(); c++) {
                 features.addAll(featureSets.get(c).getFeatures());
             }
-            logger.warn("createLists Features size {}", features.size());
+            logger.debug("createLists Features size {}", features.size());
         }
         for (int d = 0; d < features.size(); d++) {
             String json = "{\"featureId\": " + features.get(d).getFeatureId() + ",\"value\": 0}";
             FeatureStatus featureStatusItem = gson.fromJson(json, FeatureStatus.class);
             listener.addFeatureStatus(featureStatusItem);
         }
-        logger.warn("createLists Feature Status size {}", listener.featureStatus().size());
+        logger.debug("createLists Feature Status size {}", listener.featureStatus().size());
     }
 
     private void startConnectionCheck() {
@@ -127,7 +138,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
         }
     }
 
-    private void connect() {
+    private void connect() throws IOException {
         logger.debug("Initializing connection to Lightwave");
         updateStatus(ThingStatus.OFFLINE);
             listener.login(config.username, config.password);
@@ -179,10 +190,43 @@ public class LWAccountHandler extends BaseBridgeHandler {
         return true;
     }
 
+    public Integer pollingSize() {
+        Integer noPartitions = 0;
+        Integer channelSizeTemp;
+        List<String> channelListTemp = channelList();
+        if(channelList().isEmpty()) {
+            channelSizeTemp = 20;
+        }
+        else{
+        channelSizeTemp = channelListTemp.size();
+        }
+        List<List<String>> partitionsTemp = new ArrayList<>();
+        for (int i = 0; i < channelSizeTemp; i += partitionSize) {
+            partitionsTemp.add(channelListTemp.subList(i, Math.min(i + partitionSize, channelListTemp.size())));
+        }
+        noPartitions = partitionsTemp.size();
+        Integer pollingIntervalTemp = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
+        return (noPartitions * pollingIntervalTemp);
+    }
+
     public boolean removeChannelList( String newLink ) {
         listener.removeChannelList(newLink );
         return true;
      }
+
+     public Map<String, Long> getLocked() {
+        return listener.getLocked();
+    }
+
+    public boolean addLocked( String featureId, Long time ) {
+        listener.addLocked(featureId,time);
+        return true;
+    }
+
+    public boolean removeLocked( String featureId, Long time ) {
+        listener.removeLocked(featureId,time);
+        return true;
+    }
 
     public List<String> cLinked() {
         return listener.cLinked();
@@ -232,7 +276,8 @@ public class LWAccountHandler extends BaseBridgeHandler {
         updateProperties(properties);
     }
     private void startRefresh() {
-        int refresh = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
+        //int refresh = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
+        int refresh = pollingSize();
         if (channelList().size() == 0) {
             logger.warn("Channel List For Updating Is Empty");
         }
@@ -243,17 +288,17 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     private void updateStateAndChannels() {
         if (channelList().size() > 0) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
+        //new Thread(new Runnable() {
+            //@Override
+            //public void run() {
                 try {
                         listener.updateListener(partitionSize);
                 } catch (Exception e) {
                 }
     }
-}).start();
+//}).start();
         }
-    }
+    //}
 
     
 

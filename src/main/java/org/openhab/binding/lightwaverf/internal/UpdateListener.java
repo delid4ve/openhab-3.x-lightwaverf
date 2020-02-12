@@ -13,6 +13,7 @@
 package org.openhab.binding.lightwaverf.internal;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -35,15 +36,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 /**
- * The {@link lightwaverfBindingConstants} class defines common constants, which are
- * used across the whole binding.
+ * The {@link lightwaverfBindingConstants} class defines common constants, which
+ * are used across the whole binding.
  *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
 public class UpdateListener {
-    private final Logger logger = LoggerFactory.getLogger(UpdateListener.class);  
+    private final Logger logger = LoggerFactory.getLogger(UpdateListener.class);
     private List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
+    private Map<String, Long> featureMap = new HashMap<String,Long>();
     private List<String> channelList = new ArrayList<String>();
     private List<String> cLinked = new ArrayList<String>();
     private List<List<String>> partitions = new ArrayList<>();
@@ -55,7 +57,7 @@ public class UpdateListener {
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-    public void updateListener(int partitionSize) {
+    public void updateListener(int partitionSize) throws IOException {
         jsonBody = "";
         jsonEnd = "";
         jsonMain = "";
@@ -85,9 +87,32 @@ public class UpdateListener {
             for (Map.Entry<String, Integer> myMap : featureStatuses.entrySet()) {
                 String key = myMap.getKey().toString();
                 int value = myMap.getValue();
-                featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(u -> u.setValue(value));
+                featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(
+                u -> {
+                    if(!featureMap.containsKey(key)) {
+                        u.setValue(value);
+                    }
+                    else {
+                        logger.debug("feature {} not updated as lock is present", key);
+                    }
+                }
+                );
             }
         }
+    }
+
+    public Map<String, Long> getLocked() {
+        return featureMap;
+    }
+
+    public boolean addLocked( String featureId, Long time ) {
+        featureMap.put(featureId,time);
+        return true;
+    }
+
+    public boolean removeLocked( String featureId, Long time ) {
+        featureMap.remove(featureId,time);
+        return true;
     }
 
     public synchronized boolean isConnected() {
@@ -132,17 +157,17 @@ public class UpdateListener {
 
     public boolean addcLinked( String newLink ) {
         cLinked.add( newLink );
-        logger.warn("Channel added to update list");
+        logger.debug("Channel added to update list");
         return true;
      }
 
     public boolean removecLinked( String newLink ) {
         cLinked.remove( newLink );
-        logger.warn("Channel removed from update list");
+        logger.debug("Channel removed from update list");
         return true;
      }
 
-    public void login(String username, String password) {
+    public void login(String username, String password) throws IOException {
         logger.warn("Start Lightwave Login Process");
         setConnected(false);
         JsonObject jsonReq = new JsonObject();
@@ -153,8 +178,9 @@ public class UpdateListener {
         logger.debug("Returned Login Http Response {}", response);
         if (response.contains("Not found")) {
             logger.warn("Lightwave Rf Servers Currently Down");
-            // updateStatus(ThingStatus.OFFLINE);
+            setConnected(false);
         }
+        else{
         Login login = gson.fromJson(response, Login.class);
         logger.debug("Parsed Login response");
         sessionKey = login.getTokens().getAccessToken().toString();
@@ -162,21 +188,22 @@ public class UpdateListener {
         logger.debug("token: {}", sessionKey);
         setConnected(true);
         logger.warn("Connected to lightwave");
+        }
     }
 
-        public StructureList getStructureList() {
+        public StructureList getStructureList() throws IOException {
             String response = Http.httpClient("structures", null, null, null);
             StructureList structureList = gson.fromJson(response, StructureList.class);
             return structureList;
         }
 
-        public Root getStructure(String structureId) {
+        public Root getStructure(String structureId) throws IOException {
             String response = Http.httpClient("structure", null, null, structureId);
             Root structure = gson.fromJson(response, Root.class);
             return structure;
         }
 
-        public List<Devices> getDevices(String structureId) {
+        public List<Devices> getDevices(String structureId) throws IOException {
             List<Devices> devices = getStructure(structureId).getDevices();
             return devices;
         }

@@ -23,6 +23,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import com.google.gson.JsonObject;
@@ -357,7 +359,7 @@ public class DeviceHandler extends BaseThingHandler {
             updateState(channelId, new PercentType(value));
             break;
             case "batteryLevel":
-            updateState(channelId, new PercentType(value *100));
+            updateState(channelId, new DecimalType(value));
             break;
         case "rgbColor":
             Color color = new Color(value);
@@ -447,6 +449,7 @@ public class DeviceHandler extends BaseThingHandler {
         else {
         logger.debug("handleCommand(list): channel = {} group = {}", channelName,i);
         feature = getFeature(i,channelName);
+        featureId = feature.getFeatureId();
         switch (channelName) {
         case "switch":
         case "diagnostics":
@@ -497,20 +500,35 @@ public class DeviceHandler extends BaseThingHandler {
         }
         logger.debug("channel: {}", channelUID.getId());
         logger.debug("value: {}", value);
+        long now = System.currentTimeMillis();
+        account.addLocked(featureId, now);
+        logger.debug("lock added: {} : {}", featureId, now);
+        Integer pollingSize = (account.pollingSize() * 1000);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                removeLocked(featureId,now);
+            }
+        }, pollingSize);
         try {
-            setStatus(feature.getFeatureId(), value);
+            setStatus(featureId, value);
             int valueint = Integer.parseInt(value);
-                account.featureStatus().stream().filter(i -> feature.getFeatureId().equals(i.getFeatureId())).forEach(u -> u.setValue(valueint));
+                account.featureStatus().stream().filter(i -> featureId.equals(i.getFeatureId())).forEach(u -> u.setValue(valueint));
         } catch (Exception e) {
         }
     }
+    }
+
+    public void removeLocked(String featureId, Long time) {
+        account.removeLocked(featureId,time);
+        logger.debug("lock removed: {} : {}", featureId, time); 
     }
     
     public void setStatus(String featureId,String value) throws Exception {
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("value", value);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
-        Http.httpClient("feature", data, "application/json",featureId);  
-        logger.debug("Command sent");    
+        Http.httpClient("feature", data, "application/json",featureId);     
     } 
 }
