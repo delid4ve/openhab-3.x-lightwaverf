@@ -1,3 +1,8 @@
+Version 1.0.8
+Fixed 3/4 gang dimmer incorrect channel name
+added token refresh
+fixed linkplus date format
+
 Version 1.0.7
 Fixed bug with Update listener not reflecting the correct polling time
 Removed Update Listener additional Thread as was unstable

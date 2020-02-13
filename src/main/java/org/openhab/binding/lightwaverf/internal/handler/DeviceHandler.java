@@ -386,9 +386,21 @@ public class DeviceHandler extends BaseThingHandler {
             updateState(channelId, new DecimalType(value.toString()));
             break;
         case "date":
-            Number abc = ((value).longValue()*100000);
-            DateTimeType date = new DateTimeType(new DateTime(abc).toString());
-            updateState(channelId,date);
+            String monthPad = "";
+            String dayPad = "";
+            String hex = Integer.toHexString(value);
+            int year = Integer.parseInt(hex.substring(0, 3),16);
+            int month = Integer.parseInt(hex.substring(3, 4),16);
+            int day = Integer.parseInt(hex.substring(4, 6),16);
+
+            if (month < 10) {
+                monthPad = "0";
+            }
+            if (day < 10) {
+                dayPad = "0";
+            }
+            String dateValue = year + "-" + monthPad + month + "-" + dayPad + day + "T00:00:00.000+0000";
+            updateState(channelId,new DateTimeType(dateValue));
         break;
         case "currentTime":
             Number def = ((value).longValue()*1000);

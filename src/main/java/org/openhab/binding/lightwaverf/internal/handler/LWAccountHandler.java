@@ -56,6 +56,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
     List<Features> features = new ArrayList<Features>();
     int partitionSize = Integer.valueOf(this.thing.getConfiguration().get("pollingGroupSize").toString());
     private ScheduledFuture<?> connectionCheckTask;
+    private ScheduledFuture<?> tokenTask;
     private ScheduledFuture<?> refreshTask;
     private AccountConfig config;
     public UpdateListener listener;
@@ -89,8 +90,20 @@ public class LWAccountHandler extends BaseBridgeHandler {
         //    listTask = scheduler.schedule(this::startRefresh, 10, TimeUnit.SECONDS);
         //}
         connectionCheckTask = scheduler.schedule(this::startConnectionCheck,60, TimeUnit.SECONDS);
+        tokenTask = scheduler.schedule(this::getToken, 24, TimeUnit.HOURS);
         updateStatus(ThingStatus.ONLINE);
         
+    }
+
+    private void getToken(){
+        if (tokenTask == null || tokenTask.isCancelled()) {
+        try {
+            listener.login(config.username, config.password);
+        }
+        catch (Exception e) {
+        }
+    }
+
     }
 
     private void createLists() throws IOException {
@@ -159,9 +172,13 @@ public class LWAccountHandler extends BaseBridgeHandler {
         if (connectionCheckTask != null) {
             connectionCheckTask.cancel(true);
         }
+        if (tokenTask != null) {
+            tokenTask.cancel(true);
+        }
             connectionCheckTask = null;
             listTask = null;
             refreshTask = null;
+            tokenTask = null;
     }
 
     @Override

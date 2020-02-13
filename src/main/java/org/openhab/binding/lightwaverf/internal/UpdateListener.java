@@ -167,6 +167,24 @@ public class UpdateListener {
         return true;
      }
 
+    public void getToken(String username, String password) throws IOException {
+        logger.warn("Get new token");
+        JsonObject jsonReq = new JsonObject();
+        jsonReq.addProperty("email", username);
+        jsonReq.addProperty("password", password);
+        InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
+        String response = Http.httpClient("login", body, "application/json", null);
+        if (response.contains("Not found")) {
+            logger.warn("Lightwave Rf Servers Currently Down");
+            setConnected(false);
+        }
+        else{
+        Login login = gson.fromJson(response, Login.class);
+        sessionKey = login.getTokens().getAccessToken().toString();
+        AccessToken.setToken(sessionKey);
+        }
+    }
+
     public void login(String username, String password) throws IOException {
         logger.warn("Start Lightwave Login Process");
         setConnected(false);

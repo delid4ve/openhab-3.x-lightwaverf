@@ -141,7 +141,7 @@
 	</channel-group-type>
 
 	<channel-group-type id="d23">
-		<label>Channel 2</label>
+		<label>Channel 3</label>
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
@@ -156,7 +156,7 @@
 	</channel-group-type>
 
 	<channel-group-type id="d24">
-		<label>Channel 2</label>
+		<label>Channel 4</label>
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
