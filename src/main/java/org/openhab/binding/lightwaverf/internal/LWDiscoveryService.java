@@ -24,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
 import org.eclipse.smarthome.config.discovery.DiscoveryService;
@@ -48,27 +47,11 @@ import org.slf4j.LoggerFactory;
  */
 
 public class LWDiscoveryService extends AbstractDiscoveryService implements DiscoveryService, ThingHandlerService {
-
     private final Logger logger = LoggerFactory.getLogger(LWDiscoveryService.class);
-
     private static final int DISCOVER_TIMEOUT_SECONDS = 10;
-
     private LWAccountHandler accountHandler;
     private ScheduledFuture<?> scanTask;
-    ThingTypeUID thingTypeUid = null;
-    ThingUID bridgeUID;
-    String label;
-    private String id;
-    private String sId;
-    private String sName;
-    private String dId;
-    private String sdId;
-    private String dType;
-    private String dProductCode;
-    private String array1[];
-    private Boolean deviceAdded;
-    private List<StructureList> structureList = new ArrayList<StructureList>();
-    private List<Root> structures = new ArrayList<Root>();
+    private ThingTypeUID thingTypeUid;    
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
@@ -130,7 +113,9 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
 
     private void discover() throws IOException {
         logger.debug("Start Discovery");
-            bridgeUID = accountHandler.getThing().getUID();
+        List<StructureList> structureList = new ArrayList<StructureList>();
+        List<Root> structures = new ArrayList<Root>();
+            ThingUID bridgeUID = accountHandler.getThing().getUID();
             List<Thing> things = accountHandler.getThing().getThings();
             if (structures == null || structures.isEmpty()) {
                 String response = Http.httpClient("structures", null, null, null);
@@ -148,24 +133,24 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                 }
             }
                     for (int s = 0; s < structures.size(); s++) {
-                        sId = structures.get(s).getGroupId();
-                        sName = structures.get(s).getName();
+                        String sId = structures.get(s).getGroupId();
+                        String sName = structures.get(s).getName();
                         logger.debug("Structure Id {} with name {} Found", sId,sName);
                             for (int d = 0; d < structures.get(s).getDevices().size(); d++) {
-                            dType = structures.get(s).getDevices().get(d).getCat().toString();
-                            dId = structures.get(s).getDevices().get(d).getDeviceId().toString();
-                            array1 = dId.split("-");
-                            sdId = array1[1].toString();
-                            deviceAdded = false;
+                            String dType = structures.get(s).getDevices().get(d).getCat().toString();
+                            String dId = structures.get(s).getDevices().get(d).getDeviceId().toString();
+                            String[] array1 = dId.split("-");
+                            String sdId = array1[1].toString();
+                            Boolean deviceAdded = false;
                                 for (int i = 0; i < things.size(); i++) {
-                                    id = things.get(i).getConfiguration().get("sdId").toString();
+                                    String id = things.get(i).getConfiguration().get("sdId").toString();
                                     if(id.equals(sdId)) {
                                         deviceAdded = true;
                                     }
                                 }
                                 if (!deviceAdded) {
                         logger.debug("Device Simplified Id: {}", sdId);
-                            dProductCode = structures.get(s).getDevices().get(d).getProductCode().toString();
+                            String dProductCode = structures.get(s).getDevices().get(d).getProductCode().toString();
                             logger.debug("Product Code discovered: {}", "'" + dProductCode + "'");
                             switch (dProductCode) {
                                 case "L2":
@@ -212,7 +197,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                                     dProperties.put("Category", structures.get(s).getDevices().get(d).getCat().toString());
                                     dProperties.put("Generation", structures.get(s).getDevices().get(d).getGen().toString());
                                     dProperties.put("Channels", structures.get(s).getDevices().get(d).getFeatureSets().size());
-                                    label = createLabelDevice(structures.get(s).getDevices().get(d));
+                                    String label = createLabelDevice(structures.get(s).getDevices().get(d));
                                     thingDiscovered(DiscoveryResultBuilder.create(deviceThing).withLabel(label)
                                         .withProperties(dProperties)
                                         .withRepresentationProperty(sdId.toString())

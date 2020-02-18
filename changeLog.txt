@@ -1,3 +1,8 @@
+Version 1.1.0
+Changed Polling Method
+Fixed Dimmer gui flicker
+Fixed RGB Color - now sets to nearest available colour (lightwave pre defined colours)
+
 Version 1.0.8
 Fixed 3/4 gang dimmer incorrect channel name
 added token refresh

@@ -27,8 +27,7 @@ import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.openhab.binding.lightwaverf.internal.api.AccessToken;
 import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
-import org.openhab.binding.lightwaverf.internal.api.discovery.Root;
-import org.openhab.binding.lightwaverf.internal.api.discovery.StructureList;
+import org.openhab.binding.lightwaverf.internal.api.discovery.Features;
 import org.openhab.binding.lightwaverf.internal.api.login.Login;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
@@ -45,27 +44,18 @@ import com.google.gson.reflect.TypeToken;
 public class UpdateListener {
     private final Logger logger = LoggerFactory.getLogger(UpdateListener.class);
     private List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
-    private Map<String, Long> featureMap = new HashMap<String,Long>();
-    private List<String> channelList = new ArrayList<String>();
-    private List<String> cLinked = new ArrayList<String>();
-    private List<List<String>> partitions = new ArrayList<>();
-    private String jsonBody = "";
-    private String jsonEnd = "";
-    private String jsonMain = "";
     private boolean isConnected = false;
     private String sessionKey = "";
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-    public void updateListener(int partitionSize) throws IOException {
-        jsonBody = "";
-        jsonEnd = "";
-        jsonMain = "";
-        partitions.clear();
-        for (int i = 0; i < channelList.size(); i += partitionSize) {
-            partitions.add(channelList.subList(i, Math.min(i + partitionSize, channelList.size())));
-        }
+    public void updateListener(List<List<String>> partitions, Map<String, Long> locks) throws IOException {
+        String jsonBody = "";
+        String jsonEnd = "";
+        String jsonMain = "";
+        logger.debug("Start Partitioning Into Groups");
         for (int l = 0; l < partitions.size(); l++) {
+            logger.debug("Start Partition {} of {}", (l+1),partitions.size());
             jsonBody = "{\"features\": [";
             jsonEnd = "";
             for (int m = 0; m < partitions.get(l).size(); m++) {
@@ -77,42 +67,30 @@ public class UpdateListener {
                 jsonMain = "{\"featureId\": \"" + partitions.get(l).get(m).toString() + "\"}";
                 jsonBody = jsonBody + jsonMain + jsonEnd;
             }
-
             InputStream data = new ByteArrayInputStream(jsonBody.getBytes(StandardCharsets.UTF_8));
             String response = Http.httpClient("features", data, "application/json", "");
-            logger.debug("response:{}", response);
-            HashMap<String, Integer> featureStatuses = gson.fromJson(response,
-                    new TypeToken<HashMap<String, Integer>>() {
-                    }.getType());
-            for (Map.Entry<String, Integer> myMap : featureStatuses.entrySet()) {
-                String key = myMap.getKey().toString();
-                int value = myMap.getValue();
-                featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(
-                u -> {
-                    if(!featureMap.containsKey(key)) {
-                        u.setValue(value);
-                    }
-                    else {
-                        logger.debug("feature {} not updated as lock is present", key);
-                    }
-                }
-                );
+            logger.debug("JSON Repsonse: {}", response);
+            if(response.contains("{\"message\":\"Structure not found\"}")) {
+                logger.debug("Api Timed Out, decrease your group size.");
             }
+            else {
+                HashMap<String, Integer> featureStatuses = gson.fromJson(response,
+                    new TypeToken<HashMap<String, Integer>>() {}.getType());
+                for (Map.Entry<String, Integer> myMap : featureStatuses.entrySet()) {
+                    String key = myMap.getKey().toString();
+                    int value = myMap.getValue();
+                    featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(u -> {
+                        if(!locks.containsKey(key)) {
+                            u.setValue(value);
+                        } else {
+                            logger.debug("feature {} not updated as lock is present", key);
+                        } 
+                    });
+                }
+            }
+            logger.debug("Finish Partition {} of {}", (l+1),partitions.size());
         }
-    }
-
-    public Map<String, Long> getLocked() {
-        return featureMap;
-    }
-
-    public boolean addLocked( String featureId, Long time ) {
-        featureMap.put(featureId,time);
-        return true;
-    }
-
-    public boolean removeLocked( String featureId, Long time ) {
-        featureMap.remove(featureId,time);
-        return true;
+        logger.debug("Finished current poll");
     }
 
     public synchronized boolean isConnected() {
@@ -123,49 +101,32 @@ public class UpdateListener {
         isConnected = state;
     }
 
-    public List<String> channelList() {
-        return channelList;
-    }
-
-    public boolean addChannelList( String newLink ) {
-        channelList.add(newLink);
-        return true;
-    }
-
-    public boolean removeChannelList( String newLink ) {
-        channelList.remove(newLink );
-        return true;
-     }
-
     public List<FeatureStatus> featureStatus() {
         return featureStatus;
     }
-
-    public boolean addFeatureStatus( FeatureStatus newFeatureStatus ) {
-        featureStatus.add(newFeatureStatus);
-        return true;
+    
+    public void addFeatureStatus(Devices device) {
+        Integer added = 0;
+        List<Features> features = new ArrayList<Features>();
+            for (int c = 0; c < device.getFeatureSets().size(); c++) {
+                features.addAll(device.getFeatureSets().get(c).getFeatures());
+            }
+            for (int d = 0; d < features.size(); d++) {
+                String featureId = features.get(d).getFeatureId();
+                Boolean containsFeature = featureStatus.stream().anyMatch(x -> x.getFeatureId().equals(featureId));
+                if (!containsFeature) {
+                    String json = "{\"featureId\": " + features.get(d).getFeatureId() + ",\"value\": -1}";
+                    FeatureStatus featureStatusItem = gson.fromJson(json, FeatureStatus.class);
+                    featureStatus.add(featureStatusItem);
+                    added ++;
+                }
+                else {
+                //logger.debug("Feature Status {} Already Present", features.get(d).getFeatureId());
+            }
+        }
+        logger.debug("{} of {} features Added From Device: {} ", added,features.size(),device.getName());
+        logger.debug("New featureStatus Size: {}", featureStatus.size());
     }
-
-    public boolean removeFeatureStatus( FeatureStatus newFeatureStatus ) {
-        featureStatus.remove(newFeatureStatus );
-        return true;
-     }
-
-    public synchronized List<String> cLinked() {
-        return cLinked;
-    }
-
-    public boolean addcLinked( String newLink ) {
-        cLinked.add( newLink );
-        logger.debug("Channel added to update list");
-        return true;
-     }
-
-    public boolean removecLinked( String newLink ) {
-        cLinked.remove( newLink );
-        logger.debug("Channel removed from update list");
-        return true;
-     }
 
     public void getToken(String username, String password) throws IOException {
         logger.warn("Get new token");
@@ -175,7 +136,7 @@ public class UpdateListener {
         InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
         String response = Http.httpClient("login", body, "application/json", null);
         if (response.contains("Not found")) {
-            logger.warn("Lightwave Rf Servers Currently Down");
+            logger.warn("Incorrect user credentials");
             setConnected(false);
         }
         else{
@@ -188,41 +149,9 @@ public class UpdateListener {
     public void login(String username, String password) throws IOException {
         logger.warn("Start Lightwave Login Process");
         setConnected(false);
-        JsonObject jsonReq = new JsonObject();
-        jsonReq.addProperty("email", username);
-        jsonReq.addProperty("password", password);
-        InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
-        String response = Http.httpClient("login", body, "application/json", null);
-        logger.debug("Returned Login Http Response {}", response);
-        if (response.contains("Not found")) {
-            logger.warn("Lightwave Rf Servers Currently Down");
-            setConnected(false);
-        }
-        else{
-        Login login = gson.fromJson(response, Login.class);
-        logger.debug("Parsed Login response");
-        sessionKey = login.getTokens().getAccessToken().toString();
-        AccessToken.setToken(sessionKey);
+        getToken(username,password);
         logger.debug("token: {}", sessionKey);
         setConnected(true);
         logger.warn("Connected to lightwave");
-        }
     }
-
-        public StructureList getStructureList() throws IOException {
-            String response = Http.httpClient("structures", null, null, null);
-            StructureList structureList = gson.fromJson(response, StructureList.class);
-            return structureList;
-        }
-
-        public Root getStructure(String structureId) throws IOException {
-            String response = Http.httpClient("structure", null, null, structureId);
-            Root structure = gson.fromJson(response, Root.class);
-            return structure;
-        }
-
-        public List<Devices> getDevices(String structureId) throws IOException {
-            List<Devices> devices = getStructure(structureId).getDevices();
-            return devices;
-        }
 }

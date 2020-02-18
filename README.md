@@ -174,3 +174,4 @@ String	KitchenSocket2_PeriodOfBroadcast "Kitchen Socket 2 Broadcast"   { channel
 Color	KitchenSocket2_RgbColor			 "Kitchen Socket 2 Colour"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
 
 ```
+
