@@ -49,7 +49,7 @@ The initial configuration is as follows:
 
 ```
 
-Bridge  lightwaverf:lightwaverfaccount:accountname  [ username="example@microsoft.com", password="password",pollingInterval=0,pollingGroupSize=30,electricityCost=14]
+Bridge  lightwaverf:lightwaverfaccount:accountname  [ username="example@microsoft.com", password="password", pollingInterval=0, pollingGroupSize=30, electricityCost=14]
 
 ```
 
@@ -72,7 +72,7 @@ channels can be assigned to items as follows:
 
 ```
 
-{ channel="lightwaverf:thingType:accountname:sdId:channelgroup#channel" }
+{ channel="lightwaverf:thingType:accountname:UniqueThingName:channelgroup#channel" }
 
 ```
 
@@ -86,7 +86,7 @@ channels can be assigned to items as follows:
 | 1#currentTime      | DateTime   | Current Time (date and time)    |    No      |
 | 1#buttonPress      | Switch     | Link plus button pressed        |    No      |  
 | 1#time             | Datetime   | Current Time                    |    No      | 
-| 1#date             | DateTime   | Doesnt work                     |    No      | 
+| 1#date             | DateTime   | Current Date                    |    No      | 
 | 1#monthArray       | Number     | Doesnt work                     |    No      | 
 | 1#weekdayArray     | Number     | Current weekday number (1 Mon)  |    No      | 
 | 1#identify         | Switch     | Blink the device LED's          |    Yes     |
