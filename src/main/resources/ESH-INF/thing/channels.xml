@@ -13,6 +13,41 @@
 		<state readOnly="true"></state>
 	</channel-type>
 
+	<channel-type id="energyReset">
+		<item-type>Switch</item-type>
+		<label>Energy Reset</label>
+		<description>Resets The Current Energy Usage</description>
+		<category>Switch</category>
+		<state readOnly="false" />
+	</channel-type>
+
+	<channel-type id="voltageReset">
+		<item-type>Switch</item-type>
+		<label>Voltage Reset</label>
+		<description>Resets The Voltage to a 0 offest Value in case of error, please ensure the socket is turned off prior to this</description>
+		<category>Switch</category>
+		<state readOnly="false" />
+	</channel-type>
+
+	<channel-type id="energyCost">
+		<item-type>Number</item-type>
+		<label>Energy Cost</label>
+		<description>Current Energy Cost</description>
+		<category></category>
+		<state pattern="%.2f" readOnly="true" />
+	</channel-type>
+
+	<channel-type id="powerCost">
+		<item-type>Number</item-type>
+		<label>Power Cost</label>
+		<description>Current Power Cost</description>
+		<category></category>
+		<state pattern="%.2f" readOnly="true" />
+	</channel-type>
+
+
+
+
 	<channel-type id="switch">
 		<item-type>Switch</item-type>
 		<label>Switch</label>

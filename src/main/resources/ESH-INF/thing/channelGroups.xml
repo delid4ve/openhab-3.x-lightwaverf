@@ -55,6 +55,10 @@
 			<channel id="energy" typeId="energy" />
 			<channel id="identify" typeId="identify" />
 			<channel id="rssi" typeId="rssi" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="voltageReset" typeId="voltageReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -76,6 +80,10 @@
 			<channel id="periodOfBroadcast" typeId="periodOfBroadcast" />
 			<channel id="rgbColor" typeId="rgbColor" />
 			<channel id="voltage" typeId="voltage" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="voltageReset" typeId="voltageReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -89,6 +97,9 @@
 			<channel id="protection" typeId="protection" />
 			<channel id="power" typeId="power" />
 			<channel id="energy" typeId="energy" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -122,6 +133,10 @@
 			<channel id="diagnostics" typeId="diagnostics" />
 			<channel id="periodOfBroadcast" typeId="periodOfBroadcast" />
 			<channel id="rgbColor" typeId="rgbColor" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="voltageReset" typeId="voltageReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -137,6 +152,9 @@
 			<channel id="power" typeId="power" />
 			<channel id="energy" typeId="energy" />
 			<channel id="bulbSetup" typeId="bulbSetup" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -152,6 +170,9 @@
 			<channel id="power" typeId="power" />
 			<channel id="energy" typeId="energy" />
 			<channel id="bulbSetup" typeId="bulbSetup" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 
@@ -167,6 +188,9 @@
 			<channel id="power" typeId="power" />
 			<channel id="energy" typeId="energy" />
 			<channel id="bulbSetup" typeId="bulbSetup" />
+			<channel id="energyReset" typeId="energyReset" />
+			<channel id="energyCost" typeId="energyCost" />
+			<channel id="powerCost" typeId="powerCost" />
 		</channels>
 	</channel-group-type>
 </thing:thing-descriptions>

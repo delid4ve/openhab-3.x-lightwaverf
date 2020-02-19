@@ -69,9 +69,12 @@ public class UpdateListener {
             }
             InputStream data = new ByteArrayInputStream(jsonBody.getBytes(StandardCharsets.UTF_8));
             String response = Http.httpClient("features", data, "application/json", "");
-            logger.debug("JSON Repsonse: {}", response);
+            logger.debug("JSON Response: {}", response);
             if(response.contains("{\"message\":\"Structure not found\"}")) {
-                logger.debug("Api Timed Out, decrease your group size.");
+                logger.warn("Api Timed Out, decrease your group size.");
+            }
+            else if(response.contains("{\"message\":\"FeatureRead Failed\"}")) {
+                logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
             }
             else {
                 HashMap<String, Integer> featureStatuses = gson.fromJson(response,

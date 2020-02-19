@@ -28,6 +28,11 @@
 				<description>Number of Items to fetch at once</description>
 				<default>20</default>
 			</parameter>
+			<parameter name="electricityCost" type="integer" required="true">
+				<label>Electricity Cost</label>
+				<description>Electricity Cost Per kwH In Pence (Integer)</description>
+				<default>14</default>
+			</parameter>
 		</config-description>
 	</bridge-type>
 

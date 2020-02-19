@@ -1,8 +1,8 @@
-# lightwaverf Binding  ![Lightwave RF](logo.png)
+# Lightwave RF Binding  ![Lightwave RF](logo.png)
 
 
 This binding integrates Lightwave RF's range of smart devices. (https://lightwaverf.com/).
-A registered account is required with Lightwave Rf in order to use the binding.
+A registered account is required with Lightwave RF in order to use the binding.
 
 
 ## Supported Things
@@ -38,9 +38,8 @@ A list of supported channels will be generated under the 'Thing' properties in o
 
 Add a lightwave account thing and configure your email and password for your online account.
 Additional Properties:
-Refresh interval: Frequency to get updates from the api.
-Number of items to fetch at once: Due to limitations with the api, polling has to be split into groups, this defines how many channels will be fetched at once.
-If the amount of channels goes above this, a further fetch will be initiated resulting in an icreased poll time. (refreshinterval x groups = new polling time).
+pollingInterval: Frequency bwtween api polls (can be set as low as 0).
+pollingGroupSize: The number of items to fetch in one request (if this is too high the api will time out, 20-30 is the most efficient)
   
 
 
@@ -50,7 +49,7 @@ The initial configuration is as follows:
 
 ```
 
-Bridge lightwaverf:lightwaverfaccount:accountname [ username="example@microsoft.com", password="password" ]
+Bridge  lightwaverf:lightwaverfaccount:accountname  [ username="example@microsoft.com", password="password",pollingInterval=0,pollingGroupSize=30,electricityCost=14]
 
 ```
 
@@ -62,7 +61,7 @@ Things can be added to a bridge enclosed in {} as follows:
 
 ```
 
-ThingType UniqueThingName	"name" @ "group" [ sdId="simplifieddeviceId" ] 
+ThingType   UniqueThingName     "name"      @       "group"     [ sdId="simplifieddeviceId" ] 
 
 ```
 
@@ -110,27 +109,35 @@ channels can be assigned to items as follows:
 | Channel            | Item Type  | Description                     |  Writeable |
 |--------------------|------------|---------------------------------|------------|
 | 1#switch           | Switch     | Turn on/off                     |    Yes     |
-| 1#power            | Number     | Current power draw in watts     |    No      |  
-| 1#energy           | Number     | Total usage in kwH              |    No      | 
-| 1#voltage          | Number     | Current voltage being supplied  |    No      | 
-| 1#outletInUse      | Switch     | Socket has a device plugged in  |    No      | 
-| 1#protection       | Switch     | physical controls disabled      |    Yes     | 
+| 1#power            | Number     | Current power draw in watts     |    No      |
+| 1#energy           | Number     | Total usage in kwH              |    No      |
+| 1#voltage          | Number     | Current voltage being supplied  |    No      |
+| 1#outletInUse      | Switch     | Socket has a device plugged in  |    No      |
+| 1#protection       | Switch     | physical controls disabled      |    Yes     |
 | 1#identify         | Switch     | Blink the device LED's          |    Yes     |
-| 1#reset            | Switch     | Reset the device                |    Yes     |
+| 1#reset            | Switch     | Reset the device (power Cycle)  |    Yes     |
 | 1#upgrade          | Switch     | Check for firmware updates      |    Yes     |
-| 1#diagnostics      | Switch     | Carry out diagnostics           |    Yes     | 
-| 1#periodOfBroadcast| String     | Device Uptime                   |    No      | 
+| 1#diagnostics      | Switch     | Send Diagnostic data to LW      |    Yes     |
+| 1#periodOfBroadcast| String     | Device Uptime                   |    No      |
 | 1#rgbColor         | Color      | Colour of the device LED's      |    Yes     |
+| 1#energyReset      | Switch     | Reset the current energy usage  |    Yes     |
+| 1#voltageReset     | Switch     | Reset the voltage if error      |    Yes     |
+| 1#energyCost       | Number     | Energy Cost                     |    No      |
+| 1#powerCost        | Number     | Power Cost                      |    No      |
 
 #### Channel 2
 
 | Channel            | Item Type  | Description                     |  Writeable |
 |--------------------|------------|---------------------------------|------------|
 | 2#switch           | Switch     | Turn on/off                     |    Yes     |
-| 2#power            | Number     | Current power draw in watts     |    No      |  
-| 2#energy           | Number     | Total usage in kwH              |    No      | 
-| 2#outletInUse      | Switch     | Socket has a device plugged in  |    No      | 
+| 2#power            | Number     | Current power draw in watts     |    No      |
+| 2#energy           | Number     | Total usage in kwH              |    No      |
+| 2#outletInUse      | Switch     | Socket has a device plugged in  |    No      |
 | 2#protection       | Switch     | physical controls disabled      |    Yes     |
+| 2#energyReset      | Switch     | Reset the current energy usage  |    Yes     |
+| 2#energyCost       | Number     | Energy Cost                     |    No      |
+| 2#powerCost        | Number     | Power Cost                      |    No      |
+
 
 ## Example
 
@@ -140,12 +147,12 @@ channels can be assigned to items as follows:
 
 Bridge lightwaverf:lightwaverfaccount:mylocation "Lightwave Account" [ username="example@hotmail.co.uk", password="xxxxxxxxxx"] {
 
-h21 	LightwaveHub	        "Link Plus"				        [ sdId="1" ]
-s11 	KitchenSocket1 	        "Kitchen Socket 1"		        [ sdId="2" ]
-s22 	KitchenSocket2 	        "Kitchen Socket 2"		        [ sdId="3" ]
-d21 	KitchenDimmer 	        "Kitchen Dimmer"			    [ sdId="4" ]
-t11 	KitchenThermostat 	    "Kitchen Thermostat"			[ sdId="5" ]
-e11 	KitchenEnergyMonitor	"Kitchen energy Monitor"	    [ sdId="6" ]	
+h21 	LightwaveHub            "Link Plus"                     [ sdId="1" ]
+s11 	KitchenSocket1          "Kitchen Socket 1"              [ sdId="2" ]
+s22 	KitchenSocket2          "Kitchen Socket 2"              [ sdId="3" ]
+d21 	KitchenDimmer           "Kitchen Dimmer"                [ sdId="4" ]
+t11 	KitchenThermostat       "Kitchen Thermostat"            [ sdId="5" ]
+e11 	KitchenEnergyMonitor    "Kitchen energy Monitor"        [ sdId="6" ]	
 }
 
 ```
@@ -153,25 +160,31 @@ e11 	KitchenEnergyMonitor	"Kitchen energy Monitor"	    [ sdId="6" ]
 ### demo.items
 
 ```
-Switch  KitchenSocket2_LeftSwitch        "Kettle"                       { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
-Number	KitchenSocket2_LeftPower	     "Kettle Power"		            { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power"  }
-Number	KitchenSocket2_LeftEnergy	     "Kettle Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
-Switch	KitchenSocket2_LeftOutletInUse	 "Kettle Outlet In Use"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
-Switch	KitchenSocket2_LeftProtection	 "Kettle Protection"		    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
+Switch  KitchenSocket2_LeftSwitch           "Kettle"                            { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#switch" }
+Number	KitchenSocket2_LeftPower            "Kettle Power"                      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#power" }
+Number	KitchenSocket2_LeftEnergy           "Kettle Energy"                     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energy" }
+Switch	KitchenSocket2_LeftOutletInUse      "Kettle Outlet In Use"              { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#outletInUse"}
+Switch	KitchenSocket2_LeftProtection       "Kettle Protection"                 { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#protection" }
+Number	KitchenSocket2_LeftPowerCost        "Kettle Power Cost"                 { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#powerCost" }
+Number	KitchenSocket2_LeftEnergyCost       "Kettle Energy Cost"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energyCost" }
+Switch	KitchenSocket2_LeftEnergyReset      "Kettle Energy Reset"               { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#energyReset" }
 
-Switch  KitchenSocket2_RightSwitch       "Toaster"                      { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
-Number	KitchenSocket2_RightPower	     "Toaster Power"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power"  }
-Number	KitchenSocket2_RightEnergy	     "Toater Energy"		        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
-Switch	KitchenSocket2_RightOutletInUse	 "Toaster Outlet In Use"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
-Switch	KitchenSocket2_RightProtection	 "Toaster Protection"	        { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
+Switch  KitchenSocket2_RightSwitch          "Toaster"                           { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#switch" }
+Number	KitchenSocket2_RightPower           "Toaster Power"                     { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#power" }
+Number	KitchenSocket2_RightEnergy          "Toater Energy"                     { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energy" }
+Switch	KitchenSocket2_RightOutletInUse     "Toaster Outlet In Use"             { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#outletInUse"}
+Switch	KitchenSocket2_RightProtection      "Toaster Protection"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#protection" }
+Number	KitchenSocket2_RightPower           "Toaster Power Cost"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#powerCost" }
+Number	KitchenSocket2_RightEnergy          "Toater Energy Cost"                { channel="lightwaverf:s22:mylocation:KitchenSocket2:2#energyCost" }
 
-Number	KitchenSocket2_Voltage   	     "Kitchen Socket 2 Voltage"     { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
-Switch	KitchenSocket2_Identify			 "Kitchen Socket 2 Identify"	{ channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
-Switch	KitchenSocket2_Reset			 "Kitchen Socket 2 Reset"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
-Switch	KitchenSocket2_Upgrade		     "Kitchen Socket 2 Upgrade"	    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
-Switch	KitchenSocket2_Diagnostics		 "Kitchen Socket 2 Diagnostics" { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
-String	KitchenSocket2_PeriodOfBroadcast "Kitchen Socket 2 Broadcast"   { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
-Color	KitchenSocket2_RgbColor			 "Kitchen Socket 2 Colour"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
+Number	KitchenSocket2_Voltage              "Kitchen Socket 2 Voltage"          { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltage" }
+Switch	KitchenSocket2_Identify             "Kitchen Socket 2 Identify"         { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#identify" }
+Switch	KitchenSocket2_Reset                "Kitchen Socket 2 Reset"            { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#reset" }
+Switch	KitchenSocket2_Upgrade              "Kitchen Socket 2 Upgrade"          { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#upgrade" }
+Switch	KitchenSocket2_Diagnostics          "Kitchen Socket 2 Diagnostics"      { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#diagnostics" }
+String	KitchenSocket2_PeriodOfBroadcast    "Kitchen Socket 2 Broadcast"        { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#periodOfBroadcast" }
+Color	KitchenSocket2_RgbColor             "Kitchen Socket 2 Colour"           { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#rgbColor" }
+Switch	KitchenSocket2_VoltageReset         "Kitchen Socket 2 Voltage Reset"    { channel="lightwaverf:s22:mylocation:KitchenSocket2:1#voltageReset" }
 
 ```
 

@@ -23,12 +23,17 @@ public class AccountConfig {
 
     public String username;
     public String password;
-    public Integer pollingInterval;
+    public int pollingInterval;
+    public int pollingGroupSize;
+    public int electricityCost;
+
     
 
     @Override
     public String toString() {
-        return "[username=" + username + ", password=" + getPasswordForPrinting() + ", pollingInterval=" + pollingInterval + "]";
+        return "[username=" + username + ", password=" + getPasswordForPrinting()  +
+        ", pollingInterval=" + pollingInterval + ", pollingGroupSize=" + pollingGroupSize + 
+        ", electricityCost=" + electricityCost +"]";
     }
 
     private String getPasswordForPrinting() {

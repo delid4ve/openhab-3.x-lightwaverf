@@ -159,6 +159,8 @@ public class DeviceHandler extends BaseThingHandler {
         updateProperties(dProperties);
     }
 
+
+
     @Override
     public  void handleCommand(ChannelUID channelUID,Command command) {
         String channelName = channelUID.getIdWithoutGroup();
@@ -175,6 +177,9 @@ public class DeviceHandler extends BaseThingHandler {
         else {
         logger.debug("handleCommand(list): channel = {} group = {}", channelName,i);
         switch (channelName) {
+        case "energyReset": case "voltageReset":
+            value = "0";
+            break;
         case "switch":
         case "diagnostics":
         case "outletInUse":
@@ -253,6 +258,16 @@ public class DeviceHandler extends BaseThingHandler {
         }
         logger.debug("channel: {}", channelUID.getId());
         logger.debug("value: {}", value);
+
+        if(channelUID.getIdWithoutGroup() == "energyReset") {
+            channelName = "energy";
+        }
+        else if(channelUID.getIdWithoutGroup() == "voltageReset") {
+            channelName = "voltage";
+        }
+        else {
+        channelName = channelUID.getIdWithoutGroup();
+        }
         Features feature = account.getFeature(sdId,i,channelName);
         String featureId = feature.getFeatureId();
         long now = System.currentTimeMillis();

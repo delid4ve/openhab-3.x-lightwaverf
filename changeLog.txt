@@ -1,3 +1,13 @@
+Version 1.1.1
+Changed energy usage from int to long to fix unable to store value error
+Added Account Parameter: electricityCost
+Added Channel energyCost
+Added Channel powerCost
+Added Channel energyReset
+Added Channel voltageReset (use with caution, only when the lightwave value is messed up)
+Added error logging for Message Failed return from the LightwaveRf servers
+
+
 Version 1.1.0
 Changed Polling Method
 Fixed Dimmer gui flicker

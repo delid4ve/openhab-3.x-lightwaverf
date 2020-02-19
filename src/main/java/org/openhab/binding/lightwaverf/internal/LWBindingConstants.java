@@ -81,6 +81,11 @@ public class LWBindingConstants {
     // Devices / Features
     public static final String CHANNEL_TYPE = "type";
 
+    public static final String CHANNEL_ENERGY_RESET = "energyReset";
+    public static final String CHANNEL_ENERGY_COST = "energyCost";
+    public static final String CHANNEL_POWER_RESET = "powerReset";
+    public static final String CHANNEL_POWER_COST = "powerCost";
+
     // List of all Channel ids (Sockets)
     public static final String CHANNEL_SWITCH = "switch";
     public static final String CHANNEL_OUTLET_IN_USE = "outletInUse";
