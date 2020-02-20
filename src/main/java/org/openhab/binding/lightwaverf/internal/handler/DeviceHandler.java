@@ -270,7 +270,7 @@ public class DeviceHandler extends BaseThingHandler {
         }
         Features feature = account.getFeature(sdId,i,channelName);
         String featureId = feature.getFeatureId();
-        long now = System.currentTimeMillis();
+        Long now = System.currentTimeMillis();
         account.addLocked(featureId, now);
         logger.debug("lock added: {} : {}", featureId, now);
         final String temp = value;
@@ -286,7 +286,7 @@ public class DeviceHandler extends BaseThingHandler {
         };
         update = scheduler.schedule(status, 0, TimeUnit.MILLISECONDS);
             
-            int valueint = Integer.parseInt(value);
+            Long valueint = Long.parseLong(value);
                 account.featureStatus().stream().filter(j -> featureId.equals(j.getFeatureId())).forEach(u -> u.setValue(valueint));
                 logger.debug("updated featureStatus: {}", valueint);
         }

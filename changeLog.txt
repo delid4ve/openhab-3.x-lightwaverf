@@ -1,3 +1,6 @@
+Version 1.1.2
+Fixed channel update bug
+
 Version 1.1.1
 Changed energy usage from int to long to fix unable to store value error
 Added Account Parameter: electricityCost

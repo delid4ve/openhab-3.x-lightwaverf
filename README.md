@@ -118,7 +118,7 @@ channels can be assigned to items as follows:
 | 1#reset            | Switch     | Reset the device (power Cycle)  |    Yes     |
 | 1#upgrade          | Switch     | Check for firmware updates      |    Yes     |
 | 1#diagnostics      | Switch     | Send Diagnostic data to LW      |    Yes     |
-| 1#periodOfBroadcast| String     | Device Uptime                   |    No      |
+| 1#periodOfBroadcast| Number     | Device Uptime                   |    No      |
 | 1#rgbColor         | Color      | Colour of the device LED's      |    Yes     |
 | 1#energyReset      | Switch     | Reset the current energy usage  |    Yes     |
 | 1#voltageReset     | Switch     | Reset the voltage if error      |    Yes     |
