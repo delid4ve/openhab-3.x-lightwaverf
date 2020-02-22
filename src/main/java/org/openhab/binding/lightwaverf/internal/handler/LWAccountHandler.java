@@ -96,7 +96,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
     @Override
     public void initialize() {
         logger.debug("Initializing Lightwave account handler.");
-        //listener = new UpdateListener();
         try {
             listener = new UpdateListener();
             AccountConfig config = getConfigAs(AccountConfig.class);
@@ -207,6 +206,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
             refreshTask = null;
             tokenTask = null;
             connect = null;
+            listener = null;
     }
 
     private void properties() {

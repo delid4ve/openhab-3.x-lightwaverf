@@ -91,11 +91,6 @@ public class DeviceHandler extends BaseThingHandler {
     }
 
     @Override
-    public Collection<Class<? extends ThingHandlerService>> getServices() {
-        return Collections.singleton(LWDiscoveryService.class);
-    }
-
-    @Override
     public void bridgeStatusChanged(ThingStatusInfo bridgeStatusInfo) {
         logger.debug("bridgeStatusChanged {} for thing {}", bridgeStatusInfo, getThing().getUID());
         Bridge bridge = getBridge();
@@ -249,8 +244,8 @@ public class DeviceHandler extends BaseThingHandler {
         case "valveLevel":
             value = (new DecimalType(Float.parseFloat(command.toString()))).toString();
             break;
-            case "temperature":
-            case "targetTemperature":
+        case "temperature":
+        case "targetTemperature":
             value = (new DecimalType((Float.parseFloat(command.toString())) * 10)).toString();
             break;
         default:
@@ -286,7 +281,7 @@ public class DeviceHandler extends BaseThingHandler {
         };
         update = scheduler.schedule(status, 0, TimeUnit.MILLISECONDS);
             
-            Long valueint = Long.parseLong(value);
+            Long valueint = (long)Double.parseDouble(value);
                 account.featureStatus().stream().filter(j -> featureId.equals(j.getFeatureId())).forEach(u -> u.setValue(valueint));
                 logger.debug("updated featureStatus: {}", valueint);
         }

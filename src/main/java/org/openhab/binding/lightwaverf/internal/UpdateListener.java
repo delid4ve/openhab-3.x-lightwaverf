@@ -76,6 +76,9 @@ public class UpdateListener {
             else if(response.contains("{\"message\":\"FeatureRead Failed\"}")) {
                 logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
             }
+            else if(response.contains("502 Bad Gateway")) {
+                logger.warn("Please check your internet connection as you are receiving a 502 Bad Gateway Error");
+            }
             else {
                 HashMap<String, Long> featureStatuses = gson.fromJson(response,
                     new TypeToken<HashMap<String, Long>>() {}.getType());
