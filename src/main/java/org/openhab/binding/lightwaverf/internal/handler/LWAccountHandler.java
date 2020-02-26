@@ -134,12 +134,14 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     private StructureList getStructureList() throws IOException {
         String response = Http.httpClient("structures", null, null, null);
+        logger.debug("StructureList: {}", response);
         StructureList structureList = gson.fromJson(response, StructureList.class);
         return structureList;
     }
 
     private Root getStructure(String structureId) throws IOException {
         String response = Http.httpClient("structure", null, null, structureId);
+        logger.debug("Structure: {}", response);
         Root structure = gson.fromJson(response, Root.class);
         return structure;
     }

@@ -4,12 +4,16 @@
 	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
 	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
 
-	<thing-type id="device">
+	<thing-type id="d11">
 		<supported-bridge-type-refs>
 			<bridge-type-ref id="lightwaverfaccount" />
 		</supported-bridge-type-refs>
-		<label>Unknown Device</label>
-		<description>unknown device</description>
+		<label>Generation 1 1 Way Dimmer</label>
+		<description>Generation 1 1 Way Dimmer</description>
+		<channel-groups>
+			<channel-group id="1" typeId="d11" />
+
+		</channel-groups>
 		<properties>
 			<property name="Device ID"></property>
 			<property name="Name"></property>

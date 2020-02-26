@@ -41,6 +41,7 @@ public class LWBindingConstants {
     public static final ThingTypeUID THING_TYPE_SSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "s11");
     public static final ThingTypeUID THING_TYPE_SSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s21");
     public static final ThingTypeUID THING_TYPE_DSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s22");
+    public static final ThingTypeUID THING_TYPE_SDIMMER_GEN1 = new ThingTypeUID(BINDING_ID, "d11");
     public static final ThingTypeUID THING_TYPE_SDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d21");
     public static final ThingTypeUID THING_TYPE_DDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d22");
     public static final ThingTypeUID THING_TYPE_TDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d23");
@@ -54,6 +55,7 @@ public class LWBindingConstants {
                     THING_TYPE_LIGHTWAVE_HUB,
                     THING_TYPE_THERMOSTAT,
                     THING_TYPE_SSOCKET_GEN1,
+                    THING_TYPE_SDIMMER_GEN1,
                     THING_TYPE_SSOCKET_GEN2,
                     THING_TYPE_DSOCKET_GEN2,
                     THING_TYPE_SDIMMER_GEN2,
@@ -67,6 +69,7 @@ public class LWBindingConstants {
             Stream.of(THING_TYPE_LIGHTWAVE_HUB,
             THING_TYPE_THERMOSTAT,
             THING_TYPE_SSOCKET_GEN1,
+            THING_TYPE_SDIMMER_GEN1,
             THING_TYPE_SSOCKET_GEN2,
             THING_TYPE_DSOCKET_GEN2,
             THING_TYPE_SDIMMER_GEN2,

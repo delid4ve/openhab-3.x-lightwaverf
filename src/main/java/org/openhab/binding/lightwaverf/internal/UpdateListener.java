@@ -73,11 +73,14 @@ public class UpdateListener {
             if(response.contains("{\"message\":\"Structure not found\"}")) {
                 logger.warn("Api Timed Out, decrease your group size.");
             }
-            else if(response.contains("{\"message\":\"FeatureRead Failed\"}")) {
+            else if(response.contains("{\"message\":\"Feature Read Failed\"}")) {
                 logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
             }
             else if(response.contains("502 Bad Gateway")) {
                 logger.warn("Please check your internet connection as you are receiving a 502 Bad Gateway Error");
+            }
+            else if(response.contains("{\"message\":")) {
+                logger.warn("Unknown error type: {}", response);
             }
             else {
                 HashMap<String, Long> featureStatuses = gson.fromJson(response,

@@ -164,6 +164,9 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                                 case "L42" :
                                 thingTypeUid = THING_TYPE_DSOCKET_GEN2;
                                 break;
+                                case "LW400" :
+                                thingTypeUid = THING_TYPE_SDIMMER_GEN1;
+                                break;
                                 case "L21" : case "L21MK2" :
                                 thingTypeUid = THING_TYPE_SDIMMER_GEN2;
                                 break;
