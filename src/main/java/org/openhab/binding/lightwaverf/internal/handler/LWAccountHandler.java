@@ -226,7 +226,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
     }
 
     private void restartPolling() {
-        logger.debug("Polling failed, restarting");
+        logger.warn("Polling failed, restarting");
         pollingCheck = scheduler.schedule(poll,0, TimeUnit.SECONDS);
     }
 
@@ -388,18 +388,18 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 updateState(channelUid, new DecimalType(value));
                                 break;
                             case "powerCost": 
-                                updateState(channelUid, new DecimalType(value * electricityCost));
+                                updateState(channelUid, new DecimalType(value / 1000.0 * electricityCost));
                                 break;
                             case "energy":
-                                updateState(channelUid, new DecimalType((value / 1000)));
+                                updateState(channelUid, new DecimalType((value / 1000.0)));
                                 break;
                             case "energyCost":
-                                updateState(channelUid, new DecimalType((value / 1000 * electricityCost)));
+                                updateState(channelUid, new DecimalType((value / 1000.0 * electricityCost)));
                                 break;
                             case "temperature":
                             case "targetTemperature":
                             case "voltage":
-                                updateState(channelUid, new DecimalType((value / 10)));
+                                updateState(channelUid, new DecimalType((value / 10.0)));
                                 break;
                             case "dimLevel":
                             case "valveLevel":
@@ -442,8 +442,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 updateState(channelUid,new DateTimeType(dateValue));
                                 break;
                             case "currentTime":
-                                Number def = ((value)*1000);
-                                DateTimeType time = new DateTimeType(new DateTime(def).toString());
+                                DateTimeType time = new DateTimeType(new DateTime(value * 1000).toString());
                                 updateState(channelUid, time);
                                 break;
                             case "duskTime":
@@ -476,7 +475,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 }
                             case "locationLongitude":
                             case "locationLatitude":
-                                updateState(channelUid, new StringType(new DecimalType(value / 1000000).toString()));
+                                updateState(channelUid, new StringType(new DecimalType(value / 1000000.0).toString()));
                                 break;
                             }
                         }

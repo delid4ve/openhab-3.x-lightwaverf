@@ -1,3 +1,7 @@
+Version 1.2.1
+Fixed decimal bug
+Changed format for energy power and cost to 8 decimal places
+
 Version 1.2.0
 Fixed polling not restarting issue
 various other minor bug fixes

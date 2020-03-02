@@ -34,7 +34,7 @@
 		<label>Energy Cost</label>
 		<description>Current Energy Cost</description>
 		<category></category>
-		<state pattern="%.2f" readOnly="true" />
+		<state pattern="%.8f" readOnly="true" />
 	</channel-type>
 
 	<channel-type id="powerCost">
@@ -42,7 +42,7 @@
 		<label>Power Cost</label>
 		<description>Current Power Cost</description>
 		<category></category>
-		<state pattern="%.2f" readOnly="true" />
+		<state pattern="%.8f" readOnly="true" />
 	</channel-type>
 
 
@@ -74,21 +74,14 @@
 		<label>Power</label>
 		<description>Current Power Usage</description>
 		<category>Energy</category>
-		<state pattern="%.2f W" readOnly="true" />
+		<state pattern="%.8f W" readOnly="true" />
 	</channel-type>
 	<channel-type id="energy">
 		<item-type>Number</item-type>
 		<label>Energy Usage (Since Last Reset)</label>
 		<description>Product Energy Usage (kwH)</description>
 		<category>Energy</category>
-		<state pattern="%.2f KwH" readOnly="true" />
-	</channel-type>
-	<channel-type id="powerm">
-		<item-type>Number</item-type>
-		<label>Power</label>
-		<description>Current Power Usage</description>
-		<category>Energy</category>
-		<state pattern="%.2f kW" readOnly="true" />
+		<state pattern="%.8f KwH" readOnly="true" />
 	</channel-type>
 	<channel-type id="identify">
 		<item-type>Switch</item-type>
