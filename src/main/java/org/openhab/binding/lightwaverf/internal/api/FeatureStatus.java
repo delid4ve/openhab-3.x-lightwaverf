@@ -29,7 +29,7 @@ public class FeatureStatus {
 private String featureId;
 @SerializedName("value")
 @Expose
-private Long value;
+private long value;
 
 public String getFeatureId() {
 return featureId;
@@ -39,11 +39,11 @@ public void setFeatureId(String featureId) {
 this.featureId = featureId;
 }
 
-public Long getValue() {
+public long getValue() {
 return value;
 }
 
-public void setValue(Long value) {
+public void setValue(long value) {
 this.value = value;
 }
 }

@@ -70,6 +70,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
     private @Nullable List<Devices> devices;
     private Map<String, Long> locks = new HashMap<String,Long>();
     private @Nullable ScheduledFuture<?> connectionCheckTask;
+    private @Nullable ScheduledFuture<?> pollingCheck;
     private @Nullable ScheduledFuture<?> connect;
     private @Nullable ScheduledFuture<?> tokenTask;
     private @Nullable ScheduledFuture<?> refreshTask;
@@ -88,14 +89,15 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     @Override
     public void thingUpdated(Thing thing) {
-        dispose();
         this.thing = thing;
+        dispose();    
         initialize();
     }
 
     @Override
     public void initialize() {
         logger.debug("Initializing Lightwave account handler.");
+        //listener = new UpdateListener();
         try {
             listener = new UpdateListener();
             AccountConfig config = getConfigAs(AccountConfig.class);
@@ -134,14 +136,12 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     private StructureList getStructureList() throws IOException {
         String response = Http.httpClient("structures", null, null, null);
-        logger.debug("StructureList: {}", response);
         StructureList structureList = gson.fromJson(response, StructureList.class);
         return structureList;
     }
 
     private Root getStructure(String structureId) throws IOException {
         String response = Http.httpClient("structure", null, null, structureId);
-        logger.debug("Structure: {}", response);
         Root structure = gson.fromJson(response, Root.class);
         return structure;
     }
@@ -189,9 +189,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
 
     @Override
     public void dispose() {
-        logger.debug("Running dispose()");
-        stopConnectionCheck();
-        
+        logger.debug("Running dispose()");        
         if (refreshTask != null) {
             refreshTask.cancel(true);
         }
@@ -204,6 +202,10 @@ public class LWAccountHandler extends BaseBridgeHandler {
         if (connect != null) {
             connect.cancel(true);
         }
+        if (pollingCheck != null) {
+            pollingCheck.cancel(true);
+        }
+            pollingCheck = null;
             connectionCheckTask = null;
             refreshTask = null;
             tokenTask = null;
@@ -223,8 +225,14 @@ public class LWAccountHandler extends BaseBridgeHandler {
         updateProperties(properties);
     }
 
+    private void restartPolling() {
+        logger.debug("Polling failed, restarting");
+        pollingCheck = scheduler.schedule(poll,0, TimeUnit.SECONDS);
+    }
+
     private void polling() {
         logger.debug("Initiate Polling");
+        pollingCheck = scheduler.schedule(this::restartPolling,120, TimeUnit.SECONDS);
         List<String> channelList = new ArrayList<String>();
         channelList = channelList();
         List<List<String>> partitions = new ArrayList<List<String>>();
@@ -255,7 +263,10 @@ public class LWAccountHandler extends BaseBridgeHandler {
                     locks.remove(key, value);
                     logger.debug("lock removed: {} : {}", key, value);
                 }
-                logger.debug("Removed Redundant Locks");
+                logger.debug("Removed Redundant Locks");                
+                if (pollingCheck != null) {
+                    pollingCheck.cancel(true);
+                }
                 refreshTask = scheduler.schedule(poll, pollingInterval, TimeUnit.SECONDS);
                 logger.debug("Scheduled refresh");
             } catch (Exception e) {
@@ -278,22 +289,15 @@ public class LWAccountHandler extends BaseBridgeHandler {
         String featureSetId = device.getFeatureSets().get(featureSetNo).getFeatureSetId();
         FeatureSets featureSet = featureSets().stream().filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst()
                 .orElse(featureSets().get(0));
-        if(channelId.contains("energy") || channelId.contains("power")  ) {
-        return featureSet.getFeatures().stream().filter(i -> channelId.contains(i.getType())).findFirst()
+                //seems equals doesnt work when setting the channel name manually so we have to do this
+            if (channelId.contains("energy") || channelId.contains("power")) {
+                return featureSet.getFeatures().stream().filter(i -> channelId.contains(i.getType())).findFirst()
                 .orElse(featureSet.getFeatures().get(0));
-        }
-        else {        
+            }
+            else {
         return featureSet.getFeatures().stream().filter(i -> channelId.equals(i.getType())).findFirst()
                 .orElse(featureSet.getFeatures().get(0));
-        }
-    }
-
-    private void stopConnectionCheck() {
-        if (connectionCheckTask != null) {
-            logger.debug("Stop periodic connection check");
-            connectionCheckTask.cancel(true);
-            connectionCheckTask = null;
-        }
+            }
     }
 
     private FeatureStatus getFeatureStatus(String featureId) {
@@ -336,7 +340,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
             String sdId = things.get(i).getConfiguration().get("sdId").toString();
             for (Channel channel : things.get(i).getChannels()) {
                 if (isLinked(channel.getUID())) {
-                    Double electricityCost = Double.parseDouble(this.getThing().getConfiguration().get("electricityCost").toString()) / 100;
+                    double electricityCost = Double.parseDouble(this.getThing().getConfiguration().get("electricityCost").toString()) / 100;
                     String channelName = channel.getUID().getIdWithoutGroup();
                     
                     if(channelName == "energyCost") {
@@ -348,7 +352,6 @@ public class LWAccountHandler extends BaseBridgeHandler {
                     else {
                         channelHelper = channelName;
                     }
-
                     String channelId = channel.getUID().getId().toString();
                     ChannelUID channelUid = channel.getUID();
                     int channelNo = (Integer.parseInt(channelId.substring(0,1))-1);
@@ -356,7 +359,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
                     String featureId = feature.getFeatureId();
                     if(!locks.containsKey(featureId)) {
                         FeatureStatus status = getFeatureStatus(featureId);
-                        Long value = status.getValue();   
+                        long value = status.getValue();                
                         if(value != -1) {
                             switch (channelName) {
                             case "switch":
@@ -385,37 +388,28 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 updateState(channelUid, new DecimalType(value));
                                 break;
                             case "powerCost": 
-                                updateState(channelUid, new DecimalType((double)value * electricityCost / 1000));
+                                updateState(channelUid, new DecimalType(value * electricityCost));
                                 break;
                             case "energy":
-                                updateState(channelUid, new DecimalType((double)value / 1000));
+                                updateState(channelUid, new DecimalType((value / 1000)));
                                 break;
                             case "energyCost":
-                                updateState(channelUid, new DecimalType((double)value / 1000 * electricityCost));
+                                updateState(channelUid, new DecimalType((value / 1000 * electricityCost)));
                                 break;
                             case "temperature":
                             case "targetTemperature":
                             case "voltage":
-                                updateState(channelUid, new DecimalType((double)value / 10));
+                                updateState(channelUid, new DecimalType((value / 10)));
                                 break;
                             case "dimLevel":
                             case "valveLevel":
-                                updateState(channelUid, new PercentType(value.intValue()));
+                                updateState(channelUid, new PercentType((int) value));
                                 break;
-                            case "batteryLevel":
+                                case "batteryLevel":
                                 updateState(channelUid, new DecimalType(value));
-                                break;
-                            case "periodOfBroadcast":
-                            case "monthArray":
-                            case "weekdayArray":
-                                updateState(channelUid, new DecimalType(value));
-                                break;
-                            case "locationLongitude":
-                            case "locationLatitude":
-                                updateState(channelUid, new StringType(new DecimalType((double)value / 1000000).toString()));
                                 break;
                             case "rgbColor":
-                                Color color = new Color((value.intValue()));
+                                Color color = new Color((int) value);
                                 int red = (color.getRed());
                                 int green = (color.getGreen());
                                 int blue = (color.getBlue());
@@ -426,10 +420,15 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 String hsb1 = hue + "," + saturation + "," + brightness;
                                 updateState(channelUid, new HSBType(hsb1));
                                 break;
+                            case "periodOfBroadcast":
+                            case "monthArray":
+                            case "weekdayArray":
+                                updateState(channelUid, new StringType(String.valueOf(value)));
+                                break;
                             case "date":
                                 String monthPad = "";
                                 String dayPad = "";
-                                String hex = Integer.toHexString(value.intValue());
+                                String hex = Integer.toHexString((int) value);
                                 int year = Integer.parseInt(hex.substring(0, 3),16);
                                 int month = Integer.parseInt(hex.substring(3, 4),16);
                                 int day = Integer.parseInt(hex.substring(4, 6),16);
@@ -443,39 +442,42 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 updateState(channelUid,new DateTimeType(dateValue));
                                 break;
                             case "currentTime":
-                                DateTimeType time = new DateTimeType(new DateTime(value*1000).toString());
+                                Number def = ((value)*1000);
+                                DateTimeType time = new DateTimeType(new DateTime(def).toString());
                                 updateState(channelUid, time);
                                 break;
                             case "duskTime":
                             case "dawnTime":
                             case "time":
-                                    String hoursPad = "";
-                                    String minsPad = "";
-                                    String secsPad = "";
-                                    int minutes = (((int) value.intValue() / 60)%60);
-                                    int hours = ((int) value.intValue() / 3600);
-                                    int seconds = ((int) value.intValue() % 60);
-                                    if (hours < 10) {
-                                        hoursPad = "0";
-                                    }
-                                    if (minutes < 10) {
-                                        minsPad = "0";
-                                    }
-                                    if (seconds < 10) {
-                                        secsPad = "0";
-                                    } 
-                                    String timeValue = hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
-                                    updateState(channelUid, new DateTimeType(timeValue));
+                                String hoursPad = "";
+                                String minsPad = "";
+                                String secsPad = "";
+                                int minutes = ((((int) value) / 60)%60);
+                                int hours = ((int) value / 3600);
+                                int seconds = (((int) value) % 60);
+                                if (hours < 10) {
+                                    hoursPad = "0";
+                                }
+                                if (minutes < 10) {
+                                    minsPad = "0";
+                                }
+                                if (seconds < 10) {
+                                    secsPad = "0";
+                                } 
+                                String timeValue = hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
+                                updateState(channelUid, new DateTimeType(timeValue));
+                                break;
+                            case "weekday":
+                                if (value != 0) {
+                                    updateState(channelUid, new StringType(DayOfWeek.of((int) value).toString()));
                                     break;
-                                case "weekday":
-                                    if (value.intValue() > 0) {
-                                        int weekday = value.intValue();
-                                        String weekday1 = DayOfWeek.of(weekday).toString();
-                                        updateState(channelUid, new StringType(weekday1));
-                                        break;
-                                    } else {
-                                    break; 
-                                    }
+                                } else {
+                                break;
+                                }
+                            case "locationLongitude":
+                            case "locationLatitude":
+                                updateState(channelUid, new StringType(new DecimalType(value / 1000000).toString()));
+                                break;
                             }
                         }
                     } else {
@@ -518,4 +520,14 @@ public class LWAccountHandler extends BaseBridgeHandler {
     public List<FeatureStatus> featureStatus() {
         return listener.featureStatus();
     }
+
+
+
+
+
+    
+
+
+
+
 }

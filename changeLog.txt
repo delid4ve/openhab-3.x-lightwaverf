@@ -1,21 +1,6 @@
-Version 1.1.7
-Fixed typo where polling would stop
-
-Version 1.1.6
-Reincluded Unknown Device
-
-Version 1.1.5
-Minor bug fixes
-
-Version 1.1.4
-Fixed Polling not stopped
-Fixed discovery not working issue
-
-Version 1.1.3
-Added error checking for 502 Bad Gateway
-
-Version 1.1.2
-Fixed channel update bug
+Version 1.2.0
+Fixed polling not restarting issue
+various other minor bug fixes
 
 Version 1.1.1
 Changed energy usage from int to long to fix unable to store value error

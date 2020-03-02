@@ -26,7 +26,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
-import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
@@ -45,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * @author David Murton - Initial contribution
  */
 
-public class LWDiscoveryService extends AbstractDiscoveryService implements DiscoveryService, ThingHandlerService {
+public class LWDiscoveryService extends AbstractDiscoveryService implements  ThingHandlerService {
     private final Logger logger = LoggerFactory.getLogger(LWDiscoveryService.class);
     private static final int DISCOVER_TIMEOUT_SECONDS = 10;
     private LWAccountHandler accountHandler;
@@ -163,9 +162,6 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Disc
                                 break;
                                 case "L42" :
                                 thingTypeUid = THING_TYPE_DSOCKET_GEN2;
-                                break;
-                                case "LW400" :
-                                thingTypeUid = THING_TYPE_SDIMMER_GEN1;
                                 break;
                                 case "L21" : case "L21MK2" :
                                 thingTypeUid = THING_TYPE_SDIMMER_GEN2;

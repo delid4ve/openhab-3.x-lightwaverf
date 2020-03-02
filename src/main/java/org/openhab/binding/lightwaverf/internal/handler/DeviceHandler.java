@@ -20,8 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 import com.google.gson.JsonObject;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -51,15 +49,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author David Murton - Initial contribution
  */
-//@NonNullByDefault
+// @NonNullByDefault
 public class DeviceHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(DeviceHandler.class);
     private @Nullable LWAccountHandler account = null;
     private String sdId = this.thing.getConfiguration().get("sdId").toString();
-    private @Nullable ScheduledFuture<?> update;
     private Devices device = new Devices();
-    
+
     public DeviceHandler(Thing thing) {
         super(thing);
     }
@@ -71,7 +68,7 @@ public class DeviceHandler extends BaseThingHandler {
         if (bridge == null) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Bridge Not set");
         }
-        initializeBridge( bridge.getHandler(), bridge.getStatus());
+        initializeBridge(bridge.getHandler(), bridge.getStatus());
         try {
             device = device(sdId);
             account.addFeatureStatus(device);
@@ -80,14 +77,17 @@ public class DeviceHandler extends BaseThingHandler {
         properties();
         updateStatus(ThingStatus.ONLINE);
     }
-    
+
     @Override
     public void dispose() {
         logger.debug("Running dispose()");
-        if (update != null) {
-            update.cancel(true);
-        }
-        update = null;
+        account = null;
+        device = null;
+    }
+
+    @Override
+    public Collection<Class<? extends ThingHandlerService>> getServices() {
+        return Collections.singleton(LWDiscoveryService.class);
     }
 
     @Override
@@ -96,11 +96,11 @@ public class DeviceHandler extends BaseThingHandler {
         Bridge bridge = getBridge();
         if (bridge != null) {
             initializeBridge(bridge.getHandler(), bridgeStatusInfo.getStatus());
-            
+
         }
     }
 
-    private void initializeBridge(ThingHandler thingHandler,ThingStatus bridgeStatus) {
+    private void initializeBridge(ThingHandler thingHandler, ThingStatus bridgeStatus) {
         logger.debug("initializeBridge {} for thing {}", bridgeStatus, getThing().getUID());
 
         if (thingHandler != null && bridgeStatus != null) {
@@ -154,134 +154,116 @@ public class DeviceHandler extends BaseThingHandler {
         updateProperties(dProperties);
     }
 
-
-
     @Override
-    public  void handleCommand(ChannelUID channelUID,Command command) {
+    public void handleCommand(ChannelUID channelUID, Command command) {
         String channelName = channelUID.getIdWithoutGroup();
         String value = "";
         String group = channelUID.getGroupId();
         int i = ((int) Double.parseDouble(group) - 1);
         if (command instanceof RefreshType) {
             return;
-        }
-        else if (account == null) {
+        } else if (account == null) {
             logger.warn("No connection to Lightwave available, ignoring command");
             return;
-        }
-        else {
-        logger.debug("handleCommand(list): channel = {} group = {}", channelName,i);
-        switch (channelName) {
-        case "energyReset": case "voltageReset":
-            value = "0";
-            break;
-        case "switch":
-        case "diagnostics":
-        case "outletInUse":
-        case "protection":
-        case "identify":
-        case "reset":
-        case "upgrade":
-        case "heatState":
-        case "callForHeat":
-        case "bulbSetup":
-        case "dimSetup":
-            if (command.toString() == "ON") {
-                value = "1";
+        } else {
+            logger.debug("handleCommand(list): channel = {} group = {}", channelName, i);
+            switch (channelName) {
+                case "energyReset":
+                case "voltageReset":
+                    value = "0";
+                    break;
+                case "switch":
+                case "diagnostics":
+                case "outletInUse":
+                case "protection":
+                case "identify":
+                case "reset":
+                case "upgrade":
+                case "heatState":
+                case "callForHeat":
+                case "bulbSetup":
+                case "dimSetup":
+                    if (command.toString() == "ON") {
+                        value = "1";
+                    } else {
+                        value = "0";
+                    }
+                    break;
+                case "rgbColor":
+                    if (command.toString().contains(",")) {
+                        HSBType hsb = new HSBType(command.toString());
+                        int hue = Integer.parseInt(hsb.getHue().toString());
+                        int brightness = Integer.parseInt(hsb.getBrightness().toString());
+                        if (brightness > 100) {
+                            brightness = 100;
+                        }
+                        if (hue >= 0 && hue < 50) {
+                            hue = 0;
+                        } else if (hue >= 40 && hue < 75) {
+                            hue = 75;
+                        } else if (hue >= 75 && hue < 160) {
+                            hue = 120;
+                        } else if (hue >= 160 && hue < 260) {
+                            hue = 220;
+                        } else if (hue >= 260 && hue < 325) {
+                            hue = 275;
+                        } else if (hue >= 325) {
+                            hue = 0;
+                        }
+                        PercentType brightness1 = new PercentType(brightness);
+                        DecimalType hue1 = new DecimalType(hue);
+                        PercentType saturation = new PercentType(100);
+                        HSBType h = new HSBType(hue1, saturation, brightness1);
+                        PercentType redp = h.getRed();
+                        PercentType greenp = h.getGreen();
+                        PercentType bluep = h.getBlue();
+                        int redr = (int) (redp.doubleValue() * 255 / 100);
+                        int greenr = (int) (greenp.doubleValue() * 255 / 100);
+                        int bluer = (int) (bluep.doubleValue() * 255 / 100);
+                        long d = (redr * 65536 + greenr * 256 + bluer);
+                        value = Long.toString(d);
+                        updateState(channelUID, h);
+                        break;
+                    } else {
+                        logger.warn("Brightness Is Not Supported For the RGB Colour Channel");
+                        break;
+                    }
+                case "timeZone":
+                case "locationLongitude":
+                case "locationLatitude":
+                case "dimLevel":
+                case "valveLevel":
+                    value = (new DecimalType(Float.parseFloat(command.toString()))).toString();
+                    break;
+                case "temperature":
+                case "targetTemperature":
+                    value = (new DecimalType((Float.parseFloat(command.toString())) * 10)).toString();
+                    break;
+                default:
+                    value = "-1";
+            }
+            logger.debug("channel: {}", channelUID.getId());
+            logger.debug("value: {}", value);
+
+            if (channelUID.getIdWithoutGroup() == "energyReset") {
+                channelName = "energy";
+            } else if (channelUID.getIdWithoutGroup() == "voltageReset") {
+                channelName = "voltage";
             } else {
-                value = "0";
+                channelName = channelUID.getIdWithoutGroup();
             }
-            break;
-        case "rgbColor": 
-            if(command.toString().contains(",")) { 
-                HSBType hsb = new HSBType(command.toString());
-                int hue = Integer.parseInt(hsb.getHue().toString());
-                int brightness = Integer.parseInt(hsb.getBrightness().toString());
-                if(brightness > 100) {
-                brightness = 100;
-                }
-                if(hue >= 0 && hue < 50) {
-                    hue = 0;
-                }
-                else if(hue >= 40 && hue < 75) {
-                    hue = 75;
-                }
-                else if(hue >= 75 && hue < 160) {
-                    hue = 120;
-                }
-                else if(hue >= 160 && hue < 260) {
-                    hue = 220;
-                }
-                else if(hue >= 260 && hue < 325 ) {
-                    hue = 275;
-                }
-                else if(hue >= 325 ) {
-                    hue = 0;
-                }
-                PercentType brightness1 = new PercentType(brightness);
-                DecimalType hue1 = new DecimalType(hue);
-                PercentType saturation = new PercentType(100);
-                HSBType h = new HSBType(hue1, saturation, brightness1);
-                PercentType redp =  h.getRed();
-                PercentType greenp = h.getGreen();
-                PercentType bluep =  h.getBlue();
-                int redr = (int) (redp.doubleValue() * 255 / 100);
-                int greenr = (int) (greenp.doubleValue() * 255 / 100);
-                int bluer = (int) (bluep.doubleValue() * 255 / 100);
-                long d = (redr * 65536 + greenr * 256 + bluer);
-                value = Long.toString(d);
-                updateState(channelUID,h);
-            break;
-        }
-        else {
-        logger.warn("Brightness Is Not Supported For the RGB Colour Channel");
-            break; 
-        }  
-        case "timeZone":
-        case "locationLongitude":
-        case "locationLatitude":
-        case "dimLevel":
-        case "valveLevel":
-            value = (new DecimalType(Float.parseFloat(command.toString()))).toString();
-            break;
-        case "temperature":
-        case "targetTemperature":
-            value = (new DecimalType((Float.parseFloat(command.toString())) * 10)).toString();
-            break;
-        default:
-            value = "-1";
-        }
-        logger.debug("channel: {}", channelUID.getId());
-        logger.debug("value: {}", value);
-
-        if(channelUID.getIdWithoutGroup() == "energyReset") {
-            channelName = "energy";
-        }
-        else if(channelUID.getIdWithoutGroup() == "voltageReset") {
-            channelName = "voltage";
-        }
-        else {
-        channelName = channelUID.getIdWithoutGroup();
-        }
-        Features feature = account.getFeature(sdId,i,channelName);
-        String featureId = feature.getFeatureId();
-        Long now = System.currentTimeMillis();
-        account.addLocked(featureId, now);
-        logger.debug("lock added: {} : {}", featureId, now);
-        final String temp = value;
-
-        Runnable status = new Runnable() {
-            @Override
-            public void run() {
-                try{
+            Features feature = account.getFeature(sdId, i, channelName);
+            String featureId = feature.getFeatureId();
+            long now = System.currentTimeMillis();
+            account.addLocked(featureId, now);
+            logger.debug("lock added: {} : {}", featureId, now);
+            final String temp = value;
+            try {
                 setStatus(featureId, temp);
-                } catch (Exception e) {
-                }
+            } catch (Exception e) {
             }
-        };
-        update = scheduler.schedule(status, 0, TimeUnit.MILLISECONDS);
-            
-            Long valueint = (long)Double.parseDouble(value);
+                
+            int valueint = Integer.parseInt(value);
                 account.featureStatus().stream().filter(j -> featureId.equals(j.getFeatureId())).forEach(u -> u.setValue(valueint));
                 logger.debug("updated featureStatus: {}", valueint);
         }

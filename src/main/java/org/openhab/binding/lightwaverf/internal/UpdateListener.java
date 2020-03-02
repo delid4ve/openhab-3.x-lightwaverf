@@ -45,7 +45,7 @@ public class UpdateListener {
     private final Logger logger = LoggerFactory.getLogger(UpdateListener.class);
     private List<FeatureStatus> featureStatus = new ArrayList<FeatureStatus>();
     private boolean isConnected = false;
-    private String sessionKey = "";
+    //private String sessionKey = "";
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
@@ -73,21 +73,15 @@ public class UpdateListener {
             if(response.contains("{\"message\":\"Structure not found\"}")) {
                 logger.warn("Api Timed Out, decrease your group size.");
             }
-            else if(response.contains("{\"message\":\"Feature Read Failed\"}")) {
+            else if(response.contains("{\"message\":\"FeatureRead Failed\"}")) {
                 logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
             }
-            else if(response.contains("502 Bad Gateway")) {
-                logger.warn("Please check your internet connection as you are receiving a 502 Bad Gateway Error");
-            }
-            else if(response.contains("{\"message\":")) {
-                logger.warn("Unknown error type: {}", response);
-            }
             else {
-                HashMap<String, Long> featureStatuses = gson.fromJson(response,
-                    new TypeToken<HashMap<String, Long>>() {}.getType());
-                for (Map.Entry<String, Long> myMap : featureStatuses.entrySet()) {
+                HashMap<String, Integer> featureStatuses = gson.fromJson(response,
+                    new TypeToken<HashMap<String, Integer>>() {}.getType());
+                for (Map.Entry<String, Integer> myMap : featureStatuses.entrySet()) {
                     String key = myMap.getKey().toString();
-                    Long value = myMap.getValue();
+                    int value = myMap.getValue();
                     featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(u -> {
                         if(!locks.containsKey(key)) {
                             u.setValue(value);
@@ -150,7 +144,7 @@ public class UpdateListener {
         }
         else{
         Login login = gson.fromJson(response, Login.class);
-        sessionKey = login.getTokens().getAccessToken().toString();
+        String sessionKey = login.getTokens().getAccessToken().toString();
         AccessToken.setToken(sessionKey);
         }
     }
@@ -159,6 +153,7 @@ public class UpdateListener {
         logger.warn("Start Lightwave Login Process");
         setConnected(false);
         getToken(username,password);
+        String sessionKey = AccessToken.getToken();
         logger.debug("token: {}", sessionKey);
         setConnected(true);
         logger.warn("Connected to lightwave");

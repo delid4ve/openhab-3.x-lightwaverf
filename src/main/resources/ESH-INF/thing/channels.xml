@@ -34,7 +34,7 @@
 		<label>Energy Cost</label>
 		<description>Current Energy Cost</description>
 		<category></category>
-		<state pattern="%.8f" readOnly="true" />
+		<state pattern="%.2f" readOnly="true" />
 	</channel-type>
 
 	<channel-type id="powerCost">
@@ -42,7 +42,7 @@
 		<label>Power Cost</label>
 		<description>Current Power Cost</description>
 		<category></category>
-		<state pattern="%.8f" readOnly="true" />
+		<state pattern="%.2f" readOnly="true" />
 	</channel-type>
 
 
@@ -74,21 +74,21 @@
 		<label>Power</label>
 		<description>Current Power Usage</description>
 		<category>Energy</category>
-		<state pattern="%.8f W" readOnly="true" />
+		<state pattern="%.2f W" readOnly="true" />
 	</channel-type>
 	<channel-type id="energy">
 		<item-type>Number</item-type>
 		<label>Energy Usage (Since Last Reset)</label>
 		<description>Product Energy Usage (kwH)</description>
 		<category>Energy</category>
-		<state pattern="%.8f KwH" readOnly="true" />
+		<state pattern="%.2f KwH" readOnly="true" />
 	</channel-type>
 	<channel-type id="powerm">
 		<item-type>Number</item-type>
 		<label>Power</label>
 		<description>Current Power Usage</description>
 		<category>Energy</category>
-		<state pattern="%.8f kW" readOnly="true" />
+		<state pattern="%.2f kW" readOnly="true" />
 	</channel-type>
 	<channel-type id="identify">
 		<item-type>Switch</item-type>
@@ -119,7 +119,7 @@
 		<state readOnly="false" />
 	</channel-type>
 	<channel-type id="periodOfBroadcast">
-		<item-type>Number</item-type>
+		<item-type>String</item-type>
 		<label>Period Of Broadcast</label>
 		<description>Dont ask me what it does...</description>
 		<state readOnly="true"></state>
@@ -236,13 +236,13 @@
 		<state readOnly="true" pattern= "%1$tA,%1$tB %1$td, %1$tY" />
 	</channel-type>
 	<channel-type id="monthArray">
-		<item-type>Number</item-type>
+		<item-type>String</item-type>
 		<label>Month Array</label>
 		<description></description>
 		<state readOnly="true"></state>
 	</channel-type>
 	<channel-type id="weekdayArray">
-		<item-type>Number</item-type>
+		<item-type>String</item-type>
 		<label>Weekday Array</label>
 		<description></description>
 		<state readOnly="true"></state>
