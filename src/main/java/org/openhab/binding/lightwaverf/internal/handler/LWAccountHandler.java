@@ -14,6 +14,7 @@ package org.openhab.binding.lightwaverf.internal.handler;
 
 import java.io.IOException;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -448,6 +449,7 @@ public class LWAccountHandler extends BaseBridgeHandler {
                             case "duskTime":
                             case "dawnTime":
                             case "time":
+
                                 String hoursPad = "";
                                 String minsPad = "";
                                 String secsPad = "";
@@ -462,8 +464,10 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 }
                                 if (seconds < 10) {
                                     secsPad = "0";
-                                } 
-                                String timeValue = hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
+                                }
+                                LocalDate now = LocalDate.now();
+
+                                String timeValue = now + "T" + hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
                                 updateState(channelUid, new DateTimeType(timeValue));
                                 break;
                             case "weekday":

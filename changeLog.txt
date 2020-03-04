@@ -1,3 +1,7 @@
+Version 1.2.2
+Fixed long power values not working
+Added current date to time/duskTime/dawnTime
+
 Version 1.2.1
 Fixed decimal bug
 Changed format for energy power and cost to 8 decimal places

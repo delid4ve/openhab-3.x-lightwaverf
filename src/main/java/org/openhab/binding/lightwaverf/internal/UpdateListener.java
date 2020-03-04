@@ -77,11 +77,11 @@ public class UpdateListener {
                 logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
             }
             else {
-                HashMap<String, Integer> featureStatuses = gson.fromJson(response,
-                    new TypeToken<HashMap<String, Integer>>() {}.getType());
-                for (Map.Entry<String, Integer> myMap : featureStatuses.entrySet()) {
+                HashMap<String, Long> featureStatuses = gson.fromJson(response,
+                    new TypeToken<HashMap<String, Long>>() {}.getType());
+                for (Map.Entry<String, Long> myMap : featureStatuses.entrySet()) {
                     String key = myMap.getKey().toString();
-                    int value = myMap.getValue();
+                    long value = myMap.getValue();
                     featureStatus.stream().filter(i -> key.equals(i.getFeatureId())).forEach(u -> {
                         if(!locks.containsKey(key)) {
                             u.setValue(value);
