@@ -11,8 +11,9 @@
  * SPDX-License-Identifier: EPL-2.0
  */
 package org.openhab.binding.lightwaverf.internal.handler;
-
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ import java.util.concurrent.TimeUnit;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.eclipse.smarthome.core.library.types.OnOffType;
 import org.eclipse.smarthome.core.thing.Bridge;
@@ -38,13 +40,10 @@ import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerService;
 import org.eclipse.smarthome.core.types.Command;
 import org.joda.time.DateTime;
-import org.openhab.binding.lightwaverf.internal.UpdateListener;
-import org.openhab.binding.lightwaverf.internal.api.FeatureStatus;
+import org.openhab.binding.lightwaverf.internal.api.ChannelListItem;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
 import org.openhab.binding.lightwaverf.internal.api.discovery.FeatureSets;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Features;
-import org.openhab.binding.lightwaverf.internal.api.discovery.Root;
-import org.openhab.binding.lightwaverf.internal.api.discovery.StructureList;
 import org.openhab.binding.lightwaverf.internal.config.AccountConfig;
 import org.openhab.binding.lightwaverf.internal.Http;
 import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
@@ -69,13 +68,12 @@ import java.awt.Color;
 public class LWAccountHandler extends BaseBridgeHandler {
     private final Logger logger = LoggerFactory.getLogger(LWAccountHandler.class);
     private @Nullable List<Devices> devices;
-    private Map<String, Long> locks = new HashMap<String,Long>();
-    private @Nullable ScheduledFuture<?> connectionCheckTask;
+    private @Nullable Map<String, Long> locks;
+    private @Nullable List<ChannelListItem> linkList;
     private @Nullable ScheduledFuture<?> pollingCheck;
-    private @Nullable ScheduledFuture<?> connect;
     private @Nullable ScheduledFuture<?> tokenTask;
     private @Nullable ScheduledFuture<?> refreshTask;
-    private @Nullable UpdateListener listener;
+    private @Nullable Thread pollingThread;
     private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
@@ -89,6 +87,51 @@ public class LWAccountHandler extends BaseBridgeHandler {
     }
 
     @Override
+    public void initialize() {
+        logger.debug("Initializing Lightwave account handler.");
+        logger.warn("Polling Interval set to {} milliseconds",Long.parseLong(this.thing.getConfiguration().get("pollingInterval").toString()));
+        if (this.thing.getConfiguration().get("pollingInterval").toString() == "0") {
+            logger.debug("Polling interval needs to be greater than 0 milliseconds");
+            updateStatus(ThingStatus.OFFLINE);
+        }
+        else{
+            linkList = Collections.synchronizedList(new ArrayList<ChannelListItem>());
+            locks = new HashMap<String,Long>();
+            devices = new ArrayList<Devices>();
+            updateToken();
+            updateDevices();
+            updateProperties();
+            createTasks();
+            updateStatus(ThingStatus.ONLINE);
+        }
+    }
+
+    private void updateToken() {
+        AccountConfig config = getConfigAs(AccountConfig.class);
+        Http http = new Http();
+        http.getToken(config.username,config.password);
+    }
+
+    private void updateDevices() {
+        Http http = new Http();
+        devices = http.getDevices();
+    }
+
+    private void createTasks() {
+        long pollingInterval = Long.parseLong(this.thing.getConfiguration().get("pollingInterval").toString());
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                pollingThread = Thread.currentThread();
+                if (!pollingThread.isInterrupted()) { polling(); }
+                //polling();
+            }
+        };
+        refreshTask = scheduler.scheduleWithFixedDelay(runnable,10000, pollingInterval, TimeUnit.MILLISECONDS);
+        tokenTask = scheduler.scheduleWithFixedDelay(this::updateToken,24, 24, TimeUnit.HOURS);
+    }
+  
+    @Override
     public void thingUpdated(Thing thing) {
         this.thing = thing;
         dispose();    
@@ -96,125 +139,27 @@ public class LWAccountHandler extends BaseBridgeHandler {
     }
 
     @Override
-    public void initialize() {
-        logger.debug("Initializing Lightwave account handler.");
-        //listener = new UpdateListener();
-        try {
-            listener = new UpdateListener();
-            AccountConfig config = getConfigAs(AccountConfig.class);
-            listener.login(config.username, config.password);
-        } catch (IOException e) {
-        }
-        connect = scheduler.schedule(this::initialConnect,5, TimeUnit.SECONDS);
-        connectionCheckTask = scheduler.schedule(this::startConnectionCheck,60, TimeUnit.SECONDS);
-        tokenTask = scheduler.scheduleWithFixedDelay(this::getToken,24, 24, TimeUnit.HOURS);
-    }
-
-    private void initialConnect() {
-        devices = new ArrayList<Devices>();
-        try {
-            devices = getDevices();
-            for (int b = 0; b < devices.size(); b++) {
-                addFeatureStatus(devices.get(b));
-            }
-        } catch (IOException e) {
-        }
-        properties();
-        updateStatus(ThingStatus.ONLINE);
-        refreshTask = scheduler.schedule(poll,5, TimeUnit.SECONDS);
-    }
-
-    private void getToken(){
-        AccountConfig config = getConfigAs(AccountConfig.class);
-        if (tokenTask == null || tokenTask.isCancelled()) {
-            try {
-                listener.login(config.username, config.password);
-            }
-            catch (Exception e) {
-            }
-        }
-    }
-
-    private StructureList getStructureList() throws IOException {
-        String response = Http.httpClient("structures", null, null, null);
-        StructureList structureList = gson.fromJson(response, StructureList.class);
-        return structureList;
-    }
-
-    private Root getStructure(String structureId) throws IOException {
-        String response = Http.httpClient("structure", null, null, structureId);
-        Root structure = gson.fromJson(response, Root.class);
-        return structure;
-    }
-
-    public List<Devices> getDevices() throws IOException {
-        List<Devices> devices = new ArrayList<Devices>();
-        StructureList structureList = new StructureList();
-        structureList = getStructureList();
-        for (int a = 0; a < structureList.getStructures().size(); a++) {
-            String structureId = structureList.getStructures().get(a).toString();
-            Root structure = getStructure(structureId);
-            devices.addAll(structure.getDevices());
-        }
-        return devices;
-    } 
-
-    public boolean addFeatureStatus( Devices device ) {
-        listener.addFeatureStatus(device);
-        return true;
-    }
-
-    private void startConnectionCheck() {
-            logger.debug("Start periodic connection check");
-            Runnable runnable = () -> {
-                logger.debug("Checking Lightwave connection");
-                if (isConnected()) {
-                    logger.debug("Connection to Lightwave in tact");
-                } else {
-                        try {
-                        connect();
-                    } catch (Exception e) {
-                    }
-                }
-            };
-            connectionCheckTask = scheduler.scheduleWithFixedDelay(runnable, 0, 60, TimeUnit.SECONDS);
-        }
-
-    private void connect() throws IOException {
-        AccountConfig config = getConfigAs(AccountConfig.class);
-        logger.debug("Initializing connection to Lightwave");
-        updateStatus(ThingStatus.OFFLINE);
-            listener.login(config.username, config.password);
-            updateStatus(ThingStatus.ONLINE);
-    }
-
-    @Override
     public void dispose() {
-        logger.debug("Running dispose()");        
+        logger.debug("Running dispose()");
+        pollingThread.interrupt(); 
         if (refreshTask != null) {
             refreshTask.cancel(true);
         }
-        if (connectionCheckTask != null) {
-            connectionCheckTask.cancel(true);
-        }
         if (tokenTask != null) {
             tokenTask.cancel(true);
-        }
-        if (connect != null) {
-            connect.cancel(true);
         }
         if (pollingCheck != null) {
             pollingCheck.cancel(true);
         }
             pollingCheck = null;
-            connectionCheckTask = null;
             refreshTask = null;
             tokenTask = null;
-            connect = null;
-            listener = null;
+            linkList = null;
+            locks = null;
+            devices = null;
     }
 
-    private void properties() {
+    private void updateProperties() {
         Map<String, String> properties = editProperties();
         properties.clear();
         for (int i=0; i < devices.size(); i++) { 
@@ -226,141 +171,216 @@ public class LWAccountHandler extends BaseBridgeHandler {
         updateProperties(properties);
     }
 
+    public void addLink(String sdId, ChannelUID uid) {
+        synchronized(linkList) {
+            if(!linkList.stream().filter(i -> uid.equals(i.getUID())).findAny().isPresent()) {
+        linkList.add(channelListItem(sdId,uid));
+        logger.debug("Channel Added to Polling List: {}",uid.toString());
+            } else {
+                logger.debug("Channel Already In Polling List: {}",uid.toString());
+            }
+        }
+
+    }
+
+    public void removeLink(String sdId, ChannelUID uid) {
+        synchronized(linkList) {
+            if(linkList.stream().filter(i -> uid.equals(i.getUID())).findAny().isPresent()) {
+                linkList.removeIf(e -> e.getUID().equals(uid));
+            //linkList.stream().filter(i -> uid.equals(i.getUID())).forEach(
+            //    linkList::remove);
+                logger.debug("Channel Removed from Polling List: {}",uid.toString());
+            } else {
+                logger.debug("Channel Not Present In Polling List: {}",uid.toString());
+            }
+        }        
+
+    }
+
+    private ChannelListItem channelListItem(String sdId, ChannelUID uid) {
+        String channelName = uid.getIdWithoutGroup();
+        String channelId = uid.getId().toString();
+        int channelNo = (Integer.parseInt(channelId.substring(0,1))-1);
+        Features feature = getFeature(sdId,channelNo, channelName);
+        String featureId = feature.getFeatureId();
+        ChannelListItem channelListItem = new ChannelListItem(sdId,uid,featureId);
+        return channelListItem;
+    }
+
     private void restartPolling() {
-        logger.warn("Polling failed, restarting");
-        pollingCheck = scheduler.schedule(poll,0, TimeUnit.SECONDS);
+        long pollingInterval = Long.parseLong(this.thing.getConfiguration().get("pollingInterval").toString());
+        logger.warn("Polling restarting");
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                polling();
+            }
+        };
+        refreshTask = scheduler.scheduleWithFixedDelay(runnable,10, pollingInterval, TimeUnit.MILLISECONDS);
+    }
+
+    private List<List<ChannelListItem>> getChannelList() {
+        int partitionSize = Integer.valueOf(this.thing.getConfiguration().get("pollingGroupSize").toString());
+        List<List<ChannelListItem>> partitions = new ArrayList<List<ChannelListItem>>();
+        synchronized(linkList) {
+            for (int i = 0; i < linkList.size(); i += partitionSize) {
+                partitions.add(linkList.subList(i, Math.min(i + partitionSize, linkList.size())));
+            }
+        }
+        return partitions;
+    }
+
+    private Map<String, Long> getLocks() {
+        Map<String, Long> locksT = new HashMap<String,Long>();
+            if (!locks.isEmpty()) {
+                locksT.putAll(locks);
+            }
+        return locksT;
+    }
+
+    private void removeLocks(Map<String, Long> locksT) {
+        for (Map.Entry<String, Long> map : locksT.entrySet()) {
+            String key = map.getKey();
+            Long value = map.getValue();
+            locks.remove(key, value);
+            logger.debug("lock removed: {} : {}", key, value);
+        }
     }
 
     private void polling() {
-        logger.debug("Initiate Polling");
-        pollingCheck = scheduler.schedule(this::restartPolling,120, TimeUnit.SECONDS);
-        List<String> channelList = new ArrayList<String>();
-        channelList = channelList();
-        List<List<String>> partitions = new ArrayList<List<String>>();
-        int pollingInterval = Integer.valueOf(this.thing.getConfiguration().get("pollingInterval").toString());
-        int partitionSize = Integer.valueOf(this.thing.getConfiguration().get("pollingGroupSize").toString());
-        for (int i = 0; i < channelList.size(); i += partitionSize) {
-            partitions.add(channelList.subList(i, Math.min(i + partitionSize, channelList.size())));
-        }
-        if (channelList.size() == 0) {
+        synchronized(linkList) {
+        logger.debug("Polling List Size: {}",linkList.size());
+        if (linkList.size() == 0) {
             logger.warn("Channel List For Updating Is Empty, rescheduling");
-            refreshTask = scheduler.schedule(this::polling,10, TimeUnit.SECONDS);
-        }
-        else if (channelList.size() > 0) {
-            try {
-                logger.debug("Started polling");
-                Map<String, Long> lockstemp = new HashMap<String,Long>();
-                if (!locks.isEmpty()) {
-                lockstemp.putAll(locks);
-                }
-                logger.debug("Start Listener");
-                listener.updateListener(partitions,locks);
-                logger.debug("Start Channel Update");
-                channelUpdate();
-                logger.debug("Finished Channel Update");
-                for (Map.Entry<String, Long> map : lockstemp.entrySet()) {
-                    String key = map.getKey();
-                    Long value = map.getValue();
-                    locks.remove(key, value);
-                    logger.debug("lock removed: {} : {}", key, value);
-                }
-                logger.debug("Removed Redundant Locks");                
-                if (pollingCheck != null) {
-                    pollingCheck.cancel(true);
-                }
-                refreshTask = scheduler.schedule(poll, pollingInterval, TimeUnit.SECONDS);
-                logger.debug("Scheduled refresh");
-            } catch (Exception e) {
+            if (refreshTask != null) {
+                refreshTask.cancel(true);
+            }
+            restartPolling();
+        } else {
+            logger.debug("Initiate Polling");
+            pollingCheck = scheduler.schedule(this::restartPolling,30, TimeUnit.SECONDS);
+            List<List<ChannelListItem>> partitions = getChannelList();
+            Map<String, Long> locksT = getLocks();                
+            int l = 0;
+            for (l = 0; l < partitions.size(); l++) {
+                List<ChannelListItem> partition = partitions.get(l);
+                logger.debug("Start Partition: {}", (l+1));
+                runUpdate(partition,locksT,(l+1));
+            }
+            logger.debug("Finished Channel Update");
+            removeLocks(locksT);
+            logger.debug("Removed Redundant Locks");                
+            if (pollingCheck != null) {
+                pollingCheck.cancel(true);
             }
         }
-    } 
+    }
+    }
 
-    private Devices device(String sdId) {
-        Devices device = null;
-        for (int i = 0; i < devices.size(); i++) {
-            if (devices.get(i).getDeviceId().contains("-" + sdId + "-")) {
-                device = devices.get(i);
-            }
-        }
-        return device;
+    public void runUpdate(List<ChannelListItem> partition, Map<String, Long> locks, int number) {
+        //Runnable runnable = new Runnable() {
+            //@Override
+            //public void run() { 
+                String body = createJson(partition);             
+                InputStream data = new ByteArrayInputStream(body.getBytes(StandardCharsets.UTF_8));
+                Http http = new Http();
+                String response = http.httpClient("features", data, "application/json", "");
+                if (errorHandler(response)) {
+                    HashMap<String, Long> featureStatuses = gson.fromJson(response,new TypeToken<HashMap<String, Long>>() {}.getType());
+                    for (Map.Entry<String, Long> myMap : featureStatuses.entrySet()) {
+                        String key = myMap.getKey().toString();
+                        ChannelListItem channel = partition.stream().filter(i -> key.equals(i.getFeatureId())).findFirst().orElse(partition.get(0));
+                        channelUpdate(myMap.getValue(),channel.getUID(),myMap.getKey().toString(),channel.getSdId());
+                    }
+                logger.debug("Finished Partition: {}", number);
+                }
+            //}
+        //};
+        //runnable.run();
     }
 
     public Features getFeature(String sdId, int featureSetNo,String channelId) {
-        Devices device = device(sdId);
+        String t = "-" + sdId + "-";
+        Devices device = devices.stream().filter(i -> i.getDeviceId().contains(t)).findFirst().orElse(devices.get(0));
         String featureSetId = device.getFeatureSets().get(featureSetNo).getFeatureSetId();
         FeatureSets featureSet = featureSets().stream().filter(i -> featureSetId.equals(i.getFeatureSetId())).findFirst()
-                .orElse(featureSets().get(0));
-                //seems equals doesnt work when setting the channel name manually so we have to do this
-            if (channelId.contains("energy") || channelId.contains("power")) {
-                return featureSet.getFeatures().stream().filter(i -> channelId.contains(i.getType())).findFirst()
-                .orElse(featureSet.getFeatures().get(0));
-            }
-            else {
+                .orElse(featureSets().get(0)); 
         return featureSet.getFeatures().stream().filter(i -> channelId.equals(i.getType())).findFirst()
                 .orElse(featureSet.getFeatures().get(0));
-            }
-    }
-
-    private FeatureStatus getFeatureStatus(String featureId) {
-        List<FeatureStatus> featureStatus = featureStatus();
-        return featureStatus().stream().filter(i -> featureId.equals(i.getFeatureId())).findFirst()
-            .orElse(featureStatus.get(0));
-    }
-
-    private Runnable poll = new Runnable() {
-        @Override
-        public void run() {
-            polling();
-        }
-    };
-
-    private List<String> channelList() {
-        List<String> channelList = new ArrayList<String>();
-        List<Thing> things = new ArrayList<Thing>();
-        things = this.getThing().getThings();
-        for (int i=0; i < things.size(); i++) {
-            String sdId = things.get(i).getConfiguration().get("sdId").toString();
-            for (Channel channel : things.get(i).getChannels()) {
-                if (isLinked(channel.getUID())) {
-                    String channelName = channel.getUID().getIdWithoutGroup();
-                    String channelId = channel.getUID().getId().toString();
-                    int channelNo = (Integer.parseInt(channelId.substring(0,1))-1);
-                    Features feature = getFeature(sdId,channelNo, channelName);
-                    channelList.add(feature.getFeatureId());
-                }
-            }
-        }
-        return channelList;          
+    }    
+    
+    @Override
+    public void handleCommand(ChannelUID channelUID, Command command) {
     }
     
-    private void channelUpdate() {
+    public boolean addLocked( String featureId, Long time ) {
+        locks.put(featureId,time);
+        return true;
+    }
+    
+    private List<FeatureSets> featureSets() {
+        List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
+        for (int b = 0; b < devices.size(); b++) {   
+            featureSets.addAll(devices.get(b).getFeatureSets());
+        }
+        return featureSets;
+    }
+
+    public List<Devices> getDevices() {
+        Http http = new Http();
+        return http.getDevices();
+    }
+
+    private String createJson(List<ChannelListItem> partition) {
+        String jsonBody = "";
+        String jsonEnd = "";
+        String jsonMain = "";
+            jsonBody = "{\"features\": [";
+            jsonEnd = "";
+            //logger.debug("Fixer Partition Size: {}",partition.size());
+            for (int m = 0; m < partition.size(); m++) {
+                if (m < (partition.size() - 1)) {
+                    jsonEnd = ",";
+                } else {
+                    jsonEnd = "]}";
+                }
+                //logger.debug("Fixer Partition: {}",partition.get(m).getFeatureId().toString());
+                jsonMain = "{\"featureId\": \"" + partition.get(m).getFeatureId().toString() + "\"}";
+                jsonBody = jsonBody + jsonMain + jsonEnd;
+                //logger.debug("Fixer JSON: {}",jsonBody);
+            }
+        return jsonBody;
+    }
+
+    private Boolean errorHandler(String response) {
+        if(response.contains("{\"message\":\"Structure not found\"}")) {
+            logger.warn("Api Timed Out Returning Data, decrease your group size.");
+            return false;
+        }
+        else if(response.contains("{\"message\":\"Request rate reached limit\"}")) {
+            logger.warn("Your polling too fast, increase your interval");
+            return false;
+        }
+        else if(response.contains("{\"message\":\"FeatureRead Failed\"}")) {
+            logger.warn("Lightwaves Servers currently in error state, try and reduce your polling to see if helps");
+            return false;
+        }
+        else {
+            //logger.debug("JSON Is Normal");
+            //logger.debug("Response is: {}",response);
+            return true;
+        }
+    }
+
+    private void channelUpdate(long value,ChannelUID channel,String featureId,String sdId) {
+        String channelName = channel.getIdWithoutGroup(); 
+        double electricityCost = Double.parseDouble(this.getThing().getConfiguration().get("electricityCost").toString()) / 100;
         List<Thing> things = new ArrayList<Thing>();
-        String channelHelper = "";
-        things = this.getThing().getThings();
-        for (int i=0; i < things.size(); i++) {
-            String sdId = things.get(i).getConfiguration().get("sdId").toString();
-            for (Channel channel : things.get(i).getChannels()) {
-                if (isLinked(channel.getUID())) {
-                    double electricityCost = Double.parseDouble(this.getThing().getConfiguration().get("electricityCost").toString()) / 100;
-                    String channelName = channel.getUID().getIdWithoutGroup();
-                    
-                    if(channelName == "energyCost") {
-                        channelHelper = "energy";
-                    }
-                    else if(channelName == "powerCost") {
-                        channelHelper = "power";
-                    }
-                    else {
-                        channelHelper = channelName;
-                    }
-                    String channelId = channel.getUID().getId().toString();
-                    ChannelUID channelUid = channel.getUID();
-                    int channelNo = (Integer.parseInt(channelId.substring(0,1))-1);
-                    Features feature = getFeature(sdId,channelNo, channelHelper);
-                    String featureId = feature.getFeatureId();
-                    if(!locks.containsKey(featureId)) {
-                        FeatureStatus status = getFeatureStatus(featureId);
-                        long value = status.getValue();                
+        things = this.getThing().getThings();   
+        String helper;
+        Thing thing;
+        Channel channelCost;
+                    if(!locks.containsKey(featureId)) {               
                         if(value != -1) {
                             switch (channelName) {
                             case "switch":
@@ -375,39 +395,43 @@ public class LWAccountHandler extends BaseBridgeHandler {
                             case "bulbSetup":
                             case "dimSetup":
                                 if (value == 1) {
-                                    updateState(channelUid, OnOffType.ON);
+                                    updateState(channel, OnOffType.ON);
                                 } else {
-                                    updateState(channelUid, OnOffType.OFF);
+                                    updateState(channel, OnOffType.OFF);
                                 }
                                 break;
                             case "power": 
+                                updateState(channel, new DecimalType(value));
+                                helper = channel.getGroupId() + "#powerCost";
+                                thing = things.stream().filter(i -> i.getConfiguration().get("sdId").equals(sdId)).findFirst().orElse(things.get(0));
+                                channelCost = thing.getChannels().stream().filter(i -> i.getUID().getId().contains(helper)).findFirst().orElse(thing.getChannels().get(0));
+                                updateState(channelCost.getUID(), new DecimalType(value / 1000.0 * electricityCost));
+                                break;
                             case "rssi": 
                             case "timeZone":
                             case "day":
                             case "month":
                             case "year":
-                                updateState(channelUid, new DecimalType(value));
-                                break;
-                            case "powerCost": 
-                                updateState(channelUid, new DecimalType(value / 1000.0 * electricityCost));
+                                updateState(channel, new DecimalType(value));
                                 break;
                             case "energy":
-                                updateState(channelUid, new DecimalType((value / 1000.0)));
-                                break;
-                            case "energyCost":
-                                updateState(channelUid, new DecimalType((value / 1000.0 * electricityCost)));
+                                updateState(channel, new DecimalType((value / 1000.0)));
+                                helper = channel.getGroupId() + "#energyCost";
+                                thing = things.stream().filter(i -> i.getConfiguration().get("sdId").equals(sdId)).findFirst().orElse(things.get(0));
+                                channelCost = thing.getChannels().stream().filter(i -> i.getUID().getId().contains(helper)).findFirst().orElse(thing.getChannels().get(0));
+                                updateState(channelCost.getUID(), new DecimalType((value / 1000.0 * electricityCost)));
                                 break;
                             case "temperature":
                             case "targetTemperature":
                             case "voltage":
-                                updateState(channelUid, new DecimalType((value / 10.0)));
+                                updateState(channel, new DecimalType((value / 10.0)));
                                 break;
                             case "dimLevel":
                             case "valveLevel":
-                                updateState(channelUid, new PercentType((int) value));
+                                updateState(channel, new PercentType((int) value));
                                 break;
                                 case "batteryLevel":
-                                updateState(channelUid, new DecimalType(value));
+                                updateState(channel, new DecimalType(value));
                                 break;
                             case "rgbColor":
                                 Color color = new Color((int) value);
@@ -419,12 +443,12 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 int saturation = (int) Math.round(hsb[1] * 100);
                                 int brightness = (int) Math.round(hsb[2] * 100);  
                                 String hsb1 = hue + "," + saturation + "," + brightness;
-                                updateState(channelUid, new HSBType(hsb1));
+                                updateState(channel, new HSBType(hsb1));
                                 break;
                             case "periodOfBroadcast":
                             case "monthArray":
                             case "weekdayArray":
-                                updateState(channelUid, new StringType(String.valueOf(value)));
+                                updateState(channel, new StringType(String.valueOf(value)));
                                 break;
                             case "date":
                                 String monthPad = "";
@@ -440,11 +464,11 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                     dayPad = "0";
                                 }
                                 String dateValue = year + "-" + monthPad + month + "-" + dayPad + day + "T00:00:00.000+0000";
-                                updateState(channelUid,new DateTimeType(dateValue));
+                                updateState(channel,new DateTimeType(dateValue));
                                 break;
                             case "currentTime":
                                 DateTimeType time = new DateTimeType(new DateTime(value * 1000).toString());
-                                updateState(channelUid, time);
+                                updateState(channel, time);
                                 break;
                             case "duskTime":
                             case "dawnTime":
@@ -468,69 +492,24 @@ public class LWAccountHandler extends BaseBridgeHandler {
                                 LocalDate now = LocalDate.now();
 
                                 String timeValue = now + "T" + hoursPad + hours + ":" + minsPad + minutes + ":" + secsPad + seconds ;
-                                updateState(channelUid, new DateTimeType(timeValue));
+                                updateState(channel, new DateTimeType(timeValue));
                                 break;
                             case "weekday":
                                 if (value != 0) {
-                                    updateState(channelUid, new StringType(DayOfWeek.of((int) value).toString()));
+                                    updateState(channel, new StringType(DayOfWeek.of((int) value).toString()));
                                     break;
                                 } else {
                                 break;
                                 }
                             case "locationLongitude":
                             case "locationLatitude":
-                                updateState(channelUid, new StringType(new DecimalType(value / 1000000.0).toString()));
+                                updateState(channel, new StringType(new DecimalType(value / 1000000.0).toString()));
                                 break;
                             }
                         }
                     } else {
                         logger.debug("channel locked"); 
                     }   
-                }
-            }
         }
-    }
-
-    @Override
-    public void handleCommand(ChannelUID channelUID, Command command) {
-    }
-    
-    public boolean isConnected() {
-           return listener.isConnected();
-    }
-    
-    public boolean addLocked( String featureId, Long time ) {
-        locks.put(featureId,time);
-        return true;
-    }
-    
-    public @Nullable List<Devices> devices() {
-        return devices;
-    }
-    
-    public Map<String,Long> locks() {
-        return locks;
-    }
-    
-    public List<FeatureSets> featureSets() {
-        List<FeatureSets> featureSets = new ArrayList<FeatureSets>();
-        for (int b = 0; b < devices.size(); b++) {   
-            featureSets.addAll(devices.get(b).getFeatureSets());
-        }
-        return featureSets;
-    }
-    
-    public List<FeatureStatus> featureStatus() {
-        return listener.featureStatus();
-    }
-
-
-
-
-
-    
-
-
-
 
 }

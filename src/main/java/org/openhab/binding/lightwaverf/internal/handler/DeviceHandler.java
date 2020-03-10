@@ -13,15 +13,13 @@
 package org.openhab.binding.lightwaverf.internal.handler;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import com.google.gson.JsonObject;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.library.types.DecimalType;
 import org.eclipse.smarthome.core.library.types.PercentType;
@@ -31,12 +29,9 @@ import org.eclipse.smarthome.core.thing.ChannelUID;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.ThingStatusDetail;
-import org.eclipse.smarthome.core.thing.ThingStatusInfo;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
-import org.eclipse.smarthome.core.thing.binding.ThingHandlerService;
 import org.openhab.binding.lightwaverf.internal.Http;
-import org.openhab.binding.lightwaverf.internal.LWDiscoveryService;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
 import org.openhab.binding.lightwaverf.internal.api.discovery.Features;
 import org.eclipse.smarthome.core.types.*;
@@ -49,13 +44,14 @@ import org.slf4j.LoggerFactory;
  *
  * @author David Murton - Initial contribution
  */
-// @NonNullByDefault
+
+@NonNullByDefault
 public class DeviceHandler extends BaseThingHandler {
 
     private final Logger logger = LoggerFactory.getLogger(DeviceHandler.class);
-    private @Nullable LWAccountHandler account = null;
+    private @Nullable LWAccountHandler account;
     private String sdId = this.thing.getConfiguration().get("sdId").toString();
-    private Devices device = new Devices();
+    private @Nullable Devices device;
 
     public DeviceHandler(Thing thing) {
         super(thing);
@@ -69,13 +65,17 @@ public class DeviceHandler extends BaseThingHandler {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Bridge Not set");
         }
         initializeBridge(bridge.getHandler(), bridge.getStatus());
-        try {
+            device = new Devices();
             device = device(sdId);
-            account.addFeatureStatus(device);
-        } catch (IOException e) {
-        }
         properties();
         updateStatus(ThingStatus.ONLINE);
+    }
+
+    @Override
+    public void thingUpdated(Thing thing) {
+        this.thing = thing;
+        dispose();    
+        initialize();
     }
 
     @Override
@@ -86,21 +86,25 @@ public class DeviceHandler extends BaseThingHandler {
     }
 
     @Override
-    public Collection<Class<? extends ThingHandlerService>> getServices() {
-        return Collections.singleton(LWDiscoveryService.class);
+    public void channelLinked(final ChannelUID channelUID) {
+        if(!channelUID.getIdWithoutGroup().contains("powerCost") && !channelUID.getIdWithoutGroup().contains("energyCost") &&
+        !channelUID.getIdWithoutGroup().contains("energyReset") && !channelUID.getIdWithoutGroup().contains("voltageReset")) {
+            account.addLink(sdId,channelUID);
+        }
+        super.channelUnlinked(channelUID);
     }
 
     @Override
-    public void bridgeStatusChanged(ThingStatusInfo bridgeStatusInfo) {
-        logger.debug("bridgeStatusChanged {} for thing {}", bridgeStatusInfo, getThing().getUID());
-        Bridge bridge = getBridge();
-        if (bridge != null) {
-            initializeBridge(bridge.getHandler(), bridgeStatusInfo.getStatus());
-
+    public void channelUnlinked(final ChannelUID channelUID) {
+        if(!channelUID.getIdWithoutGroup().contains("powerCost") && !channelUID.getIdWithoutGroup().contains("energyCost") &&
+        !channelUID.getIdWithoutGroup().contains("energyReset") && !channelUID.getIdWithoutGroup().contains("voltageReset")) {
+            account.removeLink(sdId,channelUID);
         }
+        super.channelLinked(channelUID);
     }
 
-    private void initializeBridge(ThingHandler thingHandler, ThingStatus bridgeStatus) {
+
+    private void initializeBridge(@Nullable ThingHandler thingHandler, ThingStatus bridgeStatus) {
         logger.debug("initializeBridge {} for thing {}", bridgeStatus, getThing().getUID());
 
         if (thingHandler != null && bridgeStatus != null) {
@@ -113,7 +117,7 @@ public class DeviceHandler extends BaseThingHandler {
         }
     }
 
-    private Devices device(String sdId) throws IOException {
+    private Devices device(String sdId) {
         Devices device = null;
         List<Devices> devices = account.getDevices();
         for (int i = 0; i < devices.size(); i++) {
@@ -262,10 +266,6 @@ public class DeviceHandler extends BaseThingHandler {
                 setStatus(featureId, temp);
             } catch (Exception e) {
             }
-                
-            int valueint = Integer.parseInt(value);
-                account.featureStatus().stream().filter(j -> featureId.equals(j.getFeatureId())).forEach(u -> u.setValue(valueint));
-                logger.debug("updated featureStatus: {}", valueint);
         }
     }
     
@@ -273,7 +273,8 @@ public class DeviceHandler extends BaseThingHandler {
         JsonObject jsonReq = new JsonObject();
         jsonReq.addProperty("value", value);
         InputStream data = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
-        Http.httpClient("feature", data, "application/json",featureId);     
+        Http http = new Http();
+        http.httpClient("feature", data, "application/json",featureId);     
     } 
 
 }

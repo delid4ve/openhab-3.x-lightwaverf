@@ -38,7 +38,7 @@ A list of supported channels will be generated under the 'Thing' properties in o
 
 Add a lightwave account thing and configure your email and password for your online account.
 Additional Properties:
-pollingInterval: Frequency bwtween api polls (can be set as low as 0).
+pollingInterval: Frequency bwtween api polls in milliseconds (can be set as low as 1).
 pollingGroupSize: The number of items to fetch in one request (if this is too high the api will time out, 20-30 is the most efficient)
   
 

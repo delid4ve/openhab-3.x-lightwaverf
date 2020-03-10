@@ -12,7 +12,6 @@
 		<description>Generation 1 1 Way Dimmer</description>
 		<channel-groups>
 			<channel-group id="1" typeId="d11" />
-
 		</channel-groups>
 		<properties>
 			<property name="Device ID"></property>

@@ -1,3 +1,11 @@
+Version 2.0
+***Polling Interval is now in milliseconds and is the delay between complete polls***
+Changed Polling method
+Added new error messages for lightwave server errors
+Fixed channel Add/remove bug
+Fixed incorrect powerCost value
+Various minor bug fixes
+
 Version 1.2.2
 Fixed long power values not working
 Added current date to time/duskTime/dawnTime

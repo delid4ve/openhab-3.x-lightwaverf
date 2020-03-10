@@ -14,7 +14,6 @@ package org.openhab.binding.lightwaverf.internal;
 
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.eclipse.smarthome.config.discovery.AbstractDiscoveryService;
 import org.eclipse.smarthome.config.discovery.DiscoveryResultBuilder;
+import org.eclipse.smarthome.config.discovery.DiscoveryService;
 import org.eclipse.smarthome.core.thing.Thing;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.ThingUID;
@@ -36,7 +36,7 @@ import org.openhab.binding.lightwaverf.internal.handler.*;
 import org.osgi.service.component.annotations.Modified;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.osgi.service.component.annotations.Component;
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which
  * are used across the whole binding.
@@ -44,7 +44,9 @@ import org.slf4j.LoggerFactory;
  * @author David Murton - Initial contribution
  */
 
-public class LWDiscoveryService extends AbstractDiscoveryService implements  ThingHandlerService {
+@Component(service = LWDiscoveryService.class, immediate = true, configurationPid = "discovery.lightwaverf")
+
+public class LWDiscoveryService extends AbstractDiscoveryService implements ThingHandlerService, DiscoveryService {
     private final Logger logger = LoggerFactory.getLogger(LWDiscoveryService.class);
     private static final int DISCOVER_TIMEOUT_SECONDS = 10;
     private LWAccountHandler accountHandler;
@@ -55,6 +57,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements  Thi
 
     public LWDiscoveryService() {
         super(LWBindingConstants.DISCOVERABLE_THING_TYPE_UIDS, DISCOVER_TIMEOUT_SECONDS, true);
+        
     }
 
     @Override
@@ -109,20 +112,22 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements  Thi
         }
     }
 
-    private void discover() throws IOException {
+    private void discover() {
         logger.debug("Start Discovery");
         List<StructureList> structureList = new ArrayList<StructureList>();
         List<Root> structures = new ArrayList<Root>();
             ThingUID bridgeUID = accountHandler.getThing().getUID();
             List<Thing> things = accountHandler.getThing().getThings();
             if (structures == null || structures.isEmpty()) {
-                String response = Http.httpClient("structures", null, null, null);
+                Http http = new Http();
+                String response = http.httpClient("structures", null, null, null);
                 logger.debug("Structure Response: {}", response);
                 StructureList structureResponse = gson.fromJson(response, StructureList.class);
                 structureList.add(structureResponse);
                 for (int sR = 0; sR < structureList.size(); sR++) {
                     for (int sL = 0; sL < structureList.get(sR).getStructures().size(); sL++) {
-                    String response2 = Http.httpClient("structure", null, null, structureList.get(sR).getStructures().get(sL).toString());
+                    Http http2 = new Http();    
+                    String response2 = http2.httpClient("structure", null, null, structureList.get(sR).getStructures().get(sL).toString());
                     logger.debug("Structure List Response: {}", response2);
                     Root structure = gson.fromJson(response2, Root.class);
                     structures.add(structure);
@@ -159,6 +164,9 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements  Thi
                                 break;
                                 case "LW320" : case "LW380" :
                                 thingTypeUid = THING_TYPE_SSOCKET_GEN1;
+                                break;
+                                case "LW400" :
+                                thingTypeUid = THING_TYPE_SDIMMER_GEN1;
                                 break;
                                 case "L42" :
                                 thingTypeUid = THING_TYPE_DSOCKET_GEN2;
@@ -203,9 +211,7 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements  Thi
                                         .build());
                             }
                         }
-                    }
-                
-            
+                    } 
         }
     
     public String createLabelDevice(Devices deviceList) {

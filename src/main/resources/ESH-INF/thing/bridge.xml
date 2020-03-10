@@ -20,12 +20,12 @@
 			</parameter>
 			<parameter name="pollingInterval" type="integer" required="true">
 				<label>Refresh Interval</label>
-				<description>Time between data refreshes</description>
-				<default>5</default>
+				<description>Time between data refreshes in milliseconds</description>
+				<default>5000</default>
 			</parameter>
 			<parameter name="pollingGroupSize" type="integer" required="true">
 				<label>Number of Items to fetch at once</label>
-				<description>Number of Items to fetch at once</description>
+				<description>Number of Items to fetch at once (set too high and lightwaves servers will timeout)</description>
 				<default>20</default>
 			</parameter>
 			<parameter name="electricityCost" type="integer" required="true">

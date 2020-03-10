@@ -14,11 +14,26 @@ package org.openhab.binding.lightwaverf.internal;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.lightwaverf.internal.api.AccessToken;
 import org.eclipse.smarthome.io.net.http.HttpUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import org.openhab.binding.lightwaverf.internal.api.discovery.Devices;
+import org.openhab.binding.lightwaverf.internal.api.discovery.Root;
+import org.openhab.binding.lightwaverf.internal.api.discovery.StructureList;
+import org.openhab.binding.lightwaverf.internal.api.login.Login;
+import org.openhab.binding.lightwaverf.internal.Http;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which
@@ -28,8 +43,11 @@ import org.eclipse.smarthome.io.net.http.HttpUtil;
  */
 @NonNullByDefault
 public class Http {
+    private final Logger logger = LoggerFactory.getLogger(Http.class);
+    private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
-    private static Properties getHeader(@Nullable String type) {
+    private Properties getHeader(@Nullable String type) {
         Properties headers = new Properties();
         switch (type) {
         case "login":
@@ -45,7 +63,7 @@ public class Http {
         return headers;
     }
 
-    private static String url(@Nullable String type, @Nullable String groupId) {
+    private String url(@Nullable String type, @Nullable String groupId) {
         String url;
         switch (type) {
         case "login":
@@ -69,7 +87,7 @@ public class Http {
         return url;
     }
 
-    public static String method(@Nullable String type) {
+    public String method(@Nullable String type) {
         String method;
         switch (type) {
         case "login":
@@ -87,9 +105,59 @@ public class Http {
         return method;
     }
 
-    public static String httpClient(@Nullable String type, @Nullable InputStream data, @Nullable String other,
-            @Nullable String groupId) throws IOException {
-        String response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
+    public String httpClient(@Nullable String type, @Nullable InputStream data, @Nullable String other,
+            @Nullable String groupId) {
+        String response = "";
+        try {
+            response = HttpUtil.executeUrl(method(type), url(type, groupId), getHeader(type), data, other, 100000);
+        } catch (IOException e) {
+            if (e.getMessage().toString().contains("java.lang.InterruptedException")) {
+                logger.debug("Http request was interrupted: {}",e.getMessage());
+            } else {
+                logger.debug("Http Util threw an error: {}",e.getMessage());
+            }
+        }
         return response;
-    }  
+    }
+    
+    public List<Devices> getDevices() {
+        List<Devices> devices = new ArrayList<Devices>();
+        StructureList structureList = new StructureList();
+        structureList = getStructureList();
+        for (int a = 0; a < structureList.getStructures().size(); a++) {
+            String structureId = structureList.getStructures().get(a).toString();
+            Root structure = getStructure(structureId);
+            devices.addAll(structure.getDevices());
+        }
+        return devices;
+    }
+
+    private StructureList getStructureList() {
+        String response = httpClient("structures", null, null, null);
+        StructureList structureList = gson.fromJson(response, StructureList.class);
+        return structureList;
+    }
+
+    private Root getStructure(String structureId) {
+        String response = httpClient("structure", null, null, structureId);
+        Root structure = gson.fromJson(response, Root.class);
+        return structure;
+    }
+
+    public void getToken(String username, String password)  {
+        logger.warn("Get new token");
+        JsonObject jsonReq = new JsonObject();
+        jsonReq.addProperty("email", username);
+        jsonReq.addProperty("password", password);
+        InputStream body = new ByteArrayInputStream(jsonReq.toString().getBytes(StandardCharsets.UTF_8));
+        String response = httpClient("login", body, "application/json", null);
+        if (response.contains("Not found")) {
+            logger.warn("Incorrect user credentials");
+        }
+        else{
+        Login login = gson.fromJson(response, Login.class);
+        String sessionKey = login.getTokens().getAccessToken().toString();
+        AccessToken.setToken(sessionKey);
+        }
+    }
 }

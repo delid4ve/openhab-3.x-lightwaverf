@@ -111,7 +111,18 @@
 			<channel id="switch" typeId="switch" />
 			<channel id="identify" typeId="identify" />
 			<channel id="protection" typeId="protection" />
+		</channels>
+	</channel-group-type>
 
+	<channel-group-type id="d11">
+		<label>Channel 1</label>
+		<description></description>
+		<category>WallSwitch</category>
+		<channels>
+			<channel id="switch" typeId="switch" />
+			<channel id="identify" typeId="identify" />
+			<channel id="protection" typeId="protection" />
+			<channel id="dimLevel" typeId="dimLevel" />
 		</channels>
 	</channel-group-type>
 
