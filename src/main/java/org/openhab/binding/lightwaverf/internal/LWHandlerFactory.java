@@ -13,7 +13,7 @@
 package org.openhab.binding.lightwaverf.internal;
 
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
-import org.eclipse.jdt.annotation.NonNullByDefault;
+
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.smarthome.core.thing.Bridge;
 import org.eclipse.smarthome.core.thing.Thing;
@@ -21,20 +21,35 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
-import org.openhab.binding.lightwaverf.internal.handler.DeviceHandler;
-import org.openhab.binding.lightwaverf.internal.handler.LWAccountHandler;
+import org.eclipse.smarthome.io.net.http.HttpClientFactory;
+import org.eclipse.smarthome.io.net.http.WebSocketFactory;
+import org.openhab.binding.lightwaverf.internal.connect.handler.BridgeHandler;
+import org.openhab.binding.lightwaverf.internal.connect.handler.TRVHandler;
+import org.openhab.binding.lightwaverf.internal.smart.handler.DeviceHandler;
+import org.openhab.binding.lightwaverf.internal.smart.handler.LWAccountHandler;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
- /**
+import org.osgi.service.component.annotations.Reference;
+
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+/**
  * The {@link lightwaverfHandlerFactory} is responsible for creating things and thing
  * handlers.
  *
  * @author David Murton - Initial contribution
  */
-@NonNullByDefault
-@Component(configurationPid = "binding.lightwaverf", service = {ThingHandlerFactory.class,
-    })
+// @NonNullByDefault
+@Component(configurationPid = "binding.lightwaverf", service = { ThingHandlerFactory.class, })
 
-public class LWHandlerFactory extends BaseThingHandlerFactory  {
+public class LWHandlerFactory extends BaseThingHandlerFactory {
+
+    private final WebSocketFactory webSocketFactory;
+    private final HttpClientFactory httpClientFactory;
+    private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
+            .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -46,13 +61,20 @@ public class LWHandlerFactory extends BaseThingHandlerFactory  {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_LIGHTWAVE_ACCOUNT.equals(thingTypeUID)) {
-            LWAccountHandler handler = new LWAccountHandler((Bridge) thing);
-            return handler;
+            return new LWAccountHandler((Bridge) thing, webSocketFactory, httpClientFactory, gson);
+        } else if (THING_TYPE_LIGHTWAVE_1HUB.equals(thingTypeUID)) {
+            return new BridgeHandler((Bridge) thing);
+        } else if (THING_TYPE_LIGHTWAVE_1TRV.equals(thingTypeUID)) {
+            return new TRVHandler((Thing) thing);
+        } else {
+            return new DeviceHandler(thing);
         }
-        else {
-            DeviceHandler handler = new DeviceHandler(thing);
-            return handler;
-        }
-        
-    }  
+    }
+
+    @Activate
+    public LWHandlerFactory(final @Reference WebSocketFactory webSocketFactory,
+            final @Reference HttpClientFactory httpClientFactory) {
+        this.webSocketFactory = webSocketFactory;
+        this.httpClientFactory = httpClientFactory;
+    }
 }

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="lightwaverf"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Account -->
+	<bridge-type id="1bridge">
+		<label>Generation 1 Bridge</label>
+		<description>LightwaveRF Generation 1 WifiLink Hub</description>
+		<channels>
+			<channel id="time" typeId="time"/>
+			<channel id="locationLongitude" typeId="locationLongitude"/>
+			<channel id="locationLatitude" typeId="locationLatitude"/>
+			<channel id="timeZone" typeId="timeZone"/>
+			<channel id="upTime" typeId="upTime"/>
+		</channels>
+		<config-description>
+			<parameter name="ipaddress" type="text" required="true">
+				<label>IP Address</label>
+				<description>Link IP Address</description>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+	<thing-type id="1switch">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="1bridge"/>
+		</supported-bridge-type-refs>
+		<label>Generation 1 1 Way Switch</label>
+		<description>Generation 1 1 Way Switch</description>
+		<channels>
+			<channel id="switch" typeId="switch"/>
+		</channels>
+		<config-description>
+			<parameter name="roomid" type="text" required="true">
+				<label>Room ID</label>
+				<description>Room ID of the Lightwave Item</description>
+			</parameter>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>DeviceID of the Lightwave Item</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="1dimmer">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="1bridge"/>
+		</supported-bridge-type-refs>
+		<label>Generation 1 1 Way Dimmer</label>
+		<description>Generation 1 1 Way Dimmer</description>
+		<channels>
+			<channel id="dimLevel" typeId="dimLevel"/>
+		</channels>
+		<config-description>
+			<parameter name="roomid" type="text" required="true">
+				<label>Room ID</label>
+				<description>Room ID of the Lightwave Item</description>
+			</parameter>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>DeviceID of the Lightwave Item</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="1trv">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="1bridge"/>
+		</supported-bridge-type-refs>
+		<label>Generation 1 TRV</label>
+		<description>Generation 1 TRV</description>
+		<channels>
+			<channel id="time" typeId="time"/>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="batteryLevel" typeId="batteryLevel"/>
+			<channel id="targetTemperature" typeId="targetTemperature"/>
+			<channel id="valveLevel" typeId="valveLevel"/>
+			<channel id="heatState" typeId="heatstate"/>
+		</channels>
+		<config-description>
+			<parameter name="roomid" type="text" required="true">
+				<label>Room ID</label>
+				<description>Room ID of the Lightwave Item</description>
+			</parameter>
+			<parameter name="serialno" type="text" required="true">
+				<label>Serial Number</label>
+				<description>Serial Number of the Lightwave Item</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="1em">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="1bridge"/>
+		</supported-bridge-type-refs>
+		<label>Generation 1 Energy Monitor</label>
+		<description>Generation 1 Energy Monitor</description>
+		<channels>
+			<channel id="time" typeId="time"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+		</channels>
+		<config-description>
+			<parameter name="serialno" type="text" required="true">
+				<label>Serial Number</label>
+				<description>Serial Number of the Lightwave Item</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+	<thing-type id="1relay">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="1bridge"/>
+		</supported-bridge-type-refs>
+		<label>Generation 1 1 Relay</label>
+		<description>Generation 1 Relay</description>
+		<channels>
+			<channel id="threeWayRelay1" typeId="threeWayRelay1"/>
+			<channel id="switch" typeId="switch"/>
+		</channels>
+		<config-description>
+			<parameter name="roomid" type="text" required="true">
+				<label>Room ID</label>
+				<description>Room ID of the Lightwave Item</description>
+			</parameter>
+			<parameter name="deviceid" type="text" required="true">
+				<label>Device ID</label>
+				<description>DeviceID of the Lightwave Item</description>
+			</parameter>
+		</config-description>
+	</thing-type>
+
+</thing:thing-descriptions>

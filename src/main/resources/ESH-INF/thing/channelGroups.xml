@@ -8,57 +8,75 @@
 		<label>Link Plus</label>
 		<description></description>
 		<category></category>
-	<channels>
-		<channel id="currentTime" typeId="currentTime" />
-		<channel id="buttonPress" typeId="buttonPress" />
-		<channel id="time" typeId="time" />
-		<channel id="date" typeId="date" />
-		<channel id="monthArray" typeId="monthArray" />
-		<channel id="weekdayArray" typeId="weekdayArray" />
-		<channel id="locationLongitude" typeId="locationLongitude" />
-		<channel id="locationLatitude" typeId="locationLatitude" />
-		<channel id="duskTime" typeId="duskTime" />
-		<channel id="dawnTime" typeId="dawnTime" />
-		<channel id="day" typeId="day" />
-		<channel id="month" typeId="month" />
-		<channel id="year" typeId="year" />
-		<channel id="weekday" typeId="weekday" />
-		<channel id="timeZone" typeId="timeZone" />
-		<channel id="rgbColor" typeId="rgbColor" />
-		<channel id="identify" typeId="identify" />
-	</channels>
-</channel-group-type>
+		<channels>
+			<channel id="currentTime" typeId="currentTime"/>
+			<channel id="buttonPress" typeId="buttonPress"/>
+			<channel id="time" typeId="time"/>
+			<channel id="date" typeId="date"/>
+			<channel id="monthArray" typeId="monthArray"/>
+			<channel id="weekdayArray" typeId="weekdayArray"/>
+			<channel id="locationLongitude" typeId="locationLongitude"/>
+			<channel id="locationLatitude" typeId="locationLatitude"/>
+			<channel id="duskTime" typeId="duskTime"/>
+			<channel id="dawnTime" typeId="dawnTime"/>
+			<channel id="day" typeId="day"/>
+			<channel id="month" typeId="month"/>
+			<channel id="year" typeId="year"/>
+			<channel id="weekday" typeId="weekday"/>
+			<channel id="timeZone" typeId="timeZone"/>
+			<channel id="rgbColor" typeId="rgbColor"/>
+			<channel id="identify" typeId="identify"/>
+		</channels>
+	</channel-group-type>
 
 	<channel-group-type id="t11">
 		<label>Thermostat</label>
 		<description></description>
 		<category></category>
-	<channels>
-		<channel id="temperature" typeId="temperature" />
-		<channel id="targetTemperature" typeId="targetTemperature" />
-		<channel id="valveLevel" typeId="valveLevel" />
-		<channel id="heatState" typeId="heatState" />
-		<channel id="batteryLevel" typeId="batteryLevel" />
-		<channel id="rssi" typeId="rssi" />
-		<channel id="identify" typeId="identify" />
-		<channel id="diagnostics" typeId="diagnostics" />
-		<channel id="callForHeat" typeId="callForHeat" />
-	</channels>
-</channel-group-type>
+		<channels>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="targetTemperature" typeId="targetTemperature"/>
+			<channel id="valveLevel" typeId="valveLevel"/>
+			<channel id="heatState" typeId="heatState"/>
+			<channel id="batteryLevel" typeId="batteryLevel"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="diagnostics" typeId="diagnostics"/>
+			<channel id="callForHeat" typeId="callForHeat"/>
+		</channels>
+	</channel-group-type>
+
+	<channel-group-type id="t12">
+		<label>Thermostat</label>
+		<description></description>
+		<category></category>
+		<channels>
+			<channel id="temperature" typeId="temperature"/>
+			<channel id="targetTemperature" typeId="targetTemperature"/>
+			<channel id="valveLevel" typeId="valveLevel"/>
+			<channel id="heatState" typeId="heatState"/>
+			<channel id="batteryLevel" typeId="batteryLevel"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="diagnostics" typeId="diagnostics"/>
+			<channel id="callForHeat" typeId="callForHeat"/>
+			<channel id="valveSetup" typeId="valveSetup"/>
+		</channels>
+	</channel-group-type>
 
 	<channel-group-type id="e11">
 		<label>Energy Monitor</label>
 		<description></description>
 		<category></category>
 		<channels>
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="identify" typeId="identify" />
-			<channel id="rssi" typeId="rssi" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="voltageReset" typeId="voltageReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="voltageReset" typeId="voltageReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -68,22 +86,22 @@
 		<description></description>
 		<category>PowerOutlet</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="outletInUse" typeId="outletInUse" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="identify" typeId="identify" />
-			<channel id="reset" typeId="reset" />
-			<channel id="upgrade" typeId="upgrade" />
-			<channel id="diagnostics" typeId="diagnostics" />
-			<channel id="periodOfBroadcast" typeId="periodOfBroadcast" />
-			<channel id="rgbColor" typeId="rgbColor" />
-			<channel id="voltage" typeId="voltage" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="voltageReset" typeId="voltageReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="outletInUse" typeId="outletInUse"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="reset" typeId="reset"/>
+			<channel id="upgrade" typeId="upgrade"/>
+			<channel id="diagnostics" typeId="diagnostics"/>
+			<channel id="periodOfBroadcast" typeId="periodOfBroadcast"/>
+			<channel id="rgbColor" typeId="rgbColor"/>
+			<channel id="voltage" typeId="voltage"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="voltageReset" typeId="voltageReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -92,14 +110,14 @@
 		<description></description>
 		<category>PowerOutlet</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="outletInUse" typeId="outletInUse" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="outletInUse" typeId="outletInUse"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -108,9 +126,31 @@
 		<description></description>
 		<category>PowerOutlet</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="identify" typeId="identify" />
-			<channel id="protection" typeId="protection" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="protection" typeId="protection"/>
+		</channels>
+	</channel-group-type>
+
+	<channel-group-type id="r13">
+		<label>Channel 1</label>
+		<description></description>
+		<category></category>
+		<channels>
+			<channel id="threeWayRelay" typeId="threeWayRelay"/>
+			<channel id="identify" typeId="identify"/>
+		</channels>
+	</channel-group-type>
+
+	<channel-group-type id="m11">
+		<label>Channel 1</label>
+		<description></description>
+		<category></category>
+		<channels>
+			<channel id="windowPosition" typeId="windowPosition"/>
+			<channel id="batteryLevel" typeId="batteryLevel"/>
+			<channel id="rssi" typeId="rssi"/>
+			<channel id="identify" typeId="identify"/>
 		</channels>
 	</channel-group-type>
 
@@ -119,10 +159,10 @@
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="identify" typeId="identify" />
-			<channel id="protection" typeId="protection" />
-			<channel id="dimLevel" typeId="dimLevel" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="dimLevel" typeId="dimLevel"/>
 		</channels>
 	</channel-group-type>
 
@@ -131,23 +171,23 @@
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="dimLevel" typeId="dimLevel" />
-			<channel id="dimSetup" typeId="dimSetup" />
-			<channel id="bulbSetup" typeId="bulbSetup" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="identify" typeId="identify" />
-			<channel id="reset" typeId="reset" />
-			<channel id="upgrade" typeId="upgrade" />
-			<channel id="diagnostics" typeId="diagnostics" />
-			<channel id="periodOfBroadcast" typeId="periodOfBroadcast" />
-			<channel id="rgbColor" typeId="rgbColor" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="voltageReset" typeId="voltageReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="dimLevel" typeId="dimLevel"/>
+			<channel id="dimSetup" typeId="dimSetup"/>
+			<channel id="bulbSetup" typeId="bulbSetup"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="identify" typeId="identify"/>
+			<channel id="reset" typeId="reset"/>
+			<channel id="upgrade" typeId="upgrade"/>
+			<channel id="diagnostics" typeId="diagnostics"/>
+			<channel id="periodOfBroadcast" typeId="periodOfBroadcast"/>
+			<channel id="rgbColor" typeId="rgbColor"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="voltageReset" typeId="voltageReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -156,16 +196,16 @@
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="dimLevel" typeId="dimLevel" />
-			<channel id="dimSetup" typeId="dimSetup" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="bulbSetup" typeId="bulbSetup" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="dimLevel" typeId="dimLevel"/>
+			<channel id="dimSetup" typeId="dimSetup"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="bulbSetup" typeId="bulbSetup"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -174,16 +214,16 @@
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="dimLevel" typeId="dimLevel" />
-			<channel id="dimSetup" typeId="dimSetup" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="bulbSetup" typeId="bulbSetup" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="dimLevel" typeId="dimLevel"/>
+			<channel id="dimSetup" typeId="dimSetup"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="bulbSetup" typeId="bulbSetup"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 
@@ -192,16 +232,16 @@
 		<description></description>
 		<category>WallSwitch</category>
 		<channels>
-			<channel id="switch" typeId="switch" />
-			<channel id="dimLevel" typeId="dimLevel" />
-			<channel id="dimSetup" typeId="dimSetup" />
-			<channel id="protection" typeId="protection" />
-			<channel id="power" typeId="power" />
-			<channel id="energy" typeId="energy" />
-			<channel id="bulbSetup" typeId="bulbSetup" />
-			<channel id="energyReset" typeId="energyReset" />
-			<channel id="energyCost" typeId="energyCost" />
-			<channel id="powerCost" typeId="powerCost" />
+			<channel id="switch" typeId="switch"/>
+			<channel id="dimLevel" typeId="dimLevel"/>
+			<channel id="dimSetup" typeId="dimSetup"/>
+			<channel id="protection" typeId="protection"/>
+			<channel id="power" typeId="power"/>
+			<channel id="energy" typeId="energy"/>
+			<channel id="bulbSetup" typeId="bulbSetup"/>
+			<channel id="energyReset" typeId="energyReset"/>
+			<channel id="energyCost" typeId="energyCost"/>
+			<channel id="powerCost" typeId="powerCost"/>
 		</channels>
 	</channel-group-type>
 </thing:thing-descriptions>

@@ -6,12 +6,12 @@
 
 	<thing-type id="e11">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="lightwaverfaccount" />
+			<bridge-type-ref id="lightwaverfaccount"/>
 		</supported-bridge-type-refs>
 		<label>Generation 1 Energy Monitor</label>
 		<description>Generation 1 Energy Monitor</description>
 		<channel-groups>
-			<channel-group id="1" typeId="e11" />
+			<channel-group id="1" typeId="e11"/>
 		</channel-groups>
 		<properties>
 			<property name="Device ID"></property>

@@ -8,6 +8,9 @@
 	<bridge-type id="lightwaverfaccount">
 		<label>Lightwaverf Account</label>
 		<description>Lightwave Account</description>
+		<channels>
+			<channel id="dummy" typeId="dummy"/>
+		</channels>
 		<config-description>
 			<parameter name="username" type="text" required="true">
 				<label>Username</label>

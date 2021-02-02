@@ -1,3 +1,12 @@
+Version 3.0
+Removed Polling
+Added Websocket functionality
+
+Version 2.1
+Added 3 Way Relay (LW821)
+Added Generation 1 Double Socket (LW260)
+Added Generation 1 TRV (LW922)
+
 Version 2.0
 ***Polling Interval is now in milliseconds and is the delay between complete polls***
 Changed Polling method

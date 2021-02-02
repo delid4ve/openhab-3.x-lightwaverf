@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
@@ -28,17 +29,19 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 
 @NonNullByDefault
 public class LWBindingConstants {
-        
-
 
     private static final String BINDING_ID = "lightwaverf";
 
     // List of all Thing Type UIDs
+    // Smart Series
     public static final ThingTypeUID THING_TYPE_LIGHTWAVE_ACCOUNT = new ThingTypeUID(BINDING_ID, "lightwaverfaccount");
     public static final ThingTypeUID THING_TYPE_LIGHTWAVE_HUB = new ThingTypeUID(BINDING_ID, "h21");
     public static final ThingTypeUID THING_TYPE_THERMOSTAT = new ThingTypeUID(BINDING_ID, "t11");
+    public static final ThingTypeUID THING_TYPE_TRV = new ThingTypeUID(BINDING_ID, "t12");
+    public static final ThingTypeUID THING_TYPE_MAGNETIC_GEN1 = new ThingTypeUID(BINDING_ID, "m11");
     public static final ThingTypeUID THING_TYPE_EMONITOR_GEN1 = new ThingTypeUID(BINDING_ID, "e11");
     public static final ThingTypeUID THING_TYPE_SSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "s11");
+    public static final ThingTypeUID THING_TYPE_DSOCKET_GEN1 = new ThingTypeUID(BINDING_ID, "s12");
     public static final ThingTypeUID THING_TYPE_SSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s21");
     public static final ThingTypeUID THING_TYPE_DSOCKET_GEN2 = new ThingTypeUID(BINDING_ID, "s22");
     public static final ThingTypeUID THING_TYPE_SDIMMER_GEN1 = new ThingTypeUID(BINDING_ID, "d11");
@@ -46,38 +49,41 @@ public class LWBindingConstants {
     public static final ThingTypeUID THING_TYPE_DDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d22");
     public static final ThingTypeUID THING_TYPE_TDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d23");
     public static final ThingTypeUID THING_TYPE_QDIMMER_GEN2 = new ThingTypeUID(BINDING_ID, "d24");
+    public static final ThingTypeUID THING_TYPE_TRELAY_GEN1 = new ThingTypeUID(BINDING_ID, "r13");
     public static final ThingTypeUID THING_TYPE_UNKNOWNDEVICE = new ThingTypeUID(BINDING_ID, "device");
+    // Connect Series
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1HUB = new ThingTypeUID(BINDING_ID, "1bridge");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1LINK = new ThingTypeUID(BINDING_ID, "1link");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1SWITCH = new ThingTypeUID(BINDING_ID, "1switch");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1DIMMER = new ThingTypeUID(BINDING_ID, "1dimmer");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1TRV = new ThingTypeUID(BINDING_ID, "1trv");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1EM = new ThingTypeUID(BINDING_ID, "1em");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1RELAY = new ThingTypeUID(BINDING_ID, "1relay");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1MOOD = new ThingTypeUID(BINDING_ID, "1mood");
+    public static final ThingTypeUID THING_TYPE_LIGHTWAVE_1ALLOFF = new ThingTypeUID(BINDING_ID, "1alloff");
 
-    
-    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections
-            .unmodifiableSet(Stream.of(
-                    THING_TYPE_LIGHTWAVE_ACCOUNT,   
-                    THING_TYPE_LIGHTWAVE_HUB,
-                    THING_TYPE_THERMOSTAT,
-                    THING_TYPE_SSOCKET_GEN1,
-                    THING_TYPE_SSOCKET_GEN2,
-                    THING_TYPE_DSOCKET_GEN2,
-                    THING_TYPE_SDIMMER_GEN1,
-                    THING_TYPE_SDIMMER_GEN2,
-                    THING_TYPE_DDIMMER_GEN2,
-                    THING_TYPE_TDIMMER_GEN2,
-                    THING_TYPE_QDIMMER_GEN2,
-                    THING_TYPE_EMONITOR_GEN1,
-                    THING_TYPE_UNKNOWNDEVICE).collect(Collectors.toSet()));
+    public static final Set<ThingTypeUID> SUPPORTED_THING_TYPE_UIDS = Collections.unmodifiableSet(Stream.of(
+            // Smart Series
+            THING_TYPE_LIGHTWAVE_ACCOUNT, THING_TYPE_LIGHTWAVE_HUB, THING_TYPE_THERMOSTAT, THING_TYPE_TRV,
+            THING_TYPE_MAGNETIC_GEN1, THING_TYPE_SSOCKET_GEN1, THING_TYPE_DSOCKET_GEN1, THING_TYPE_SSOCKET_GEN2,
+            THING_TYPE_DSOCKET_GEN2, THING_TYPE_SDIMMER_GEN1, THING_TYPE_SDIMMER_GEN2, THING_TYPE_DDIMMER_GEN2,
+            THING_TYPE_TDIMMER_GEN2, THING_TYPE_QDIMMER_GEN2, THING_TYPE_EMONITOR_GEN1, THING_TYPE_TRELAY_GEN1,
+            THING_TYPE_UNKNOWNDEVICE,
+            // Connect Series
+            THING_TYPE_LIGHTWAVE_1HUB, THING_TYPE_LIGHTWAVE_1SWITCH, THING_TYPE_LIGHTWAVE_1DIMMER,
+            THING_TYPE_LIGHTWAVE_1TRV, THING_TYPE_LIGHTWAVE_1EM, THING_TYPE_LIGHTWAVE_1RELAY,
+            THING_TYPE_LIGHTWAVE_1MOOD, THING_TYPE_LIGHTWAVE_1ALLOFF).collect(Collectors.toSet()));
 
-    public static final Set<ThingTypeUID> DISCOVERABLE_THING_TYPE_UIDS = Collections.unmodifiableSet(
-            Stream.of(THING_TYPE_LIGHTWAVE_HUB,
-            THING_TYPE_THERMOSTAT,
-            THING_TYPE_SSOCKET_GEN1,
-            THING_TYPE_SSOCKET_GEN2,
-            THING_TYPE_DSOCKET_GEN2,
-            THING_TYPE_SDIMMER_GEN1,
-            THING_TYPE_SDIMMER_GEN2,
-            THING_TYPE_DDIMMER_GEN2,
-            THING_TYPE_TDIMMER_GEN2,
-            THING_TYPE_QDIMMER_GEN2,
-            THING_TYPE_EMONITOR_GEN1,
-            THING_TYPE_UNKNOWNDEVICE).collect(Collectors.toSet()));
+    public static final Set<ThingTypeUID> DISCOVERABLE_THING_TYPE_UIDS = Collections.unmodifiableSet(Stream.of(
+            // Smart Series
+            THING_TYPE_LIGHTWAVE_HUB, THING_TYPE_THERMOSTAT, THING_TYPE_TRV, THING_TYPE_MAGNETIC_GEN1,
+            THING_TYPE_SSOCKET_GEN1, THING_TYPE_DSOCKET_GEN1, THING_TYPE_SSOCKET_GEN2, THING_TYPE_DSOCKET_GEN2,
+            THING_TYPE_SDIMMER_GEN1, THING_TYPE_SDIMMER_GEN2, THING_TYPE_DDIMMER_GEN2, THING_TYPE_TDIMMER_GEN2,
+            THING_TYPE_QDIMMER_GEN2, THING_TYPE_EMONITOR_GEN1, THING_TYPE_TRELAY_GEN1, THING_TYPE_UNKNOWNDEVICE,
+            // Connect Series
+            THING_TYPE_LIGHTWAVE_1SWITCH, THING_TYPE_LIGHTWAVE_1DIMMER, THING_TYPE_LIGHTWAVE_1TRV,
+            THING_TYPE_LIGHTWAVE_1EM, THING_TYPE_LIGHTWAVE_1RELAY, THING_TYPE_LIGHTWAVE_1MOOD,
+            THING_TYPE_LIGHTWAVE_1ALLOFF).collect(Collectors.toSet()));
 
     // Structure / Devices / Featuresets
     public static final String CHANNEL_NAME = "name";
@@ -88,6 +94,11 @@ public class LWBindingConstants {
     public static final String CHANNEL_ENERGY_COST = "energyCost";
     public static final String CHANNEL_POWER_RESET = "powerReset";
     public static final String CHANNEL_POWER_COST = "powerCost";
+
+    public static final String CHANNEL_THREEWAYRELAY = "threeWayRelay";
+    public static final String CHANNEL_WINDOWPOSITION = "windowPosition";
+
+    public static final String CHANNEL_VALVESETUP = "valveSetup";
 
     // List of all Channel ids (Sockets)
     public static final String CHANNEL_SWITCH = "switch";

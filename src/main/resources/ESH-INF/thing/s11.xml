@@ -6,12 +6,12 @@
 
 	<thing-type id="s11">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="lightwaverfaccount" />
+			<bridge-type-ref id="lightwaverfaccount"/>
 		</supported-bridge-type-refs>
 		<label>Generation 1 Single Socket</label>
 		<description>Generation 1 Single Socket</description>
 		<channel-groups>
-			<channel-group id="1" typeId="s11" />
+			<channel-group id="1" typeId="s11"/>
 		</channel-groups>
 		<properties>
 			<property name="Device ID"></property>

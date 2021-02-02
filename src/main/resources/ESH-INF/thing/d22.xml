@@ -6,13 +6,13 @@
 
 	<thing-type id="d22">
 		<supported-bridge-type-refs>
-			<bridge-type-ref id="lightwaverfaccount" />
+			<bridge-type-ref id="lightwaverfaccount"/>
 		</supported-bridge-type-refs>
 		<label>Generation 2 2 Way Dimmer</label>
 		<description>Generation 2 2 Way Dimmer</description>
 		<channel-groups>
-			<channel-group id="1" typeId="d21" />
-			<channel-group id="2" typeId="d22" />
+			<channel-group id="1" typeId="d21"/>
+			<channel-group id="2" typeId="d22"/>
 		</channel-groups>
 		<properties>
 			<property name="Device ID"></property>
