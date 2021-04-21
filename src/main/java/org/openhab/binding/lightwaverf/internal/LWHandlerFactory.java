@@ -14,19 +14,22 @@ package org.openhab.binding.lightwaverf.internal;
 
 import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
 
+import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
-import org.eclipse.smarthome.core.thing.Bridge;
-import org.eclipse.smarthome.core.thing.Thing;
-import org.eclipse.smarthome.core.thing.ThingTypeUID;
-import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
-import org.eclipse.smarthome.core.thing.binding.ThingHandler;
-import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
-import org.eclipse.smarthome.io.net.http.HttpClientFactory;
-import org.eclipse.smarthome.io.net.http.WebSocketFactory;
-import org.openhab.binding.lightwaverf.internal.connect.handler.BridgeHandler;
-import org.openhab.binding.lightwaverf.internal.connect.handler.TRVHandler;
-import org.openhab.binding.lightwaverf.internal.smart.handler.DeviceHandler;
-import org.openhab.binding.lightwaverf.internal.smart.handler.LWAccountHandler;
+import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.websocket.client.WebSocketClient;
+import org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectAccountHandler;
+import org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectTRVHandler;
+import org.openhab.binding.lightwaverf.internal.handler.LightwaverfSmartAccountHandler;
+import org.openhab.binding.lightwaverf.internal.handler.LightwaverfSmartDeviceHandler;
+import org.openhab.core.io.net.http.HttpClientFactory;
+import org.openhab.core.io.net.http.WebSocketFactory;
+import org.openhab.core.thing.Bridge;
+import org.openhab.core.thing.Thing;
+import org.openhab.core.thing.ThingTypeUID;
+import org.openhab.core.thing.binding.BaseThingHandlerFactory;
+import org.openhab.core.thing.binding.ThingHandler;
+import org.openhab.core.thing.binding.ThingHandlerFactory;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,13 +44,13 @@ import com.google.gson.GsonBuilder;
  *
  * @author David Murton - Initial contribution
  */
-// @NonNullByDefault
+@NonNullByDefault
 @Component(configurationPid = "binding.lightwaverf", service = { ThingHandlerFactory.class, })
 
 public class LWHandlerFactory extends BaseThingHandlerFactory {
 
-    private final WebSocketFactory webSocketFactory;
-    private final HttpClientFactory httpClientFactory;
+    private final WebSocketClient webSocketClient;
+    private final HttpClient httpClient;
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
 
@@ -56,25 +59,25 @@ public class LWHandlerFactory extends BaseThingHandlerFactory {
         return SUPPORTED_THING_TYPE_UIDS.contains(thingTypeUID);
     }
 
+    @Activate
+    public LWHandlerFactory(final @Reference WebSocketFactory webSocketFactory,
+            final @Reference HttpClientFactory httpClientFactory) {
+        this.webSocketClient = webSocketFactory.getCommonWebSocketClient();
+        this.httpClient = httpClientFactory.getCommonHttpClient();
+    }
+
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_LIGHTWAVE_ACCOUNT.equals(thingTypeUID)) {
-            return new LWAccountHandler((Bridge) thing, webSocketFactory, httpClientFactory, gson);
+            return new LightwaverfSmartAccountHandler((Bridge) thing, webSocketClient, httpClient, gson);
         } else if (THING_TYPE_LIGHTWAVE_1HUB.equals(thingTypeUID)) {
-            return new BridgeHandler((Bridge) thing);
+            return new LightwaverfConnectAccountHandler((Bridge) thing);
         } else if (THING_TYPE_LIGHTWAVE_1TRV.equals(thingTypeUID)) {
-            return new TRVHandler((Thing) thing);
+            return new LightwaverfConnectTRVHandler((Thing) thing);
         } else {
-            return new DeviceHandler(thing);
+            return new LightwaverfSmartDeviceHandler(thing);
         }
-    }
-
-    @Activate
-    public LWHandlerFactory(final @Reference WebSocketFactory webSocketFactory,
-            final @Reference HttpClientFactory httpClientFactory) {
-        this.webSocketFactory = webSocketFactory;
-        this.httpClientFactory = httpClientFactory;
     }
 }

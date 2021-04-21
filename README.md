@@ -38,8 +38,9 @@ A list of supported channels will be generated under the 'Thing' properties in o
 
 Add a lightwave account thing and configure your email and password for your online account.
 Additional Properties:
-delay: (integer) the delay between sending messages in milliseconds (helpful for rules/startup sending lots of requests)
-retries: (integer) amount of tries to retry commands without a response 
+pollingInterval: Frequency bwtween api polls in milliseconds (can be set as low as 1).
+pollingGroupSize: The number of items to fetch in one request (if this is too high the api will time out, 20-30 is the most efficient)
+  
 
 
 ## Thing Configuration
@@ -48,7 +49,7 @@ The initial configuration is as follows:
 
 ```
 
-Bridge  lightwaverf:lightwaverfaccount:accountname  [ username="example@microsoft.com", password="password",retries=5,delay=100,electricityCost=14]
+Bridge  lightwaverf:lightwaverfaccount:accountname  [ username="example@microsoft.com", password="password",pollingInterval=0,pollingGroupSize=30,electricityCost=14]
 
 ```
 

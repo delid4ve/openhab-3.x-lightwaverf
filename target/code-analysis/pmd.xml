@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+    version="6.22.0" timestamp="2021-04-20T17:29:41.982">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfSmartAccountHandler.java">
+<violation beginline="114" endline="117" begincolumn="20" endcolumn="13" rule="EmptyIfStmt" ruleset="Error Prone" package="org.openhab.binding.lightwaverf.internal.handler" class="LightwaverfSmartAccountHandler" method="initialize" externalInfoUrl="https://pmd.github.io/pmd-6.22.0/pmd_rules_java_errorprone.html#emptyifstmt" priority="3">
+Avoid empty if statements
+</violation>
+</file>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\GeneralMessageId.java">
+<violation beginline="39" endline="39" begincolumn="16" endcolumn="31" rule="UnsynchronizedStaticFormatter" ruleset="Multithreading" package="org.openhab.binding.lightwaverf.internal.utilities" class="GeneralMessageId" method="getMessageIdString" externalInfoUrl="https://pmd.github.io/pmd-6.22.0/pmd_rules_java_multithreading.html#unsynchronizedstaticformatter" priority="3">
+Static Formatter objects should be accessed in a synchronized manner
+</violation>
+</file>
+</pmd>

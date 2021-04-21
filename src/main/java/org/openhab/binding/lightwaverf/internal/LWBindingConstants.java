@@ -13,12 +13,14 @@
 package org.openhab.binding.lightwaverf.internal;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
-import org.eclipse.smarthome.core.thing.ThingTypeUID;
+import org.openhab.core.thing.ThingTypeUID;
 
 /**
  * The {@link lightwaverfBindingConstants} class defines common constants, which are
@@ -84,6 +86,33 @@ public class LWBindingConstants {
             THING_TYPE_LIGHTWAVE_1SWITCH, THING_TYPE_LIGHTWAVE_1DIMMER, THING_TYPE_LIGHTWAVE_1TRV,
             THING_TYPE_LIGHTWAVE_1EM, THING_TYPE_LIGHTWAVE_1RELAY, THING_TYPE_LIGHTWAVE_1MOOD,
             THING_TYPE_LIGHTWAVE_1ALLOFF).collect(Collectors.toSet()));
+
+    // Map of product codes supported
+    public static final Map<String, ThingTypeUID> createMap() { // thing type denotes number of channels
+        Map<String, ThingTypeUID> deviceTypes = new HashMap<>();
+        deviceTypes.put("L2", THING_TYPE_LIGHTWAVE_HUB);
+        deviceTypes.put("LW931", THING_TYPE_MAGNETIC_GEN1);
+        deviceTypes.put("LW600", THING_TYPE_EMONITOR_GEN1);
+        deviceTypes.put("LW320", THING_TYPE_SSOCKET_GEN1);
+        deviceTypes.put("LW380", THING_TYPE_SSOCKET_GEN1);
+        deviceTypes.put("LW260", THING_TYPE_SSOCKET_GEN1);
+        deviceTypes.put("LW381", THING_TYPE_DSOCKET_GEN1);
+        deviceTypes.put("LW400", THING_TYPE_SDIMMER_GEN1);
+        deviceTypes.put("L42", THING_TYPE_DSOCKET_GEN2);
+        deviceTypes.put("L21", THING_TYPE_SDIMMER_GEN2);
+        deviceTypes.put("L21MK2", THING_TYPE_SDIMMER_GEN2);
+        deviceTypes.put("L22", THING_TYPE_DDIMMER_GEN2);
+        deviceTypes.put("L22MK2", THING_TYPE_DDIMMER_GEN2);
+        deviceTypes.put("L22EU", THING_TYPE_DDIMMER_GEN2);
+        deviceTypes.put("L23", THING_TYPE_TDIMMER_GEN2);
+        deviceTypes.put("L23MK2", THING_TYPE_TDIMMER_GEN2);
+        deviceTypes.put("L24", THING_TYPE_QDIMMER_GEN2);
+        deviceTypes.put("L24MK2", THING_TYPE_QDIMMER_GEN2);
+        deviceTypes.put("LW921", THING_TYPE_THERMOSTAT);
+        deviceTypes.put("LW922", THING_TYPE_TRV);
+        deviceTypes.put("LW821", THING_TYPE_TRELAY_GEN1);
+        return Collections.unmodifiableMap(deviceTypes);
+    }
 
     // Structure / Devices / Featuresets
     public static final String CHANNEL_NAME = "name";

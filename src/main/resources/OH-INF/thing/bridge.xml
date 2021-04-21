@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="lightwaverf"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="https://openhab.org/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="https://openhab.org/schemas/thing-description/v1.0.0 https://openhab.org/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Account -->
+	<bridge-type id="lightwaverfaccount">
+		<label>Lightwaverf Account</label>
+		<description>Lightwave Account</description>
+		<channels>
+			<channel id="dummy" typeId="dummy"/>
+		</channels>
+		<config-description>
+			<parameter name="username" type="text" required="true">
+				<label>Username</label>
+				<description>Lightwaverf Username</description>
+			</parameter>
+			<parameter name="password" type="text" required="true">
+				<context>password</context>
+				<label>Password</label>
+				<description>Lightwaverf Password</description>
+			</parameter>
+			<parameter name="retries" type="integer" required="true">
+				<label>Number of times to retry messages before failing</label>
+				<description>Number of times to retry messages before failing</description>
+				<default>5</default>
+			</parameter>
+			<parameter name="timeout" type="integer" required="true">
+				<label>Response Timeout</label>
+				<description>Timeout for the websocket to wait for a response in milliseconds (defualt 1000)</description>
+				<default>1000</default>
+			</parameter>
+			<parameter name="electricityCost" type="integer" required="true">
+				<label>Electricity Cost</label>
+				<description>Electricity Cost Per kwH In Pence (Integer)</description>
+				<default>14</default>
+			</parameter>
+		</config-description>
+	</bridge-type>
+
+</thing:thing-descriptions>
