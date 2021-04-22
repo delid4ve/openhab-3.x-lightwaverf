@@ -1,120 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <checkstyle version="8.30">
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\.classpath">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\.classpath">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\pom.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\pom.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\README.md">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\README.md">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\AllOffCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\AllOffCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\CommandOk.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\CommandOk.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\DimCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\DimCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\HeatInfoRequest.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\HeatInfoRequest.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\MoodCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\MoodCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\OnOffCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\OnOffCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RegistrationCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RegistrationCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RelayCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RelayCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RoomDeviceMessage.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RoomDeviceMessage.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RoomMessage.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\RoomMessage.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\SerialMessage.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\SerialMessage.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\TemperatureCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\TemperatureCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\VersionMessage.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\commands\VersionMessage.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectAccountConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectAccountConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectDimmerConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectDimmerConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectEnergyMonitorConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectEnergyMonitorConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectRelayConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectRelayConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectSwitchConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectSwitchConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectTRVConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfConnectTRVConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfSmartAccountConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfSmartAccountConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfSmartDeviceConfig.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\config\LightwaverfSmartDeviceConfig.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfConnectReceiverThread.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfConnectReceiverThread.java">
 <error line="38" column="33" severity="info" message="Name &apos;logger&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfConnectSenderThread.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfConnectSenderThread.java">
 <error line="61" column="33" severity="info" message="Name &apos;logger&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfSmartApi.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfSmartApi.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfSmartWebsocket.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\connections\LightwaverfSmartWebsocket.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\discovery\LWDiscoveryService.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\discovery\LWDiscoveryService.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartDevices.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartDevices.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartFeatures.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartFeatures.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartFeatureSets.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartFeatureSets.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartLogin.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartLogin.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartMyClient.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartMyClient.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartRoot.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartRoot.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartStructureList.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartStructureList.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartStructures.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartStructures.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartTokens.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\api\LightwaverfSmartTokens.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfConnectResponse.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfConnectResponse.java">
 <error line="62" column="20" severity="info" message="Name &apos;_long&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
 <error line="83" column="21" severity="info" message="Name &apos;_evns&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
 <error line="110" column="20" severity="info" message="Name &apos;_class&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
@@ -126,151 +90,123 @@
 <error line="344" column="19" severity="info" message="Name &apos;get_class&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
 <error line="348" column="17" severity="info" message="Name &apos;set_class&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartError.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartError.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartFeature.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartFeature.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartItem.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartItem.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartPayload.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartPayload.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartRequest.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\dto\LightwaverfSmartRequest.java">
 <error line="115" column="19" severity="info" message="Name &apos;getClass_&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectAccountHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectAccountHandler.java">
 <error line="55" column="27" severity="info" message="Name &apos;TIMEOUT_FOR_OK_MESSAGES_MS&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.MemberNameCheck"/>
 <error line="66" column="33" severity="info" message="Name &apos;logger&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
 <error line="102" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectDimmerHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectDimmerHandler.java">
 <error line="150" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="155" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="160" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectRelayHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectRelayHandler.java">
 <error line="145" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="150" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="155" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectSwitchHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectSwitchHandler.java">
 <error line="121" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="126" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="131" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectTRVHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfConnectTRVHandler.java">
 <error line="109" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="114" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 <error line="119" severity="info" message="Comment matches to-do format &apos;(TODO)|(FIXME)&apos;." source="com.puppycrawl.tools.checkstyle.checks.TodoCommentCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfSmartAccountHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfSmartAccountHandler.java">
+<error line="60" column="65" severity="info" message="Only one statement per line allowed." source="com.puppycrawl.tools.checkstyle.checks.coding.OneStatementPerLineCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfSmartDeviceHandler.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\handler\LightwaverfSmartDeviceHandler.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LightwaverfConnectMessageException.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LightwaverfConnectMessageException.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LightwaverfSmartCommandManager.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
-<error line="219" column="20" severity="info" message="Name &apos;class_&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LightwaverfSmartCommandManager.java">
+<error line="249" column="20" severity="info" message="Name &apos;class_&apos; must match pattern &apos;^[a-z][a-zA-Z0-9]*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfConnectMessageListener.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfConnectMessageListener.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfConnectStringMessageListener.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfConnectStringMessageListener.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfSmartDeviceListener.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfSmartDeviceListener.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfSmartListener.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\listeners\LightwaverfSmartListener.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LWBindingConstants.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LWBindingConstants.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LWHandlerFactory.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\LWHandlerFactory.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\AbstractLWCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\AbstractLWCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\GeneralMessageId.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\GeneralMessageId.java">
 <error line="31" column="40" severity="info" message="Name &apos;formatter&apos; must match pattern &apos;^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$&apos;." source="com.puppycrawl.tools.checkstyle.checks.naming.ConstantNameCheck"/>
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\LWCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\LWCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\LWType.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\LWType.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageConvertor.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageConvertor.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageId.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageId.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageType.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\MessageType.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\RegistrationMessageId.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\RegistrationMessageId.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\StopPublisherCommand.java">
-<error line="2" severity="error" message="Header line doesn&apos;t match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" source="org.openhab.tools.analysis.checkstyle.ParameterizedRegexpHeaderCheck"/>
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\java\org\openhab\binding\lightwaverf\internal\utilities\StopPublisherCommand.java">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\binding\binding.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\binding\binding.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\i18n\lightwaverf_xx_XX.properties">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\i18n\lightwaverf_xx_XX.properties">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\bridge.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\bridge.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\channelGroups.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\channelGroups.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\channels.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\channels.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\connectseries.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\connectseries.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d11.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d11.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d21.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d21.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d22.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d22.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d23.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d23.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d24.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\d24.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\device.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\device.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\e11.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\e11.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\h21.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\h21.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\m11.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\m11.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\r13.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\r13.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s11.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s11.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s12.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s12.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s22.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\s22.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\t11.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\t11.xml">
 </file>
-<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\t12.xml">
+<file name="D:\RDS_DATA\USERS_FOLDERS\Dave\Documents\GitHub\Repositories\openhab-addons-3.1.0\bundles\org.openhab.binding.lightwaverf\src\main\resources\OH-INF\thing\t12.xml">
 </file>
 </checkstyle>

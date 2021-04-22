@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -15,18 +15,10 @@ package org.openhab.binding.lightwaverf.internal.config;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 
 /**
- * The {@link lightwaverfBindingConstants} class defines common constants, which
- * are used across the whole binding.
- *
  * @author David Murton - Initial contribution
  */
 @NonNullByDefault
 public class LightwaverfSmartDeviceConfig {
 
     public String deviceid = "";
-
-    @Override
-    public String toString() {
-        return "[deviceid=" + deviceid + "]";
-    }
 }

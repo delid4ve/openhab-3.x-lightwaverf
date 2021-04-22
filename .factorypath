@@ -113,7 +113,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/org/openhab/core/bundles/org.openhab.core.io.transport.mdns/3.1.0-SNAPSHOT/org.openhab.core.io.transport.mdns-3.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/openhab/core/bundles/org.openhab.core.io.transport.modbus/3.1.0-SNAPSHOT/org.openhab.core.io.transport.modbus-3.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/apache/commons/commons-pool2/2.8.1/commons-pool2-2.8.1.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/net/wimpi/jamod/1.3.1.OH/jamod-1.3.1.OH.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/net/wimpi/jamod/1.3.2.OH/jamod-1.3.2.OH.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/openhab/core/bundles/org.openhab.core.io.transport.serial/3.1.0-SNAPSHOT/org.openhab.core.io.transport.serial-3.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/openhab/core/bundles/org.openhab.core.io.console.eclipse/3.1.0-SNAPSHOT/org.openhab.core.io.console.eclipse-3.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/openhab/core/bundles/org.openhab.core.io.console.rfc147/3.1.0-SNAPSHOT/org.openhab.core.io.console.rfc147-3.1.0-SNAPSHOT.jar" enabled="true" runInBatchMode="false"/>

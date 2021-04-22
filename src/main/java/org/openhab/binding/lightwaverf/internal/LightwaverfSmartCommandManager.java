@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -26,6 +26,7 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jdt.annotation.NonNullByDefault;
+import org.eclipse.jdt.annotation.Nullable;
 import org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartPayload;
 import org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartRequest;
 import org.openhab.binding.lightwaverf.internal.listeners.LightwaverfSmartDeviceListener;
@@ -65,6 +66,11 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
     private int transactionId = 1;
     private final String uuid = UUID.randomUUID().toString();
     private final String deviceUuid = UUID.randomUUID().toString();
+
+    public String getDeviceUuid() {
+        return this.deviceUuid;
+    }
+
     /** Boolean to indicate if we are running */
     private boolean running = false;
     private String token = "";
@@ -104,39 +110,52 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
     public void run() {
         logger.trace("Message Queue is running");
         try {
+            @Nullable
             LightwaverfSmartRequest command = queue.take();
-            CountDownLatch latch = new CountDownLatch(1);
-            latchMap.putIfAbsent(command.getTransactionId(), latch);
-            retryCountMap.putIfAbsent(command.getTransactionId(), Integer.valueOf(1));
-            sendMessage(gson.toJson(command));
-            boolean unlatched = latch.await(timeoutForOkMessagesMs, TimeUnit.MILLISECONDS);
-            latchMap.remove(command.getTransactionId());
-
-            if (!unlatched) {
-                Integer sendCount = retryCountMap.get(command.getTransactionId());
-                if (sendCount.intValue() >= retries) {
-                    logger.error(
-                            "Unable to send transaction {}, command was {} : {} for Device: {}, after {} retry attempts",
-                            command.getTransactionId(), command.getItems().get(0).getPayload().getType(),
-                            command.getItems().get(0).getPayload().getValue(),
-                            command.getItems().get(0).getPayload().getDeviceId(), 5);
+            if (command != null) {
+                if (command.getOperation() == null) {
+                    sendMessage("{}");
                     return;
                 }
-                if (!running) {
-                    logger.error("Not retrying transactionId {} as we are stopping", command.getTransactionId());
-                    return;
+                CountDownLatch latch = new CountDownLatch(1);
+                latchMap.putIfAbsent(command.getTransactionId(), latch);
+                retryCountMap.putIfAbsent(command.getTransactionId(), Integer.valueOf(1));
+                sendMessage(gson.toJson(command));
+                boolean unlatched = latch.await(timeoutForOkMessagesMs, TimeUnit.MILLISECONDS);
+                latchMap.remove(command.getTransactionId());
 
+                if (!unlatched) {
+                    Integer sendCount = retryCountMap.get(command.getTransactionId());
+                    if (sendCount == null) {
+                        logger.error("Unable to get sendCount, aborting retrying for transaction {}",
+                                command.getTransactionId());
+                    } else {
+                        if (sendCount.intValue() >= retries) {
+                            logger.error(
+                                    "Unable to send transaction {}, command value was {} : {} for Device: {}, after {} retry attempts",
+                                    command.getTransactionId(), command.getItems().get(0).getPayload().getType(),
+                                    command.getItems().get(0).getPayload().getValue(),
+                                    command.getItems().get(0).getPayload().getDeviceId(), 5);
+                            return;
+                        }
+
+                        if (!running) {
+                            logger.error("Not retrying transactionId {} as we are stopping",
+                                    command.getTransactionId());
+                            return;
+
+                        }
+                        Integer newRetryCount = Integer.valueOf(sendCount.intValue() + 1);
+                        logger.error(
+                                "Ok message not received for transaction: {}, for Device: {}, retrying again. Retry count {}",
+                                command.getTransactionId(),
+                                featureMap.get(command.getItems().get(0).getPayload().getFeatureId()), newRetryCount);
+                        retryCountMap.put(command.getTransactionId(), newRetryCount);
+                        queue.addFirst(command);
+                    }
+                } else {
+                    logger.trace("Ok message processed for transaction:{}", command.getTransactionId());
                 }
-                Integer newRetryCount = Integer.valueOf(sendCount.intValue() + 1);
-                logger.error(
-                        "Ok message not received for transaction: {}, command was {} : {} for Device: {}, retrying again. Retry count {}",
-                        command.getTransactionId(), command.getItems().get(0).getPayload().getType(),
-                        command.getItems().get(0).getPayload().getValue(),
-                        command.getItems().get(0).getPayload().getDeviceId(), newRetryCount);
-                retryCountMap.put(command.getTransactionId(), newRetryCount);
-                queue.addFirst(command);
-            } else {
-                logger.trace("Ok message processed for transaction:{}", command.getTransactionId());
             }
         } catch (InterruptedException e) {
             logger.error("Command manager threw an exception: {}", e.getMessage());
@@ -165,11 +184,16 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
     }
 
     public synchronized void queueCommand(LightwaverfSmartRequest command) {
-        command.setSenderId(uuid);
-        command.setTransactionId(transactionId);
-        command.getItems().get(0).setItemId(transactionId + "");
         try {
             if (running) {
+                if (command.getOperation() == null) {
+                    logger.debug("Queueing Ping Command");
+                    queue.put(command);
+                    return;
+                }
+                command.setSenderId(uuid);
+                command.setTransactionId(transactionId);
+                command.getItems().get(0).setItemId(transactionId + "");
                 if (command.getOperation().equals("authenticate")) {
                     logger.debug("Adding login command to the top of the queue");
                     queue.putFirst(command);
@@ -190,6 +214,12 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
     public void sendLoginCommand() {
         logger.debug("Sending Login Command");
         LightwaverfSmartRequest command = new LightwaverfSmartRequest(token, this.deviceUuid);
+        queueCommand(command);
+    }
+
+    public void sendPing() {
+        logger.debug("Sending Ping Command");
+        LightwaverfSmartRequest command = new LightwaverfSmartRequest();
         queueCommand(command);
     }
 
@@ -250,9 +280,19 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
                     if (payload != null) {
                         if (payload.getFeature() == null) {
                             if (direction.equals("response")) {
-                                String featureid = messages.get(transactionid).getItems().get(i).getPayload()
-                                        .getFeatureId();
-                                deviceid = featureMap.get(featureid);
+                                LightwaverfSmartRequest request = messages.get(transactionid);
+                                if (request != null) {
+                                    String featureid = request.getItems().get(i).getPayload().getFeatureId();
+                                    if (featureid != null) {
+                                        deviceid = featureMap.get(featureid);
+                                    } else {
+                                        logger.error(
+                                                " Cannot process update, unable to get device id from feature map");
+                                        return;
+                                    }
+                                } else {
+                                    logger.error(" Cannot process update, message wasnt present");
+                                }
                             } else {
                                 deviceid = featureMap.get(payload.getFeatureId());
                             }
@@ -283,6 +323,7 @@ public class LightwaverfSmartCommandManager implements Runnable, LightwaverfSmar
                 logger.info(
                         "Closing existing connection at the server for connectionid {} as it wasnt closed correctly",
                         response.getItems().get(0).getPayload().getConnectionId());
+                listener.websocketConnected(false);
                 return;
             }
 

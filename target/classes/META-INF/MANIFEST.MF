@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.openhab.binding.lightwaverf
-Bnd-LastModified: 1618936163836
+Bnd-LastModified: 1619103158314
 Bundle-Description: This project contains the official add-ons of open
  HAB
 Bundle-Developers: openhab;email="info@openhab.org";name=openHAB;organ
@@ -20,7 +20,7 @@ Bundle-SCM: url="https://github.com/openhab/openhab-addons/org.openhab
  ab.addons.reactor.bundles/org.openhab.binding.lightwaverf",tag=HEAD
 Bundle-SymbolicName: org.openhab.binding.lightwaverf
 Bundle-Vendor: openHAB.org
-Bundle-Version: 3.1.0.202104201629
+Bundle-Version: 3.1.0.202104221452
 Created-By: 11.0.9 (Oracle Corporation)
 Import-Package: org.openhab.core.config.core,org.openhab.core.config.d
  iscovery,org.openhab.core.io.net.http,org.openhab.core.library.types,

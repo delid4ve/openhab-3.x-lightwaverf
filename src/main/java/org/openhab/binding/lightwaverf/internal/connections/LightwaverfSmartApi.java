@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -67,12 +67,15 @@ public class LightwaverfSmartApi {
 
     public List<LightwaverfSmartDevices> getDevices() {
         List<LightwaverfSmartDevices> devices = new ArrayList<LightwaverfSmartDevices>();
-        LightwaverfSmartStructureList structureList = new LightwaverfSmartStructureList();
-        structureList = getStructureList();
-        for (int a = 0; a < structureList.getStructures().size(); a++) {
-            String structureId = structureList.getStructures().get(a).toString();
-            LightwaverfSmartRoot structure = getStructure(structureId);
-            devices.addAll(structure.getDevices());
+        LightwaverfSmartStructureList structureList = getStructureList();
+        if (structureList != null) {
+            for (int a = 0; a < structureList.getStructures().size(); a++) {
+                String structureId = structureList.getStructures().get(a).toString();
+                LightwaverfSmartRoot structure = getStructure(structureId);
+                if (structure != null) {
+                    devices.addAll(structure.getDevices());
+                }
+            }
         }
         return devices;
     }
@@ -118,15 +121,27 @@ public class LightwaverfSmartApi {
         jsonReq.addProperty("password", this.password);
         ContentResponse response;
         try {
-            response = httpClient.newRequest(loginUrl).header("x-lwrf-appid", "ios-01")
-                    // .header("accept", "application/json").header("Content-Type", "application/json")
-                    .method("POST").content(new StringContentProvider(gson.toJson(jsonReq)), "application/json").send();
-            error(response.getContentAsString());
-            login = gson.fromJson(response.getContentAsString(), LightwaverfSmartLogin.class);
-            token = login.getTokens().getAccessToken();
-            listener.tokenUpdated(token);
-            logger.debug("LightwaveRF - New Refresh Token Aquired: {}", token);
-            return response.getContentAsString();
+            response = httpClient.newRequest(loginUrl).header("x-lwrf-appid", "ios-01").method("POST")
+                    .content(new StringContentProvider(gson.toJson(jsonReq)), "application/json").send();
+            if (response != null) {
+                String content = response.getContentAsString();
+                // Check we havnt got any errors
+                if (content.contains("Not found")) {
+                    logger.warn("LightwaveRF - API returned 'Not Found' - User Credentials maybe incorrect");
+                    return null;
+                } else if (content.contains("Discovery Failed")) {
+                    logger.warn("LightwaveRF - Discovery failed, API maybe offline");
+                    return null;
+                }
+                login = gson.fromJson(response.getContentAsString(), LightwaverfSmartLogin.class);
+                if (login != null) {
+                    token = login.getTokens().getAccessToken();
+                    listener.tokenUpdated(token);
+                    logger.debug("LightwaveRF - New Refresh Token Aquired: {}", token);
+                    return response.getContentAsString();
+                }
+            }
+            return null;
         } catch (Exception e) {
             logger.debug("LightwaveRF - Error Logging into API:{}", e.getMessage());
             return null;

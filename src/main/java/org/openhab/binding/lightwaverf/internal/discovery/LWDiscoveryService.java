@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -79,9 +79,11 @@ public class LWDiscoveryService extends AbstractDiscoveryService implements Thin
 
     @Override
     protected void startScan() {
-        // logger.debug("Start Scan");
-        if (this.scanTask != null) {
+        logger.debug("Start Scan");
+        ScheduledFuture<?> scanTask = this.scanTask;
+        if (scanTask != null) {
             scanTask.cancel(true);
+            this.scanTask = null;
         }
         this.scanTask = scheduler.schedule(() -> {
             try {

@@ -1,115 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><sca xmlns:pmdns="http://pmd.sourceforge.net/report/2.0.0" xmlns:functx="http://www.functx.com">
-   <file name="org.openhab.binding.lightwaverf.internal.commands.AllOffCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.CommandOk.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.DimCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.HeatInfoRequest.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.MoodCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.OnOffCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.RegistrationCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.RelayCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.RoomDeviceMessage.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.RoomMessage.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.SerialMessage.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.TemperatureCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.commands.VersionMessage.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectAccountConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectDimmerConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectEnergyMonitorConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectRelayConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectSwitchConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfConnectTRVConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfSmartAccountConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.config.LightwaverfSmartDeviceConfig.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
    <file name="org.openhab.binding.lightwaverf.internal.connections.LightwaverfConnectReceiverThread.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="38" message="Name 'logger' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
+   <message tool="checkstyle" line="38" message="Name 'logger' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.connections.LightwaverfConnectSenderThread.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="61" message="Name 'logger' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.connections.LightwaverfSmartApi.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.connections.LightwaverfSmartWebsocket.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.discovery.LWDiscoveryService.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartDevices.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartFeatures.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartFeatureSets.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartLogin.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartMyClient.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartRoot.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartStructureList.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartStructures.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartTokens.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
+   <message tool="checkstyle" line="61" message="Name 'logger' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfConnectResponse.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
       <message tool="checkstyle" line="62" message="Name '_long' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MemberNameCheck" category="style"/>
       <message tool="checkstyle" line="83" message="Name '_evns' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MemberNameCheck" category="style"/>
       <message tool="checkstyle" line="110" message="Name '_class' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MemberNameCheck" category="style"/>
@@ -121,137 +19,60 @@
       <message tool="checkstyle" line="344" message="Name 'get_class' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MethodNameCheck" category="style"/>
       <message tool="checkstyle" line="348" message="Name 'set_class' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MethodNameCheck" category="style"/>
    </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartError.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartFeature.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartItem.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartPayload.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
+
+
+
+
    <file name="org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartRequest.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
       <message tool="checkstyle" line="115" message="Name 'getClass_' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MethodNameCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectAccountHandler.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="55" message="Name 'TIMEOUT_FOR_OK_MESSAGES_MS' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MemberNameCheck" category="style"/>
+   <message tool="checkstyle" line="55" message="Name 'TIMEOUT_FOR_OK_MESSAGES_MS' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="MemberNameCheck" category="style"/>
       <message tool="checkstyle" line="66" message="Name 'logger' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
       <message tool="checkstyle" line="102" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectDimmerHandler.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="150" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
+   <message tool="checkstyle" line="150" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="155" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="160" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectRelayHandler.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="145" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
+   <message tool="checkstyle" line="145" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="150" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="155" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectSwitchHandler.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="121" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
+   <message tool="checkstyle" line="121" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="126" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="131" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
    </file>
    <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectTRVHandler.java">
       <message tool="findbugs" line="" message="&#xA;      Logger should be non-static field. Change this field (logger) to non-static field.&#xA;    " priority="3" rule="Logger should be non-static field (SLF4J)" category="bad practice" rule_id="SLF4J_LOGGER_SHOULD_BE_NON_STATIC"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="109" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
+   <message tool="checkstyle" line="109" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="114" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
       <message tool="checkstyle" line="119" message="Comment matches to-do format '(TODO)|(FIXME)'." priority="3" rule="TodoCommentCheck" category="style"/>
    </file>
 <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfSmartAccountHandler.java">
-      <message tool="pmd" line="114" message="&#xA;Avoid empty if statements&#xA;" priority="3" rule="EmptyIfStmt" rule_url="https://pmd.github.io/pmd-6.22.0/pmd_rules_java_errorprone.html#emptyifstmt" category="error prone"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
+      <message tool="checkstyle" line="60" message="Only one statement per line allowed." priority="3" rule="OneStatementPerLineCheck" category="style"/>
    </file>
-   <file name="org.openhab.binding.lightwaverf.internal.handler.LightwaverfSmartDeviceHandler.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.LightwaverfConnectMessageException.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
+
+
    <file name="org.openhab.binding.lightwaverf.internal.LightwaverfSmartCommandManager.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="219" message="Name 'class_' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="LocalVariableNameCheck" category="style"/>
+      <message tool="checkstyle" line="249" message="Name 'class_' must match pattern '^[a-z][a-zA-Z0-9]*$'." priority="3" rule="LocalVariableNameCheck" category="style"/>
    </file>
-   <file name="org.openhab.binding.lightwaverf.internal.listeners.LightwaverfConnectMessageListener.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.listeners.LightwaverfConnectStringMessageListener.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.listeners.LightwaverfSmartDeviceListener.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.listeners.LightwaverfSmartListener.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.LWBindingConstants.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.LWHandlerFactory.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.AbstractLWCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
+
+
+
+
+
+
+
    <file name="org.openhab.binding.lightwaverf.internal.utilities.GeneralMessageId.java">
       <message tool="pmd" line="39" message="&#xA;Static Formatter objects should be accessed in a synchronized manner&#xA;" priority="3" rule="UnsynchronizedStaticFormatter" rule_url="https://pmd.github.io/pmd-6.22.0/pmd_rules_java_multithreading.html#unsynchronizedstaticformatter" category="multithreading"/>
-   <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-      <message tool="checkstyle" line="31" message="Name 'formatter' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
+   <message tool="checkstyle" line="31" message="Name 'formatter' must match pattern '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'." priority="3" rule="ConstantNameCheck" category="style"/>
    </file>
-<file name="org.openhab.binding.lightwaverf.internal.utilities.LWCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.LWType.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.MessageConvertor.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.MessageId.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.MessageType.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.RegistrationMessageId.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-   <file name="org.openhab.binding.lightwaverf.internal.utilities.StopPublisherCommand.java">
-      <message tool="checkstyle" line="2" message="Header line doesn't match pattern ^ \* Copyright \(c\) 2010-2021 Contributors to the openHAB project$" priority="1" rule="ParameterizedRegexpHeaderCheck" category="style"/>
-   </file>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </sca>

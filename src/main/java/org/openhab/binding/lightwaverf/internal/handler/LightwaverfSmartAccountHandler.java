@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -23,7 +23,6 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.openhab.binding.lightwaverf.internal.LightwaverfSmartCommandManager;
 import org.openhab.binding.lightwaverf.internal.config.LightwaverfSmartAccountConfig;
 import org.openhab.binding.lightwaverf.internal.connections.LightwaverfSmartApi;
@@ -33,9 +32,11 @@ import org.openhab.binding.lightwaverf.internal.dto.LightwaverfSmartRequest;
 import org.openhab.binding.lightwaverf.internal.dto.api.LightwaverfSmartDevices;
 import org.openhab.binding.lightwaverf.internal.listeners.LightwaverfSmartDeviceListener;
 import org.openhab.binding.lightwaverf.internal.listeners.LightwaverfSmartListener;
+import org.openhab.core.io.net.http.WebSocketFactory;
 import org.openhab.core.thing.Bridge;
 import org.openhab.core.thing.ChannelUID;
 import org.openhab.core.thing.ThingStatus;
+import org.openhab.core.thing.ThingStatusDetail;
 import org.openhab.core.thing.binding.BaseBridgeHandler;
 import org.openhab.core.thing.binding.ThingHandlerService;
 import org.openhab.core.types.Command;
@@ -53,9 +54,10 @@ import com.google.gson.Gson;
 @NonNullByDefault
 public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements LightwaverfSmartListener {
     private final Logger logger = LoggerFactory.getLogger(LightwaverfSmartAccountHandler.class);
+
     private final LightwaverfSmartApi api;
     private final LightwaverfSmartWebsocket webSocket;
-    private final LightwaverfSmartCommandManager commandManager;
+    private final LightwaverfSmartCommandManager commandManager;;
 
     private @Nullable ScheduledFuture<?> connectionTask;
     private @Nullable ScheduledFuture<?> tokenTask;
@@ -63,15 +65,16 @@ public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements
 
     private Map<String, LightwaverfSmartDevices> devices = new HashMap<String, LightwaverfSmartDevices>();
 
-    private Boolean wsOnline = false;
-    private Double electricityCost = 0.0;
+    LightwaverfSmartAccountConfig config = new LightwaverfSmartAccountConfig();
 
-    public LightwaverfSmartAccountHandler(Bridge thing, WebSocketClient webSocketClient, HttpClient httpClient,
+    private Boolean wsOnline = false;
+
+    public LightwaverfSmartAccountHandler(Bridge thing, WebSocketFactory webSocketFactory, HttpClient httpClient,
             Gson gson) {
         super(thing);
         this.commandManager = new LightwaverfSmartCommandManager(this, gson);
-        this.webSocket = new LightwaverfSmartWebsocket(webSocketClient, this);
         this.api = new LightwaverfSmartApi(httpClient, gson, this);
+        this.webSocket = new LightwaverfSmartWebsocket(webSocketFactory, this);
     }
 
     @Override
@@ -81,49 +84,44 @@ public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements
 
     @Override
     public void initialize() {
-        LightwaverfSmartAccountConfig config = this.getConfigAs(LightwaverfSmartAccountConfig.class);
-        // String username = (String) getConfig().get("username");
-        // String password = (String) getConfig().get("password");
-        // Integer retries = (Integer) getConfig().get("retries");
-        // Integer electricityCost = (Integer) getConfig().get("electricityCost");
-        // Integer delay = (Integer) getConfig().get("delay");
-
-        String username = config.username;
-        String password = config.password;
-        Integer retries = config.retries;
-        Integer electricityCost = config.electricityCost;
-        Integer delay = config.delay;
-        Integer timeout = config.timeout;
-        this.electricityCost = ((double) electricityCost) / 100;
-        api.start(username, password);
-        commandManager.start(retries, timeout);
-        List<LightwaverfSmartDevices> deviceList = api.getDevices();
-        for (int i = 0; i < deviceList.size(); i++) {
-            LightwaverfSmartDevices device = deviceList.get(i);
-            String deviceid = device.getDeviceId();
-            // Add to list for device handlers to initialise
-            devices.put(deviceid, deviceList.get(i));
+        config = this.getConfigAs(LightwaverfSmartAccountConfig.class);
+        if (!config.username.isEmpty() && !config.password.isEmpty()) {
+            // this.electricityCost = ((double) config.electricityCost) / 100;
+            api.start(config.username, config.password);
+            commandManager.start(config.retries, config.timeout);
+            List<LightwaverfSmartDevices> deviceList = api.getDevices();
+            for (int i = 0; i < deviceList.size(); i++) {
+                LightwaverfSmartDevices device = deviceList.get(i);
+                String deviceid = device.getDeviceId();
+                // Add to list for device handlers to initialise
+                devices.put(deviceid, deviceList.get(i));
+            }
+            queueTask = scheduler.scheduleWithFixedDelay(commandManager, 0, config.delay, TimeUnit.MILLISECONDS);
+            webSocket.start();
+            // Create other tasks
+            logger.debug("Creating scheduled tasks");
+            Runnable connectionCheck = () -> {
+                if (!wsOnline) {
+                    reConnect();
+                } else {
+                    commandManager.sendPing();
+                }
+            };
+            connectionTask = scheduler.scheduleWithFixedDelay(connectionCheck, 60, 60, TimeUnit.SECONDS);
+            Runnable refreshTokens = () -> {
+                if (wsOnline) {
+                    refreshTokens();
+                } else {
+                    webSocket.start();
+                }
+            };
+            tokenTask = scheduler.scheduleWithFixedDelay(refreshTokens, 24, 24, TimeUnit.HOURS);
+            updateProperties();
+        } else {
+            logger.error("Account configuration incomplete");
+            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    "Bridge Configuration not complete");
         }
-        queueTask = scheduler.scheduleWithFixedDelay(commandManager, 0, delay, TimeUnit.MILLISECONDS);
-        webSocket.start();
-        // Create other tasks
-        logger.debug("Creating scheduled tasks");
-        Runnable connectionCheck = () -> {
-            if (!wsOnline) {
-                reConnect();
-            } else {
-                // commandManager.sendLoginCommand();
-                // webSocket.sendPing();
-            }
-        };
-        connectionTask = scheduler.scheduleWithFixedDelay(connectionCheck, 60, 60, TimeUnit.SECONDS);
-        Runnable refreshTokens = () -> {
-            if (wsOnline) {
-                refreshTokens();
-            }
-        };
-        tokenTask = scheduler.scheduleWithFixedDelay(refreshTokens, 24, 24, TimeUnit.HOURS);
-        updateProperties();
     }
 
     @Override
@@ -149,9 +147,9 @@ public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements
             }
         }
         commandManager.setRunning(false);
-        webSocket.stop();
         commandManager.stop();
-        wsOnline = false;
+        webSocket.stop();
+        this.wsOnline = false;
     }
 
     @Override
@@ -208,8 +206,8 @@ public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements
         commandManager.sendLoginCommand();
     }
 
-    public Double getElectricityCost() {
-        return this.electricityCost;
+    public double getElectricityCost() {
+        return config.electricityCost;
     }
 
     @Override
@@ -223,6 +221,7 @@ public class LightwaverfSmartAccountHandler extends BaseBridgeHandler implements
         if (!connected) {
             updateStatus(ThingStatus.OFFLINE);
             this.wsOnline = false;
+            webSocket.setConnected(false);
         }
     }
 

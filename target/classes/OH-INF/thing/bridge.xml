@@ -28,13 +28,18 @@
 			</parameter>
 			<parameter name="timeout" type="integer" required="true">
 				<label>Response Timeout</label>
-				<description>Timeout for the websocket to wait for a response in milliseconds (defualt 1000)</description>
-				<default>1000</default>
+				<description>Timeout for the websocket to wait for a response in milliseconds (defualt 2000)</description>
+				<default>2000</default>
+			</parameter>
+			<parameter name="delay" type="integer" required="true">
+				<label>Delay Between Messages</label>
+				<description>Delay between sending messages to the websocket in milliseconds (default 100)</description>
+				<default>100</default>
 			</parameter>
 			<parameter name="electricityCost" type="integer" required="true">
 				<label>Electricity Cost</label>
 				<description>Electricity Cost Per kwH In Pence (Integer)</description>
-				<default>14</default>
+				<default>15</default>
 			</parameter>
 		</config-description>
 	</bridge-type>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -56,8 +56,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
     private final Logger logger = LoggerFactory.getLogger(LightwaverfSmartDeviceHandler.class);
     private @Nullable LightwaverfSmartAccountHandler account;
     private Map<String, String> channels = new HashMap<String, String>();
-    private String deviceid = "";
-    private Double electricityCost = 0.0;
+    LightwaverfSmartDeviceConfig config = new LightwaverfSmartDeviceConfig();
 
     public LightwaverfSmartDeviceHandler(Thing thing) {
         super(thing);
@@ -65,43 +64,46 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
 
     @Override
     public void initialize() {
-        Bridge bridge = getBridge();
-        if (bridge == null) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Bridge Not set");
-        } else {
-            LightwaverfSmartAccountHandler account = (LightwaverfSmartAccountHandler) bridge.getHandler();
-            if (account != null) {
-                this.account = account;
-                this.electricityCost = account.getElectricityCost();
-                LightwaverfSmartDeviceConfig config = this.getConfigAs(LightwaverfSmartDeviceConfig.class);
-                this.deviceid = config.deviceid;
-                LightwaverfSmartDevices device = account.getDevice(deviceid);
-                if (device == null) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
-                            "Please check the deviceid as the data couldnt be retrieved");
-                    return;
-                } else {
-                    // Create a channel map and add the features to the featuremap for received messages
-                    List<LightwaverfSmartFeatureSets> featureSets = device.getFeatureSets();
-                    for (int i = 0; i < featureSets.size(); i++) {
-                        List<LightwaverfSmartFeatures> features = featureSets.get(i).getFeatures();
-                        for (int j = 0; j < features.size(); j++) {
-                            String channel = (i + 1) + "#" + features.get(j).getType();
-                            String featureid = features.get(j).getFeatureId();
-                            logger.trace("Adding Channel {} with featureid {} to map for device {}", channel, featureid,
-                                    deviceid);
-                            account.addFeature(featureid, deviceid);
-                            channels.putIfAbsent(channel, featureid);
-                        }
-                    }
-                    setProperties(device);
-                    account.addDeviceListener(deviceid, this);
-                }
+        config = this.getConfigAs(LightwaverfSmartDeviceConfig.class);
+        if (!config.deviceid.isEmpty()) {
+            Bridge bridge = getBridge();
+            if (bridge == null) {
+                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR, "Bridge Not set");
+            } else {
+                LightwaverfSmartAccountHandler account = (LightwaverfSmartAccountHandler) bridge.getHandler();
+                if (account != null) {
+                    this.account = account;
+                    // this.electricityCost = account.getElectricityCost();
 
-                if (bridge.getStatus() == ThingStatus.ONLINE) {
-                    updateStatus(ThingStatus.ONLINE);
-                } else {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
+                    // this.deviceid = config.deviceid;
+                    LightwaverfSmartDevices device = account.getDevice(config.deviceid);
+                    if (device == null) {
+                        updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                                "Please check the deviceid as the data couldnt be retrieved");
+                        return;
+                    } else {
+                        // Create a channel map and add the features to the featuremap for received messages
+                        List<LightwaverfSmartFeatureSets> featureSets = device.getFeatureSets();
+                        for (int i = 0; i < featureSets.size(); i++) {
+                            List<LightwaverfSmartFeatures> features = featureSets.get(i).getFeatures();
+                            for (int j = 0; j < features.size(); j++) {
+                                String channel = (i + 1) + "#" + features.get(j).getType();
+                                String featureid = features.get(j).getFeatureId();
+                                logger.trace("Adding Channel {} with featureid {} to map for device {}", channel,
+                                        featureid, config.deviceid);
+                                account.addFeature(featureid, config.deviceid);
+                                channels.putIfAbsent(channel, featureid);
+                            }
+                        }
+                        setProperties(device);
+                        account.addDeviceListener(config.deviceid, this);
+                    }
+                    if (bridge.getStatus() == ThingStatus.ONLINE) {
+                        updateStatus(ThingStatus.ONLINE);
+                        updateChannels();
+                    } else {
+                        updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
+                    }
                 }
             }
         }
@@ -112,6 +114,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
         logger.debug("bridgeStatusChanged {} for thing {}", bridgeStatusInfo, getThing().getUID());
         if (bridgeStatusInfo.getStatus() == ThingStatus.ONLINE) {
             updateStatus(ThingStatus.ONLINE);
+            updateChannels();
         } else {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.BRIDGE_OFFLINE);
         }
@@ -122,8 +125,14 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
         logger.debug("LightwaveRF - Running dispose()");
         LightwaverfSmartAccountHandler account = this.account;
         if (account != null) {
-            account.removeDeviceListener(deviceid);
+            account.removeDeviceListener(config.deviceid);
             account = null;
+        }
+    }
+
+    private void updateChannels() {
+        for (int j = 0; j < this.getThing().getChannels().size(); j++) {
+            handleCommand(this.getThing().getChannels().get(j).getUID(), RefreshType.REFRESH);
         }
     }
 
@@ -226,7 +235,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
                     setStatus("feature", "write", "request", 0L, featureid);
                 } else {
                     logger.error("Command {} for device {} returned a null featureid and couldnt be sent",
-                            command.toString(), this.deviceid);
+                            command.toString(), config.deviceid);
                 }
             } else if (channelUID.getIdWithoutGroup().equals("voltageReset")) {
                 String featureid = channels.get(channelUID.getGroupId() + "#" + "voltage");
@@ -234,7 +243,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
                     setStatus("feature", "write", "request", 0L, featureid);
                 } else {
                     logger.error("Command {} for device {} returned a null featureid and couldnt be sent",
-                            command.toString(), this.deviceid);
+                            command.toString(), config.deviceid);
                 }
             }
             updateState(channelUID.getId().toString(), OnOffType.OFF);
@@ -246,7 +255,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
         if (command instanceof RefreshType) {
             String featureid = channels.get(channelUID.getId());
             if (featureid != null) {
-                logger.trace("Device {} is requesting an update for {}", deviceid, channelUID.getId());
+                logger.trace("Device {} is requesting an update for {}", config.deviceid, channelUID.getId());
                 setStatus("feature", "read", "request", null, featureid);
             }
             return;
@@ -261,7 +270,7 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
                     setStatus("feature", "write", "request", value, featureid);
                 } else {
                     logger.error("Command {} for device {} returned a null featureid and couldnt be sent",
-                            command.toString(), this.deviceid);
+                            command.toString(), config.deviceid);
                 }
             }
         }
@@ -278,14 +287,14 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
         item.setPayload(payload);
         LightwaverfSmartRequest command = new LightwaverfSmartRequest(_class, operation, direction, item);
         if (payload.getFeatureId() == null) {
-            logger.error("Payload was emtpy from device {}, not sending message {} - {} - {}", deviceid, id, _class,
-                    operation);
+            logger.error("Payload was emtpy from device {}, not sending message {} - {} - {}", config.deviceid, id,
+                    _class, operation);
         } else {
             LightwaverfSmartAccountHandler account = this.account;
             if (account != null && account.isConnected()) {
                 account.sendDeviceCommand(command);
             } else {
-                logger.error("Could not set status for device {} as the account is disconnected", deviceid);
+                logger.error("Could not set status for device {} as the account is disconnected", config.deviceid);
             }
         }
     }
@@ -293,14 +302,19 @@ public class LightwaverfSmartDeviceHandler extends BaseThingHandler implements L
     @Override
     public void updateChannel(String channelId, State state) {
         updateState(channelId, state);
-        logger.debug("Device {} Updated Channel {}", deviceid, channelId);
-        if (channelId.contains("power")) {
-            Double value = Double.valueOf(state.toString());
-            updateState(channelId + "Cost", new DecimalType((value / 1000) * electricityCost));
-        }
-        if (channelId.contains("energy")) {
-            Double value = Double.valueOf(state.toString());
-            updateState(channelId + "Cost", new DecimalType(value * electricityCost));
+        logger.debug("Device {} Updated Channel {}", config.deviceid, channelId);
+        if (channelId.contains("power") || channelId.contains("energy")) {
+            LightwaverfSmartAccountHandler account = this.account;
+            if (account != null) {
+                double electricityCost = account.getElectricityCost();
+                double value = Double.valueOf(state.toString());
+                if (channelId.contains("power")) {
+                    updateState(channelId + "Cost", new DecimalType((value / 100000) * electricityCost));
+                }
+                if (channelId.contains("energy")) {
+                    updateState(channelId + "Cost", new DecimalType(value / 100 * electricityCost));
+                }
+            }
         }
     }
 }

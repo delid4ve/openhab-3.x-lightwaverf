@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2020 Contributors to the openHAB project
+ * Copyright (c) 2010-2021 Contributors to the openHAB project
  *
  * See the NOTICE file(s) distributed with this work for additional
  * information.
@@ -17,7 +17,6 @@ import static org.openhab.binding.lightwaverf.internal.LWBindingConstants.*;
 import org.eclipse.jdt.annotation.NonNullByDefault;
 import org.eclipse.jdt.annotation.Nullable;
 import org.eclipse.jetty.client.HttpClient;
-import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectAccountHandler;
 import org.openhab.binding.lightwaverf.internal.handler.LightwaverfConnectTRVHandler;
 import org.openhab.binding.lightwaverf.internal.handler.LightwaverfSmartAccountHandler;
@@ -49,7 +48,7 @@ import com.google.gson.GsonBuilder;
 
 public class LWHandlerFactory extends BaseThingHandlerFactory {
 
-    private final WebSocketClient webSocketClient;
+    private final WebSocketFactory webSocketFactory;
     private final HttpClient httpClient;
     private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE).create();
@@ -62,7 +61,7 @@ public class LWHandlerFactory extends BaseThingHandlerFactory {
     @Activate
     public LWHandlerFactory(final @Reference WebSocketFactory webSocketFactory,
             final @Reference HttpClientFactory httpClientFactory) {
-        this.webSocketClient = webSocketFactory.getCommonWebSocketClient();
+        this.webSocketFactory = webSocketFactory;
         this.httpClient = httpClientFactory.getCommonHttpClient();
     }
 
@@ -71,7 +70,7 @@ public class LWHandlerFactory extends BaseThingHandlerFactory {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
 
         if (THING_TYPE_LIGHTWAVE_ACCOUNT.equals(thingTypeUID)) {
-            return new LightwaverfSmartAccountHandler((Bridge) thing, webSocketClient, httpClient, gson);
+            return new LightwaverfSmartAccountHandler((Bridge) thing, webSocketFactory, httpClient, gson);
         } else if (THING_TYPE_LIGHTWAVE_1HUB.equals(thingTypeUID)) {
             return new LightwaverfConnectAccountHandler((Bridge) thing);
         } else if (THING_TYPE_LIGHTWAVE_1TRV.equals(thingTypeUID)) {
